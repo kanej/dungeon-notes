@@ -10,6 +10,23 @@ import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
 import { useDebounce } from 'use-debounce'
 import { serialize } from 'remark-slate'
+import styled from 'styled-components'
+import isHotkey from 'is-hotkey'
+
+const isMarkActive = (editor: Editor, format: string) => {
+  const marks = Editor.marks(editor)
+  return marks ? marks[format] === true : false
+}
+
+const toggleMark = (editor: Editor, format: string) => {
+  const isActive = isMarkActive(editor, format)
+
+  if (isActive) {
+    Editor.removeMark(editor, format)
+  } else {
+    Editor.addMark(editor, format, true)
+  }
+}
 
 const withLayout = (editor: Editor) => {
   const { normalizeNode } = editor
@@ -48,6 +65,7 @@ function Scene({ initialDoc = undefined }: { initialDoc: any | undefined }) {
     [],
   )
   const renderElement = useCallback((props: any) => <Element {...props} />, [])
+  const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
   const [value, setValue] = useState<any>(
     initialDoc || [
       {
@@ -64,6 +82,25 @@ function Scene({ initialDoc = undefined }: { initialDoc: any | undefined }) {
   const handleChange = useCallback((newValue) => {
     setValue(newValue)
   }, [])
+
+  const handleShortcuts = useCallback(
+    (e) => {
+      console.log('here')
+      if (isHotkey('mod+b', e)) {
+        e.preventDefault()
+        toggleMark(editor, 'bold')
+      }
+      if (isHotkey('mod+i', e)) {
+        e.preventDefault()
+        toggleMark(editor, 'italic')
+      }
+      if (isHotkey('mod+u', e)) {
+        e.preventDefault()
+        toggleMark(editor, 'underline')
+      }
+    },
+    [editor],
+  )
 
   const [snapshot] = useDebounce(value, 3000)
 
@@ -85,16 +122,22 @@ function Scene({ initialDoc = undefined }: { initialDoc: any | undefined }) {
 
   return (
     <div>
-      <main>
+      <Main>
         <Slate
           // @ts-ignore
           editor={editor}
           value={value}
           onChange={handleChange}
         >
-          <Editable autoFocus renderElement={renderElement} />
+          <Editable
+            autoFocus
+            spellCheck
+            renderElement={renderElement}
+            renderLeaf={renderLeaf}
+            onKeyDown={handleShortcuts}
+          />
         </Slate>
-      </main>
+      </Main>
     </div>
   )
 }
@@ -109,5 +152,30 @@ const Element = ({ attributes, children, element }: any) => {
       return <div {...attributes}>{children}</div>
   }
 }
+
+const Leaf = ({ attributes, children, leaf }: any) => {
+  if (leaf.bold) {
+    children = <strong>{children}</strong>
+  }
+
+  if (leaf.code) {
+    children = <code>{children}</code>
+  }
+
+  if (leaf.italic) {
+    children = <em>{children}</em>
+  }
+
+  if (leaf.underline) {
+    children = <u>{children}</u>
+  }
+
+  return <span {...attributes}>{children}</span>
+}
+
+const Main = styled.main`
+  // font-family: 'MedievalSharp', cursive;
+  margin: 2rem;
+`
 
 export default Scene

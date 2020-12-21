@@ -11,6 +11,7 @@
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
+    "apollo-server-express": "2.19.0",
     "cli-ux": "5.5.1",
     "express": "4.17.1",
     "tslib": "^1"
