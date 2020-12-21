@@ -11,13 +11,13 @@ export default class Init extends Command {
 
   static args = [{ name: 'file' }]
 
-  async run() {
+  async run(): Promise<void> {
     try {
       await fs.promises.access('./campaign.json', fs.constants.F_OK)
       this.log('campaign.json file already exists')
       this.exit(1)
-    } catch (err) {
-      // continue
+    } catch {
+      this.debug('campaign.json file not found')
     }
 
     const campaign = await cli.prompt('What is the campaign called?')
@@ -26,7 +26,7 @@ export default class Init extends Command {
 
     fs.writeFileSync(
       './campaign.json',
-      JSON.stringify({ name: campaign, version: '0.1' }, null, 2),
+      JSON.stringify({ name: campaign, version: '0.1' }, undefined, 2),
     )
     fs.mkdirSync('./scenes')
 

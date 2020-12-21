@@ -2,11 +2,10 @@ import { Command, flags } from '@oclif/command'
 import fs from 'fs'
 import path from 'path'
 import express from 'express'
-import bodyParser from 'body-parser'
 
 import { ApolloServer, gql } from 'apollo-server-express'
 import { promisify } from 'util'
-import AdventureService from '../services/AdventureService'
+import AdventureService from '../services/adventure-service'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
@@ -50,7 +49,7 @@ export default class Serve extends Command {
 
   static args = [{ name: 'file', required: false, default: '.' }]
 
-  async run() {
+  async run(): Promise<void> {
     const { args, flags } = this.parse(Serve)
 
     const port = flags.port
@@ -59,7 +58,7 @@ export default class Serve extends Command {
     const campaignInfo = await this._readCampaignFile(basePath)
     const adventures = {}
 
-    const adventureService = new AdventureService(adventures)
+    const adventureService = new AdventureService(basePath, adventures)
 
     this.log(`Starting server: ${basePath}`)
 
@@ -90,18 +89,18 @@ export default class Serve extends Command {
 
     // app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }))
 
-    app.get('/api', async (_req, res) => {
+    app.get('/api', async (_request, response) => {
       const contents = await readFile(basePath)
 
-      res.setHeader('content-type', 'text/markdown')
-      res.send(contents.toString())
+      response.setHeader('content-type', 'text/markdown')
+      response.send(contents.toString())
     })
 
-    app.post('/api', express.text(), async (req, res) => {
+    app.post('/api', express.text(), async (request, response) => {
       // const contents = await readFile(filePath)
-      await writeFile(basePath, req.body)
+      await writeFile(basePath, request.body)
 
-      res.status(200).send()
+      response.status(200).send()
     })
 
     app.listen(port, () => {
@@ -120,7 +119,7 @@ export default class Serve extends Command {
       const json = JSON.parse(content.toString())
 
       return json
-    } catch (err) {
+    } catch {
       this.error('No `campaign.json` file.')
     }
   }

@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react'
-import { useQuery, gql, useMutation } from '@apollo/client'
+import React, { memo, useCallback } from 'react'
+import { useQuery, gql, useMutation, ApolloError } from '@apollo/client'
 import Layout from './components/Layout'
+import { Campaign } from './domain'
 
 const CAMPAIGN_QUERY = gql`
   query GetCampaignDetails {
@@ -22,11 +23,44 @@ const ADD_ADVENTURE = gql`
   }
 `
 
-const Welcome = () => {
+export const Welcome: React.FC<{
+  loading: boolean
+  error?: string
+  campaign?: Campaign
+  onCreateAnAdventure: any
+}> = memo(({ loading, error, campaign, onCreateAnAdventure }) => {
+  if (loading) {
+    return <p>Loading...</p>
+  }
+
+  if (error) {
+    return <p>Error :(</p>
+  }
+
+  const { name, edition, description, levels } = campaign!
+
+  return (
+    <div>
+      <h1>{name}</h1>
+
+      <p>
+        A D &amp; D {edition}e Adventure for levels {levels}.
+      </p>
+      <p>{description}</p>
+
+      <div>
+        <p>This campaign has no adventures, add one to begin:</p>
+        <button onClick={onCreateAnAdventure}>Create an adventure</button>
+      </div>
+    </div>
+  )
+})
+
+const SmartWelcome = () => {
   const { loading, error, data } = useQuery(CAMPAIGN_QUERY)
   const [
     addAdventure,
-    { loading: addAdventureLoading, error: addAdventureError },
+    // { loading: addAdventureLoading, error: addAdventureError },
   ] = useMutation(ADD_ADVENTURE)
 
   const handleCreateAnAdventure = useCallback(async () => {
@@ -39,33 +73,16 @@ const Welcome = () => {
     return addAdventure({ variables: { name: adventure } })
   }, [addAdventure])
 
-  if (loading) {
-    return <p>Loading...</p>
-  }
-
-  if (error) {
-    return <p>Error :(</p>
-  }
-
-  const {
-    campaign: { name, edition, description, levels },
-  } = data
-
   return (
     <Layout>
-      <h1>{name}</h1>
-
-      <p>
-        A D &amp; D {edition}e Adventure for levels {levels}.
-      </p>
-      <p>{description}</p>
-
-      <div>
-        <p>This campaign has no adventures, add one to begin:</p>
-        <button onClick={handleCreateAnAdventure}>Create an adventure</button>
-      </div>
+      <Welcome
+        loading={loading}
+        error={error?.message}
+        campaign={data?.campaign}
+        onCreateAnAdventure={handleCreateAnAdventure}
+      />
     </Layout>
   )
 }
 
-export default Welcome
+export default SmartWelcome

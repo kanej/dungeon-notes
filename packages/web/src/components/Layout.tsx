@@ -28,8 +28,6 @@ const Layout: React.FC = ({ children }) => {
     campaign: { adventures },
   } = data
 
-  console.log(adventures)
-
   return (
     <Page>
       <LeftDrawer>

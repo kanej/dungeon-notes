@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import {
   ApolloClient,
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client'
-import unified from 'unified'
-import markdown from 'remark-parse'
-import slate from 'remark-slate'
-import Scene from './Scene'
-import Welcome from './Welcome'
+// import unified from 'unified'
+// import markdown from 'remark-parse'
+// import slate from 'remark-slate'
+// import Scene from './Scene'
+import SmartWelcome from './Welcome'
 import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
   const [loading, setLoading] = useState(true)
-  const [savedDoc, setSavedDoc] = useState<any | undefined>(undefined)
+  // const [savedDoc, setSavedDoc] = useState<any | undefined>(undefined)
   const [apolloClient, setApolloClient] = useState<
     undefined | ApolloClient<NormalizedCacheObject>
   >(undefined)
@@ -39,29 +39,7 @@ function App() {
       return
     }
 
-    let mounted = true
-    const runLoad = async () => {
-      // const response = await fetch('/api')
-
-      // const text = await response.text()
-
-      // if (!mounted) {
-      //   return
-      // }
-
-      // const processed = await unified().use(markdown).use(slate).process(text)
-
-      // const doc: any = processed.result
-
-      // setSavedDoc(doc)
-      setLoading(false)
-    }
-
-    runLoad()
-
-    return () => {
-      mounted = false
-    }
+    setLoading(false)
   }, [apolloClient])
 
   if (loading || !apolloClient) {
@@ -71,7 +49,7 @@ function App() {
   return (
     <ApolloProvider client={apolloClient}>
       {/* <Scene initialDoc={savedDoc} /> */}
-      <Welcome />
+      <SmartWelcome />
       <GlobalStyle />
     </ApolloProvider>
   )
