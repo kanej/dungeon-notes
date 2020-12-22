@@ -55,5 +55,8 @@
     "format": "prettier --write \"./src/**/*.{ts,tsx,js,jsx}\"",
     "format:check": "prettier --check \"./src/**/*.{ts,tsx,js,jsx}\""
   },
-  "types": "lib/index.d.ts"
+  "types": "lib/index.d.ts",
+  "volta": {
+    "extends": "../../package.json"
+  }
 }

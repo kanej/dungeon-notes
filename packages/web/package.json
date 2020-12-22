@@ -55,5 +55,8 @@
   "devDependencies": {
     "@types/is-hotkey": "0.1.2",
     "@types/styled-components": "5.1.4"
+  },
+  "volta": {
+    "extends": "../../package.json"
   }
 }
