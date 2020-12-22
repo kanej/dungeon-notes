@@ -9,8 +9,8 @@
   "scripts": {
     "postinstall": "husky install",
     "test": "cross-env CI=true lerna run test",
-    "format": "lerna frun format",
-    "format:check": "lerna frun format:check"
+    "format": "lerna run format",
+    "format:check": "lerna run format:check"
   },
   "devDependencies": {
     "@commitlint/cli": "11.0.0",

@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react'
-import { useQuery, gql, useMutation, ApolloError } from '@apollo/client'
+import { useQuery, gql, useMutation } from '@apollo/client'
 import Layout from './components/Layout'
 import { Campaign } from './domain'
 

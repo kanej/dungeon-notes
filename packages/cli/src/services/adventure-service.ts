@@ -2,20 +2,9 @@ import toSlug from '../utils/to-slug'
 import fs from 'fs'
 import path from 'path'
 import { promisify } from 'util'
+import { Adventure, AdventureDescriptor } from '../domain'
 
 const mkdir = promisify(fs.mkdir)
-
-type Adventure = {
-  name: string
-  slug: string
-  description: string
-  body: string
-}
-
-type AdventureDescriptor = {
-  name: string
-  slug: string
-}
 
 export default class AdventureService {
   private basePath: string
