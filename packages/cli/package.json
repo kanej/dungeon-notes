@@ -48,7 +48,7 @@
   },
   "repository": "kanej/dmnotes",
   "scripts": {
-    "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/dev-server.ts\"",
+    "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/development-server.ts\"",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint ./src --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
