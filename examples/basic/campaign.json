@@ -1,0 +1,7 @@
+{
+  "name": "Dungeon of Doom",
+  "version": "0.1",
+  "edition": 5,
+  "levels": "3-10",
+  "description": "Enter the dungeon, get the gold"
+}

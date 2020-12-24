@@ -16,3 +16,11 @@ Run a server that hosts your DM notes
 # Commands
 
 <!-- commands -->
+
+# Development
+
+The graphql server provided by the `serve` command can be run under nodemon with:
+
+```shell
+yarn dev
+```
