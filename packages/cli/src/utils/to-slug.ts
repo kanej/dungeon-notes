@@ -1,3 +1,3 @@
 export default function toSlug(text: string): string {
-  return text.trim().replaceAll(' ', '-')
+  return text.toLowerCase().trim().replace(/ /g, '-')
 }

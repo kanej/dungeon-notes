@@ -1,9 +1,10 @@
-import toSlug from '../utils/to-slug'
 import fs from 'fs'
 import path from 'path'
 import { promisify } from 'util'
 import { Adventure, AdventureDescriptor } from '../domain'
+import toSlug from '../utils/to-slug'
 
+const writeFile = promisify(fs.writeFile)
 const mkdir = promisify(fs.mkdir)
 
 export default class AdventureService {
@@ -27,7 +28,12 @@ export default class AdventureService {
     this.adventures[adventure.slug] = adventure
 
     // write to file
-    await mkdir(path.join(this.basePath, adventure.slug))
+    await mkdir(path.join(this.basePath, 'adventures'))
+    await mkdir(path.join(this.basePath, 'adventures', adventure.slug))
+    await writeFile(
+      path.join(this.basePath, 'adventures', adventure.slug, 'intro.md'),
+      'example',
+    )
 
     return {
       name,
