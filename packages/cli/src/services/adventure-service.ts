@@ -1,24 +1,19 @@
-import fs from 'fs'
-import path from 'path'
-import { promisify } from 'util'
 import { Adventure, AdventureDescriptor } from '../domain'
 import toSlug from '../utils/to-slug'
-
-const writeFile = promisify(fs.writeFile)
-const mkdir = promisify(fs.mkdir)
+import FileStore from './file-store'
 
 export default class AdventureService {
-  private basePath: string
+  private fileStore: FileStore
 
   private adventures: { [key: string]: Adventure }
 
-  constructor(basePath: string, adventures: { [key: string]: Adventure }) {
-    this.basePath = basePath
+  constructor(fileStore: FileStore, adventures: { [key: string]: Adventure }) {
+    this.fileStore = fileStore
     this.adventures = adventures
   }
 
   async add(name: string): Promise<AdventureDescriptor> {
-    const adventure = {
+    const adventure: Adventure = {
       name,
       slug: toSlug(name),
       description: '',
@@ -27,13 +22,7 @@ export default class AdventureService {
 
     this.adventures[adventure.slug] = adventure
 
-    // write to file
-    await mkdir(path.join(this.basePath, 'adventures'))
-    await mkdir(path.join(this.basePath, 'adventures', adventure.slug))
-    await writeFile(
-      path.join(this.basePath, 'adventures', adventure.slug, 'intro.md'),
-      'example',
-    )
+    this.fileStore.writeAdventure(adventure)
 
     return {
       name,

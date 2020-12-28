@@ -7,6 +7,7 @@ import { promisify } from 'util'
 import AdventureService from '../services/adventure-service'
 import { Adventure } from '../domain'
 import schema from './schema'
+import FileStore from '../services/file-store'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
@@ -26,7 +27,8 @@ export default class Server {
 
     this.adventures = {}
 
-    this.adventureService = new AdventureService(basePath, this.adventures)
+    const fileStore = new FileStore(basePath)
+    this.adventureService = new AdventureService(fileStore, this.adventures)
   }
 
   async listen(): Promise<void> {
