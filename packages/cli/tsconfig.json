@@ -10,5 +10,9 @@
     "esModuleInterop": true,
     "lib": ["ESNext"]
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "ts-node": {
+    "files": true
+  },
+  "files": ["src/lib.d.ts"]
 }

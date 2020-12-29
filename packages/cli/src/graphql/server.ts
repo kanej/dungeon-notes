@@ -34,6 +34,8 @@ export default class Server {
   async listen(): Promise<void> {
     const campaignInfo = await this._readCampaignFile(this.basePath)
 
+    await this.adventureService.load()
+
     const app = express()
 
     const resolvers = {

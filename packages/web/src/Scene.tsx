@@ -85,7 +85,6 @@ function Scene({ initialDoc = undefined }: { initialDoc: any | undefined }) {
 
   const handleShortcuts = useCallback(
     (e) => {
-      console.log('here')
       if (isHotkey('mod+b', e)) {
         e.preventDefault()
         toggleMark(editor, 'bold')

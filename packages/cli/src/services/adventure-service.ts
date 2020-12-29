@@ -17,7 +17,7 @@ export default class AdventureService {
       name,
       slug: toSlug(name),
       description: '',
-      body: '',
+      body: 'Start your adventure ...',
     }
 
     this.adventures[adventure.slug] = adventure
@@ -28,6 +28,13 @@ export default class AdventureService {
       name,
       slug: adventure.slug,
     }
+  }
+
+  async load(): Promise<void> {
+    const adventuresFromStore = await this.fileStore.readAllAdventures()
+    this.adventures = Object.fromEntries(
+      adventuresFromStore.map((a) => [a.slug, a]),
+    )
   }
 
   listNames(): Array<AdventureDescriptor> {
