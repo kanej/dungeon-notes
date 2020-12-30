@@ -5,11 +5,9 @@ import {
   NormalizedCacheObject,
 } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client'
-// import unified from 'unified'
-// import markdown from 'remark-parse'
-// import slate from 'remark-slate'
-// import Scene from './Scene'
-import SmartWelcome from './Welcome'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import SmartWelcome from './pages/Welcome'
+import SmartAdventure from './pages/Adventure'
 import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
@@ -48,8 +46,14 @@ function App() {
 
   return (
     <ApolloProvider client={apolloClient}>
-      {/* <Scene initialDoc={savedDoc} /> */}
-      <SmartWelcome />
+      <Router>
+        <Route exact path="/:adventure">
+          <SmartAdventure />
+        </Route>
+        <Route exact path="/">
+          <SmartWelcome />
+        </Route>
+      </Router>
       <GlobalStyle />
     </ApolloProvider>
   )

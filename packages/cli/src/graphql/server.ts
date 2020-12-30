@@ -40,14 +40,27 @@ export default class Server {
 
     const resolvers = {
       Query: {
-        campaign: () => ({
-          ...campaignInfo,
-          adventures: this.adventureService.listNames(),
-        }),
+        campaign: () => {
+          return {
+            ...campaignInfo,
+            adventures: this.adventureService.listNames(),
+          }
+        },
+        adventure: async (_: any, { slug }: { slug: string }) => {
+          const adventure = this.adventureService.get(slug)
+
+          return adventure
+        },
       },
       Mutation: {
-        addAdventure: async (_: any, { name }: { name: string }) => {
+        addAdventure: (_: any, { name }: { name: string }) => {
           return this.adventureService.add(name)
+        },
+        updateAdventureBody: (
+          _: any,
+          { slug, body }: { slug: string; body: string },
+        ) => {
+          return this.adventureService.updateBody(slug, body)
         },
       },
     }

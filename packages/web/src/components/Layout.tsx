@@ -14,7 +14,9 @@ const ADVENTURES_QUERY = gql`
 `
 
 const Layout: React.FC = ({ children }) => {
-  const { loading, error, data } = useQuery(ADVENTURES_QUERY)
+  const { loading, error, data } = useQuery(ADVENTURES_QUERY, {
+    pollInterval: 1000,
+  })
 
   if (loading) {
     return <div>loaindg...</div>
@@ -37,11 +39,15 @@ const Layout: React.FC = ({ children }) => {
           <div>...</div>
         ) : (
           <div>
-            {adventures.map(
-              ({ name, slug }: { name: string; slug: string }) => (
-                <a href={slug}>{name}</a>
-              ),
-            )}
+            <ul>
+              {adventures.map(
+                ({ name, slug }: { name: string; slug: string }) => (
+                  <li key={slug}>
+                    <a href={slug}>{name}</a>
+                  </li>
+                ),
+              )}
+            </ul>
           </div>
         )}
       </LeftDrawer>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { Welcome } from './Welcome'
-import { Campaign } from './domain'
+import { Campaign } from '../domain'
 
 test('Renders loading', () => {
   render(<Welcome loading={true} onCreateAnAdventure={undefined} />)

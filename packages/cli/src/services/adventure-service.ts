@@ -22,12 +22,21 @@ export default class AdventureService {
 
     this.adventures[adventure.slug] = adventure
 
-    this.fileStore.writeAdventure(adventure)
+    await this.fileStore.writeAdventure(adventure)
 
     return {
       name,
       slug: adventure.slug,
     }
+  }
+
+  async updateBody(slug: string, body: string): Promise<boolean> {
+    const adventure = this.adventures[slug]
+    adventure.body = body
+
+    await this.fileStore.writeAdventure(adventure)
+
+    return true
   }
 
   async load(): Promise<void> {
@@ -42,5 +51,9 @@ export default class AdventureService {
       slug,
       name,
     }))
+  }
+
+  get(slug: string): Adventure {
+    return this.adventures[slug]
   }
 }
