@@ -3,4 +3,9 @@ name: The tavern
 description: ''
 ---
 
-Start your adventure ...
+I am speaking words here of a fun sort.
+<br>
+
+## Welcome to the bar
+
+The adventurers enjoy the bar.
