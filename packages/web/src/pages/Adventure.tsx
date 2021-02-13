@@ -6,6 +6,7 @@ import markdown from 'remark-parse'
 import slate from 'remark-slate'
 import Editor from '../components/SlateEditor'
 import Layout from '../components/Layout'
+import { Title } from '../components/Typography'
 
 const ADVENTURE_QUERY = gql`
   query GetAdventureDetails($slug: String!) {
@@ -34,7 +35,7 @@ export const Adventure: React.FC<{
 }> = memo(({ name, description, body, onSave }) => {
   return (
     <div>
-      <h2>{name}</h2>
+      <Title>{name}</Title>
       <p>{description}</p>
       <div>
         <Editor value={body} onSave={onSave} />

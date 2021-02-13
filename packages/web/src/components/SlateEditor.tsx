@@ -21,6 +21,7 @@ import { serialize } from 'remark-slate'
 import isHotkey from 'is-hotkey'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
+import { BlockQuote, Heading1, Heading2, Paragraph } from './Typography'
 
 const SlateEditor: React.FC<{
   value: string
@@ -142,17 +143,17 @@ const toggleBlock = (editor: Editor, format: string) => {
 const Element = ({ attributes, children, element }: any) => {
   switch (element.type) {
     case 'heading_one':
-      return <h2 {...attributes}>{children}</h2>
+      return <Heading1 {...attributes}>{children}</Heading1>
     case 'heading_two':
-      return <h3 {...attributes}>{children}</h3>
+      return <Heading2 {...attributes}>{children}</Heading2>
     case 'block_quote':
-      return <blockquote {...attributes}>{children}</blockquote>
+      return <BlockQuote {...attributes}>{children}</BlockQuote>
     case 'bulleted_list':
       return <ul {...attributes}>{children}</ul>
     case 'numbered_list':
       return <ol {...attributes}>{children}</ol>
     case 'paragraph':
-      return <p {...attributes}>{children}</p>
+      return <Paragraph {...attributes}>{children}</Paragraph>
     default:
       return <div {...attributes}>{children}</div>
   }
@@ -226,6 +227,7 @@ const HoveringToolbar = () => {
         <FormatButton format="underlined" icon="format_underlined" />
         <BlockButton format="heading_one" icon="looks_one" />
         <BlockButton format="heading_two" icon="looks_two" />
+        <BlockButton format="paragraph" icon="paragraph" />
         <BlockButton format="block_quote" icon="format_quote" />
         <BlockButton format="numbered_list" icon="format_list_numbered" />
         <BlockButton format="bulleted_list" icon="format_list_bulleted" />
