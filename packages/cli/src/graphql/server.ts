@@ -4,8 +4,8 @@ import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import { promisify } from 'util'
 
-import AdventureService from '../services/adventure-service'
-import { Adventure } from '../domain'
+import ChapterService from '../services/chapter-service'
+import { Chapter } from '../domain'
 import schema from './schema'
 import FileStore from '../services/file-store'
 
@@ -17,50 +17,50 @@ export default class Server {
 
   port: number
 
-  adventures: { [key: string]: Adventure }
+  chapters: { [key: string]: Chapter }
 
-  adventureService: AdventureService
+  chapterService: ChapterService
 
   constructor(basePath: string, port: number) {
     this.basePath = basePath
     this.port = port
 
-    this.adventures = {}
+    this.chapters = {}
 
     const fileStore = new FileStore(basePath)
-    this.adventureService = new AdventureService(fileStore, this.adventures)
+    this.chapterService = new ChapterService(fileStore, this.chapters)
   }
 
   async listen(): Promise<void> {
-    const campaignInfo = await this._readCampaignFile(this.basePath)
+    const adventureInfo = await this._readAdventureFile(this.basePath)
 
-    await this.adventureService.load()
+    await this.chapterService.load()
 
     const app = express()
 
     const resolvers = {
       Query: {
-        campaign: () => {
+        adventure: () => {
           return {
-            ...campaignInfo,
-            adventures: this.adventureService.listNames(),
+            ...adventureInfo,
+            chapters: this.chapterService.listNames(),
           }
         },
-        adventure: async (_: any, { slug }: { slug: string }) => {
-          const adventure = this.adventureService.get(slug)
+        chapter: async (_: any, { slug }: { slug: string }) => {
+          const chapter = this.chapterService.get(slug)
 
-          return adventure
+          return chapter
         },
       },
       Mutation: {
-        addAdventure: (_: any, { name }: { name: string }) => {
-          return this.adventureService.add(name)
+        addChapter: (_: any, { name }: { name: string }) => {
+          return this.chapterService.add(name)
         },
-        updateAdventureBody: (
+        updateChapterBody: (
           _: any,
           { slug, body }: { slug: string; body: string },
         ) => {
-          return this.adventureService.updateBody(slug, body)
+          return this.chapterService.updateBody(slug, body)
         },
       },
     }
@@ -97,17 +97,17 @@ export default class Server {
     })
   }
 
-  private async _readCampaignFile(basePath: string) {
-    const campaignFilePath = path.join(basePath, 'campaign.json')
+  private async _readAdventureFile(basePath: string) {
+    const adventureFilePath = path.join(basePath, 'adventure.json')
 
     try {
-      const content = await readFile(campaignFilePath)
+      const content = await readFile(adventureFilePath)
 
       const json = JSON.parse(content.toString())
 
       return json
     } catch {
-      throw new Error('No `campaign.json` file.')
+      throw new Error('No `adventure.json` file.')
     }
   }
 }

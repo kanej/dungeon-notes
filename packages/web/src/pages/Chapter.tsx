@@ -8,9 +8,9 @@ import Editor from '../components/SlateEditor'
 import Layout from '../components/Layout'
 import { Title } from '../components/Typography'
 
-const ADVENTURE_QUERY = gql`
-  query GetAdventureDetails($slug: String!) {
-    adventure(slug: $slug) {
+const CHAPTER_QUERY = gql`
+  query GetChapterDetails($slug: String!) {
+    chapter(slug: $slug) {
       name
       slug
       description
@@ -19,15 +19,15 @@ const ADVENTURE_QUERY = gql`
   }
 `
 
-const UPDATE_ADVENTURE_BODY = gql`
-  mutation UpdateAdventureBody($slug: String!, $body: String!) {
-    updateAdventureBody(slug: $slug, body: $body)
+const UPDATE_CHAPTER_BODY = gql`
+  mutation UpdateChapterBody($slug: String!, $body: String!) {
+    updateChapterBody(slug: $slug, body: $body)
   }
 `
 
 const markdownToSlateConvertor = unified().use(markdown).use(slate)
 
-export const Adventure: React.FC<{
+export const Chapter: React.FC<{
   name: string
   description: string
   body: any
@@ -44,27 +44,24 @@ export const Adventure: React.FC<{
   )
 })
 
-const SmartAdventure = () => {
-  const { adventure: adventureSlug } = useParams<{ adventure: string }>()
+const SmartChapter = () => {
+  const { chapter: chapterSlug } = useParams<{ chapter: string }>()
 
-  const { loading, error, data } = useQuery(ADVENTURE_QUERY, {
-    variables: { slug: adventureSlug },
+  const { loading, error, data } = useQuery(CHAPTER_QUERY, {
+    variables: { slug: chapterSlug },
   })
 
-  const [
-    updateAdventureBody,
-    // { loading: addAdventureLoading, error: addAdventureError },
-  ] = useMutation(UPDATE_ADVENTURE_BODY)
+  const [updateChapterBody] = useMutation(UPDATE_CHAPTER_BODY)
 
   const [slateInitialState, setSlateInitialState] = useState<any | null>(null)
 
   const handleSave = useCallback(
     (text: string) => {
-      return updateAdventureBody({
-        variables: { slug: adventureSlug, body: text },
+      return updateChapterBody({
+        variables: { slug: chapterSlug, body: text },
       })
     },
-    [adventureSlug, updateAdventureBody],
+    [chapterSlug, updateChapterBody],
   )
 
   useEffect(() => {
@@ -76,7 +73,7 @@ const SmartAdventure = () => {
 
     const convert = async () => {
       const slateState = await markdownToSlateConvertor.process(
-        data.adventure.body,
+        data.chapter.body,
       )
 
       if (!mounted) {
@@ -108,12 +105,12 @@ const SmartAdventure = () => {
   }
 
   const {
-    adventure: { name, description },
+    chapter: { name, description },
   } = data
 
   return (
     <Layout>
-      <Adventure
+      <Chapter
         name={name}
         description={description}
         body={slateInitialState}
@@ -123,4 +120,4 @@ const SmartAdventure = () => {
   )
 }
 
-export default SmartAdventure
+export default SmartChapter

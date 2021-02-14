@@ -13,22 +13,26 @@ export default class Init extends Command {
 
   async run(): Promise<void> {
     try {
-      await fs.promises.access('./campaign.json', fs.constants.F_OK)
-      this.log('campaign.json file already exists')
+      await fs.promises.access('./adventure.json', fs.constants.F_OK)
+      this.log('adventure.json file already exists')
       this.exit(1)
     } catch {
-      this.debug('campaign.json file not found')
+      this.debug('adventure.json file not found')
     }
 
-    const campaign = await cli.prompt('What is the campaign called?')
+    const adventure = await cli.prompt('What is the adventure called?')
 
-    cli.action.start(`Setting up ${campaign} campaign ...`)
+    cli.action.start(`Setting up ${adventure} campaign ...`)
 
     fs.writeFileSync(
-      './campaign.json',
-      JSON.stringify({ name: campaign, version: '0.1' }, undefined, 2),
+      './adventure.json',
+      JSON.stringify(
+        { name: adventure, version: '0.1', edition: 5, description: null },
+        undefined,
+        2,
+      ),
     )
-    fs.mkdirSync('./scenes')
+    fs.mkdirSync('./chapters')
 
     cli.action.stop()
   }

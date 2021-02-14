@@ -1,11 +1,11 @@
-export type Adventure = {
+export type Chapter = {
   name: string
   slug: string
   description: string
   body: string
 }
 
-export type AdventureDescriptor = {
+export type ChapterDescriptor = {
   name: string
   slug: string
 }

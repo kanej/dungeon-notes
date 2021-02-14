@@ -9,15 +9,15 @@ import remove from 'unist-util-remove'
 // eslint-disable-next-line import/no-unresolved
 import { Root } from 'mdast'
 import toSlug from './to-slug'
-import { Adventure } from '../domain'
+import { Chapter } from '../domain'
 
 const processor = unified().use(parse).use(stringify).use(frontmatter, ['yaml'])
 
-export async function convertAdventureToMarkdown({
+export async function convertChapterToMarkdown({
   name,
   description,
   body,
-}: Adventure): Promise<string> {
+}: Chapter): Promise<string> {
   const ast = await processor.parse(body)
 
   if (!is<Root>(ast, 'root')) {
@@ -35,9 +35,9 @@ export async function convertAdventureToMarkdown({
   return String(adventureMarkdown)
 }
 
-export async function convertMarkdownToAdventure(
+export async function convertMarkdownToChapter(
   markdown: string,
-): Promise<Adventure> {
+): Promise<Chapter> {
   const ast = await processor.parse(markdown)
 
   const yamlNode = find(ast, { type: 'yaml' })
@@ -54,6 +54,7 @@ export async function convertMarkdownToAdventure(
   const astWithoutFrontmatter = remove(ast, 'yaml')
 
   const withoutFrontmatter = await processor.stringify(astWithoutFrontmatter)
+
   return {
     name: name,
     slug: toSlug(name),

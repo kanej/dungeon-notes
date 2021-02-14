@@ -1,24 +1,24 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { Welcome } from './Welcome'
-import { Campaign } from '../domain'
+import { Adventure } from '../domain'
 
 test('Renders loading', () => {
-  render(<Welcome loading={true} onCreateAnAdventure={undefined} />)
+  render(<Welcome loading={true} onCreateAChapter={undefined} />)
   const linkElement = screen.getByText(/Loading.../i)
   expect(linkElement).toBeInTheDocument()
 })
 
 test('Renders error', () => {
   render(
-    <Welcome loading={false} error={'Fail'} onCreateAnAdventure={undefined} />,
+    <Welcome loading={false} error={'Fail'} onCreateAChapter={undefined} />,
   )
   const linkElement = screen.getByText(/Error :\(/i)
   expect(linkElement).toBeInTheDocument()
 })
 
 test('Renders layout after load', () => {
-  const exampleCampaign: Campaign = {
+  const exampleAdventure: Adventure = {
     name: 'Dungeon of Doom',
     description: 'Fun in a dungeon',
     edition: '5',
@@ -28,8 +28,8 @@ test('Renders layout after load', () => {
   render(
     <Welcome
       loading={false}
-      campaign={exampleCampaign}
-      onCreateAnAdventure={undefined}
+      adventure={exampleAdventure}
+      onCreateAChapter={undefined}
     />,
   )
 

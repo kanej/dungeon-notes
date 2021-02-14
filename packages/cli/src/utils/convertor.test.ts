@@ -1,7 +1,4 @@
-import {
-  convertAdventureToMarkdown,
-  convertMarkdownToAdventure,
-} from './convertor'
+import { convertChapterToMarkdown, convertMarkdownToChapter } from './convertor'
 
 const exampleAdventure = {
   name: 'In the Tavern',
@@ -23,15 +20,13 @@ Welcome.
 describe('convertor', () => {
   describe('Adventure', () => {
     it('should serialize to markdown with frontmatter', async () => {
-      const markdown = await convertAdventureToMarkdown(exampleAdventure)
+      const markdown = await convertChapterToMarkdown(exampleAdventure)
 
       expect(markdown).toBe(exampleAdventureMarkdown)
     })
 
     it('should deserialize to adventure', async () => {
-      const adventure = await convertMarkdownToAdventure(
-        exampleAdventureMarkdown,
-      )
+      const adventure = await convertMarkdownToChapter(exampleAdventureMarkdown)
 
       expect(adventure).toStrictEqual(exampleAdventure)
     })

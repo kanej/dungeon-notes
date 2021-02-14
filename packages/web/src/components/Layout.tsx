@@ -2,10 +2,10 @@ import { gql, useQuery } from '@apollo/client'
 import React from 'react'
 import styled from 'styled-components'
 
-const ADVENTURES_QUERY = gql`
-  query GetAdventureList {
-    campaign {
-      adventures {
+const CHAPTERS_QUERY = gql`
+  query GetChapterList {
+    adventure {
+      chapters {
         name
         slug
       }
@@ -14,7 +14,7 @@ const ADVENTURES_QUERY = gql`
 `
 
 const Layout: React.FC = ({ children }) => {
-  const { loading, error, data } = useQuery(ADVENTURES_QUERY, {
+  const { loading, error, data } = useQuery(CHAPTERS_QUERY, {
     pollInterval: 1000,
   })
 
@@ -27,7 +27,7 @@ const Layout: React.FC = ({ children }) => {
   }
 
   const {
-    campaign: { adventures },
+    adventure: { chapters },
   } = data
 
   return (
@@ -40,7 +40,7 @@ const Layout: React.FC = ({ children }) => {
         ) : (
           <NavPanel>
             <List>
-              {adventures.map(
+              {chapters.map(
                 ({ name, slug }: { name: string; slug: string }) => (
                   <li key={slug}>
                     <a href={slug}>{name}</a>

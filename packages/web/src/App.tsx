@@ -7,7 +7,7 @@ import {
 import { ApolloProvider } from '@apollo/client'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import SmartWelcome from './pages/Welcome'
-import SmartAdventure from './pages/Adventure'
+import SmartChapter from './pages/Chapter'
 import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
@@ -47,8 +47,8 @@ function App() {
   return (
     <ApolloProvider client={apolloClient}>
       <Router>
-        <Route exact path="/:adventure">
-          <SmartAdventure />
+        <Route exact path="/:chapter">
+          <SmartChapter />
         </Route>
         <Route exact path="/">
           <SmartWelcome />

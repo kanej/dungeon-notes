@@ -2,10 +2,10 @@ import fs from 'fs'
 import path from 'path'
 import { promisify } from 'util'
 
-import { Adventure } from '../domain'
+import { Chapter } from '../domain'
 import {
-  convertAdventureToMarkdown,
-  convertMarkdownToAdventure,
+  convertChapterToMarkdown,
+  convertMarkdownToChapter,
 } from '../utils/convertor'
 
 const writeFile = promisify(fs.writeFile)
@@ -20,44 +20,39 @@ export default class FileStore {
     this.basePath = basePath
   }
 
-  async writeAdventure(adventure: Adventure): Promise<void> {
+  async writeChapter(chapter: Chapter): Promise<void> {
     // write to file
-    await mkdir(path.join(this.basePath, 'adventures', adventure.slug), {
+    await mkdir(path.join(this.basePath, 'chapters', chapter.slug), {
       recursive: true,
     })
 
-    const markdown = await convertAdventureToMarkdown(adventure)
+    const markdown = await convertChapterToMarkdown(chapter)
 
     await writeFile(
-      path.join(this.basePath, 'adventures', adventure.slug, 'intro.md'),
+      path.join(this.basePath, 'chapters', chapter.slug, 'intro.md'),
       markdown,
     )
   }
 
-  async readAllAdventures(): Promise<Array<Adventure>> {
-    const entries = await readdir(path.join(this.basePath, 'adventures'), {
+  async readAllChapters(): Promise<Array<Chapter>> {
+    const entries = await readdir(path.join(this.basePath, 'chapters'), {
       withFileTypes: true,
     })
 
-    const adventureDirectories = entries.filter((entry) => entry.isDirectory())
-    const adventures = []
-    for (const adventureDirectory of adventureDirectories) {
+    const chapterDirectories = entries.filter((entry) => entry.isDirectory())
+    const chapters = []
+    for (const chapterDirectory of chapterDirectories) {
       // eslint-disable-next-line no-await-in-loop
       const infoFile = await readFile(
-        path.join(
-          this.basePath,
-          'adventures',
-          adventureDirectory.name,
-          'intro.md',
-        ),
+        path.join(this.basePath, 'chapters', chapterDirectory.name, 'intro.md'),
       )
 
       // eslint-disable-next-line no-await-in-loop
-      const adventure = await convertMarkdownToAdventure(infoFile.toString())
+      const adventure = await convertMarkdownToChapter(infoFile.toString())
 
-      adventures.push(adventure)
+      chapters.push(adventure)
     }
 
-    return adventures
+    return chapters
   }
 }

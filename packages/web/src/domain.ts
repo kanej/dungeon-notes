@@ -1,6 +1,6 @@
-export type Campaign = {
+export type Adventure = {
   name: string
   edition: string
-  description: string
   levels: string
+  description: string
 }

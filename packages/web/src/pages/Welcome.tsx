@@ -1,11 +1,11 @@
 import React, { memo, useCallback } from 'react'
 import { useQuery, gql, useMutation } from '@apollo/client'
 import Layout from '../components/Layout'
-import { Campaign } from '../domain'
+import { Adventure } from '../domain'
 
-const CAMPAIGN_QUERY = gql`
-  query GetCampaignDetails {
-    campaign {
+const ADVENTURE_QUERY = gql`
+  query GetAdventureDetails {
+    adventure {
       name
       edition
       description
@@ -14,9 +14,9 @@ const CAMPAIGN_QUERY = gql`
   }
 `
 
-const ADD_ADVENTURE = gql`
-  mutation AddAdventure($name: String!) {
-    addAdventure(name: $name) {
+const ADD_CHAPTER = gql`
+  mutation AddChapter($name: String!) {
+    addChapter(name: $name) {
       name
       slug
     }
@@ -26,9 +26,9 @@ const ADD_ADVENTURE = gql`
 export const Welcome: React.FC<{
   loading: boolean
   error?: string
-  campaign?: Campaign
-  onCreateAnAdventure: any
-}> = memo(({ loading, error, campaign, onCreateAnAdventure }) => {
+  adventure?: Adventure
+  onCreateAChapter: any
+}> = memo(({ loading, error, adventure, onCreateAChapter }) => {
   if (loading) {
     return <p>Loading...</p>
   }
@@ -37,7 +37,7 @@ export const Welcome: React.FC<{
     return <p>Error :(</p>
   }
 
-  const { name, edition, description, levels } = campaign!
+  const { name, edition, description, levels } = adventure!
 
   return (
     <div>
@@ -50,36 +50,37 @@ export const Welcome: React.FC<{
 
       <div>
         <p>This campaign has no adventures, add one to begin:</p>
-        <button onClick={onCreateAnAdventure}>Create an adventure</button>
+        <button onClick={onCreateAChapter}>Add a chapter</button>
       </div>
     </div>
   )
 })
 
 const SmartWelcome = () => {
-  const { loading, error, data } = useQuery(CAMPAIGN_QUERY)
+  const { loading, error, data } = useQuery(ADVENTURE_QUERY)
+
   const [
-    addAdventure,
+    addChapter,
     // { loading: addAdventureLoading, error: addAdventureError },
-  ] = useMutation(ADD_ADVENTURE)
+  ] = useMutation(ADD_CHAPTER)
 
-  const handleCreateAnAdventure = useCallback(async () => {
-    const adventure = window.prompt('What is the name of this adventure')
+  const handleCreateAChapter = useCallback(async () => {
+    const chapter = window.prompt('What is the name of this chapter')
 
-    if (!adventure) {
+    if (!chapter) {
       return
     }
 
-    return addAdventure({ variables: { name: adventure } })
-  }, [addAdventure])
+    return addChapter({ variables: { name: chapter } })
+  }, [addChapter])
 
   return (
     <Layout>
       <Welcome
         loading={loading}
         error={error?.message}
-        campaign={data?.campaign}
-        onCreateAnAdventure={handleCreateAnAdventure}
+        adventure={data?.adventure}
+        onCreateAChapter={handleCreateAChapter}
       />
     </Layout>
   )

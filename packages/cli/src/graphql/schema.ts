@@ -2,29 +2,29 @@ import { gql } from 'apollo-server-express'
 
 const schema = gql`
   type Query {
-    campaign: Campaign
-    adventure(slug: String!): Adventure
+    adventure: Adventure
+    chapter(slug: String!): Chapter
   }
 
   type Mutation {
-    addAdventure(name: String!): AdventureDescription!
-    updateAdventureBody(slug: String!, body: String!): Boolean
+    addChapter(name: String!): ChaptureDescription!
+    updateChapterBody(slug: String!, body: String!): Boolean
   }
 
-  type Campaign {
+  type Adventure {
     name: String!
     edition: Int!
     levels: String!
     description: String!
-    adventures: [AdventureDescription!]!
+    chapters: [ChaptureDescription!]!
   }
 
-  type AdventureDescription {
+  type ChaptureDescription {
     name: String!
     slug: String!
   }
 
-  type Adventure {
+  type Chapter {
     name: String!
     slug: String!
     description: String!
