@@ -5,6 +5,7 @@ import unified from 'unified'
 import markdown from 'remark-parse'
 import slate from 'remark-slate'
 import Editor from '../components/SlateEditor'
+import PluginEditor from '../components/PluginEditor'
 import Layout from '../components/Layout'
 import { Title } from '../components/Typography'
 
@@ -38,8 +39,11 @@ export const Chapter: React.FC<{
       <Title>{name}</Title>
       <p>{description}</p>
       <div>
-        <Editor value={body} onSave={onSave} />
+        <PluginEditor value={body} onSave={onSave} />
       </div>
+      {/* <div>
+        <Editor value={body} onSave={onSave} />
+      </div> */}
     </div>
   )
 })
