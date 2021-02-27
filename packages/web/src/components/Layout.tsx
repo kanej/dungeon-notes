@@ -1,6 +1,7 @@
 import { gql, useQuery } from '@apollo/client'
 import React from 'react'
 import styled from 'styled-components'
+import useCreateAChapter from '../hooks/useCreateAChapter'
 
 const CHAPTERS_QUERY = gql`
   query GetChapterList {
@@ -17,6 +18,8 @@ const Layout: React.FC = ({ children }) => {
   const { loading, error, data } = useQuery(CHAPTERS_QUERY, {
     pollInterval: 1000,
   })
+
+  const handleCreateAChapter = useCreateAChapter()
 
   if (loading) {
     return <div>loading...</div>
@@ -48,6 +51,9 @@ const Layout: React.FC = ({ children }) => {
                 ),
               )}
             </List>
+            <AddChapterBtnWrap>
+              <button onClick={handleCreateAChapter}>Add chapter</button>
+            </AddChapterBtnWrap>
           </NavPanel>
         )}
       </LeftDrawer>
@@ -92,6 +98,10 @@ const List = styled.ul`
 const Main = styled.main`
   height: 100vh;
   padding: 2rem;
+`
+
+const AddChapterBtnWrap = styled.div`
+  margin-top: 2rem;
 `
 
 export default Layout

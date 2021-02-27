@@ -2,6 +2,7 @@ import React, { memo, useCallback } from 'react'
 import { useQuery, gql, useMutation } from '@apollo/client'
 import Layout from '../components/Layout'
 import { Adventure } from '../domain'
+import useCreateAChapter from '../hooks/useCreateAChapter'
 
 const ADVENTURE_QUERY = gql`
   query GetAdventureDetails {
@@ -10,15 +11,6 @@ const ADVENTURE_QUERY = gql`
       edition
       description
       levels
-    }
-  }
-`
-
-const ADD_CHAPTER = gql`
-  mutation AddChapter($name: String!) {
-    addChapter(name: $name) {
-      name
-      slug
     }
   }
 `
@@ -59,20 +51,7 @@ export const Welcome: React.FC<{
 const SmartWelcome = () => {
   const { loading, error, data } = useQuery(ADVENTURE_QUERY)
 
-  const [
-    addChapter,
-    // { loading: addAdventureLoading, error: addAdventureError },
-  ] = useMutation(ADD_CHAPTER)
-
-  const handleCreateAChapter = useCallback(async () => {
-    const chapter = window.prompt('What is the name of this chapter')
-
-    if (!chapter) {
-      return
-    }
-
-    return addChapter({ variables: { name: chapter } })
-  }, [addChapter])
+  const handleCreateAChapter = useCreateAChapter()
 
   return (
     <Layout>
