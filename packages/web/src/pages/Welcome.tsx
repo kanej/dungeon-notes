@@ -1,65 +1,136 @@
-import React, { memo, useCallback } from 'react'
-import { useQuery, gql, useMutation } from '@apollo/client'
+import React, {
+  ChangeEvent,
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 import Layout from '../components/Layout'
-import { Adventure } from '../domain'
-import useCreateAChapter from '../hooks/useCreateAChapter'
-
-const ADVENTURE_QUERY = gql`
-  query GetAdventureDetails {
-    adventure {
-      name
-      edition
-      description
-      levels
-    }
-  }
-`
+import { LoadingStates } from '../domain'
+import { useSelector } from 'react-redux'
+import { RootState } from '../redux/rootReducer'
 
 export const Welcome: React.FC<{
   loading: boolean
-  error?: string
-  adventure?: Adventure
-  onCreateAChapter: any
-}> = memo(({ loading, error, adventure, onCreateAChapter }) => {
-  if (loading) {
-    return <p>Loading...</p>
-  }
+  name: string
+  description: string
+  edition: string
+  startingLevel: number
+  endingLevel: number
+  onNameChange: (event: ChangeEvent<HTMLInputElement>) => void
+  onDescriptionChange: (event: ChangeEvent<HTMLTextAreaElement>) => void
+  onStartingLevelChange: (event: ChangeEvent<HTMLInputElement>) => void
+  onEndingLevelChange: (event: ChangeEvent<HTMLInputElement>) => void
+}> = memo(
+  ({
+    loading,
+    name,
+    description,
+    edition,
+    startingLevel,
+    endingLevel,
+    onNameChange,
+    onDescriptionChange,
+    onStartingLevelChange,
+    onEndingLevelChange,
+  }) => {
+    if (loading) {
+      return <div>Loading ...</div>
+    }
 
-  if (error) {
-    return <p>Error :(</p>
-  }
-
-  const { name, edition, description, levels } = adventure!
-
-  return (
-    <div>
-      <h1>{name}</h1>
-
-      <p>
-        A D &amp; D {edition}e Adventure for levels {levels}.
-      </p>
-      <p>{description}</p>
-
+    return (
       <div>
-        <p>This campaign has no adventures, add one to begin:</p>
-        <button onClick={onCreateAChapter}>Add a chapter</button>
+        <form>
+          <input type="text" onChange={onNameChange} value={name} />
+        </form>
+
+        <p>
+          A D &amp; D {edition}e Adventure for levels{' '}
+          <input
+            type="number"
+            min={1}
+            max={20}
+            onChange={onStartingLevelChange}
+            value={startingLevel}
+          />{' '}
+          -{' '}
+          <input
+            type="number"
+            min={1}
+            max={20}
+            onChange={onEndingLevelChange}
+            value={endingLevel}
+          />
+          .
+        </p>
+        <form>
+          <textarea onChange={onDescriptionChange} value={description} />
+        </form>
       </div>
-    </div>
-  )
-})
+    )
+  },
+)
 
 const SmartWelcome = () => {
-  const { loading, error, data } = useQuery(ADVENTURE_QUERY)
+  const { loading, adventure } = useSelector((state: RootState) => ({
+    loading: state.loading.state !== LoadingStates.COMPLETE,
+    adventure: state.adventure,
+  }))
 
-  const handleCreateAChapter = useCreateAChapter()
+  const [adventureName, setAdventureName] = useState('')
+  const onAdventureNameChange = useCallback(
+    (ev) => setAdventureName(ev.target.value),
+    [],
+  )
+
+  const [adventureDescription, setAdventureDescription] = useState('')
+  const onAdventureDescriptionChange = useCallback(
+    (ev) => setAdventureDescription(ev.target.value),
+    [],
+  )
+
+  const [adventureEdition, setAdventureEdition] = useState('5')
+
+  const [startingLevel, setStartingLevel] = useState(1)
+  const onStartingLevelChange = useCallback(
+    (ev) => setStartingLevel(parseInt(ev.target.value)),
+    [],
+  )
+
+  const [endingLevel, setEndingLevel] = useState(10)
+  const onEndingLevelChange = useCallback(
+    (ev) => setEndingLevel(parseInt(ev.target.value)),
+    [],
+  )
+
+  useEffect(() => {
+    if (loading || !adventure) {
+      return
+    }
+
+    setAdventureName(adventure.name)
+    setAdventureDescription(adventure.description)
+    setAdventureEdition(adventure.edition)
+
+    const parts = adventure.levels.split('-')
+
+    setStartingLevel(parseInt(parts[0]))
+    setEndingLevel(parseInt(parts[1]))
+  }, [adventure, loading])
 
   return (
     <Layout>
       <Welcome
         loading={loading}
-        error={error?.message}
-        adventure={data?.adventure}
-        onCreateAChapter={handleCreateAChapter}
+        name={adventureName}
+        description={adventureDescription}
+        edition={adventureEdition}
+        startingLevel={startingLevel}
+        endingLevel={endingLevel}
+        onNameChange={onAdventureNameChange}
+        onDescriptionChange={onAdventureDescriptionChange}
+        onStartingLevelChange={onStartingLevelChange}
+        onEndingLevelChange={onEndingLevelChange}
       />
     </Layout>
   )

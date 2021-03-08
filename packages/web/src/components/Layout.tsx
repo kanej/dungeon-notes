@@ -1,18 +1,8 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import React from 'react'
 import styled from 'styled-components'
 import useCreateAChapter from '../hooks/useCreateAChapter'
-
-const CHAPTERS_QUERY = gql`
-  query GetChapterList {
-    adventure {
-      chapters {
-        name
-        slug
-      }
-    }
-  }
-`
+import CHAPTERS_QUERY from '../queries/chaptersQuery'
 
 const Layout: React.FC = ({ children }) => {
   const { loading, error, data } = useQuery(CHAPTERS_QUERY, {
