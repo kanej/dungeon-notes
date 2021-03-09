@@ -1,0 +1,1 @@
+export const MAX_ADVENTURE_NAME_LENGTH = 40

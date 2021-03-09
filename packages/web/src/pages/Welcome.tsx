@@ -1,81 +1,24 @@
-import React, {
-  ChangeEvent,
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import unified from 'unified'
+import markdown from 'remark-parse'
+import slate from 'remark-slate'
 import Layout from '../components/Layout'
 import { LoadingStates } from '../domain'
 import { useSelector } from 'react-redux'
 import { RootState } from '../redux/rootReducer'
+import AdventureDetails from '../components/AdventureDetails'
 
-export const Welcome: React.FC<{
-  loading: boolean
-  name: string
-  description: string
-  edition: string
-  startingLevel: number
-  endingLevel: number
-  onNameChange: (event: ChangeEvent<HTMLInputElement>) => void
-  onDescriptionChange: (event: ChangeEvent<HTMLTextAreaElement>) => void
-  onStartingLevelChange: (event: ChangeEvent<HTMLInputElement>) => void
-  onEndingLevelChange: (event: ChangeEvent<HTMLInputElement>) => void
-}> = memo(
-  ({
-    loading,
-    name,
-    description,
-    edition,
-    startingLevel,
-    endingLevel,
-    onNameChange,
-    onDescriptionChange,
-    onStartingLevelChange,
-    onEndingLevelChange,
-  }) => {
-    if (loading) {
-      return <div>Loading ...</div>
-    }
-
-    return (
-      <div>
-        <form>
-          <input type="text" onChange={onNameChange} value={name} />
-        </form>
-
-        <p>
-          A D &amp; D {edition}e Adventure for levels{' '}
-          <input
-            type="number"
-            min={1}
-            max={20}
-            onChange={onStartingLevelChange}
-            value={startingLevel}
-          />{' '}
-          -{' '}
-          <input
-            type="number"
-            min={1}
-            max={20}
-            onChange={onEndingLevelChange}
-            value={endingLevel}
-          />
-          .
-        </p>
-        <form>
-          <textarea onChange={onDescriptionChange} value={description} />
-        </form>
-      </div>
-    )
-  },
-)
+const markdownToSlateConvertor = unified().use(markdown).use(slate)
 
 const SmartWelcome = () => {
-  const { loading, adventure } = useSelector((state: RootState) => ({
-    loading: state.loading.state !== LoadingStates.COMPLETE,
-    adventure: state.adventure,
-  }))
+  const { loading: adventureLoading, adventure } = useSelector(
+    (state: RootState) => ({
+      loading: state.loading.state !== LoadingStates.COMPLETE,
+      adventure: state.adventure,
+    }),
+  )
+
+  const [loading, setLoading] = useState(true)
 
   const [adventureName, setAdventureName] = useState('')
   const onAdventureNameChange = useCallback(
@@ -83,9 +26,11 @@ const SmartWelcome = () => {
     [],
   )
 
-  const [adventureDescription, setAdventureDescription] = useState('')
+  const [slateInitialState, setSlateInitialState] = useState<any | null>(null)
+
+  const [, setAdventureDescription] = useState('')
   const onAdventureDescriptionChange = useCallback(
-    (ev) => setAdventureDescription(ev.target.value),
+    (text) => setAdventureDescription(text),
     [],
   )
 
@@ -104,26 +49,48 @@ const SmartWelcome = () => {
   )
 
   useEffect(() => {
-    if (loading || !adventure) {
+    if (adventureLoading || !adventure) {
       return
     }
 
-    setAdventureName(adventure.name)
-    setAdventureDescription(adventure.description)
-    setAdventureEdition(adventure.edition)
+    let mounted = true
 
-    const parts = adventure.levels.split('-')
+    const loadAdventure = async () => {
+      if (!mounted) {
+        return
+      }
 
-    setStartingLevel(parseInt(parts[0]))
-    setEndingLevel(parseInt(parts[1]))
-  }, [adventure, loading])
+      setAdventureName(adventure.name)
+
+      setAdventureEdition(adventure.edition)
+
+      const parts = adventure.levels.split('-')
+
+      setStartingLevel(parseInt(parts[0]))
+      setEndingLevel(parseInt(parts[1]))
+
+      setAdventureDescription(adventure.description)
+      const slateState = await markdownToSlateConvertor.process(
+        adventure.description,
+      )
+
+      setSlateInitialState(slateState.result)
+      setLoading(false)
+    }
+
+    loadAdventure()
+
+    return () => {
+      mounted = false
+    }
+  }, [adventure, adventureLoading])
 
   return (
     <Layout>
-      <Welcome
+      <AdventureDetails
         loading={loading}
         name={adventureName}
-        description={adventureDescription}
+        description={slateInitialState}
         edition={adventureEdition}
         startingLevel={startingLevel}
         endingLevel={endingLevel}
