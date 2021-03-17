@@ -1,4 +1,4 @@
-import Server from './graphql/server'
+import Server from './express/server'
 
 const main = async () => {
   const port = 9898

@@ -7,9 +7,9 @@ const AdventureDetails: React.FC<{
   loading: boolean
   name: string
   description: any
-  edition: string
-  startingLevel: number
-  endingLevel: number
+  edition: number
+  startingLevel: number | null
+  endingLevel: number | null
   onNameChange: (event: ChangeEvent<HTMLInputElement>) => void
   onDescriptionChange: (text: string) => void
   onStartingLevelChange: (event: ChangeEvent<HTMLInputElement>) => void
@@ -49,7 +49,7 @@ const AdventureDetails: React.FC<{
             min={1}
             max={20}
             onChange={onStartingLevelChange}
-            value={startingLevel}
+            value={startingLevel || 1}
           />{' '}
           -{' '}
           <LevelInput
@@ -57,7 +57,7 @@ const AdventureDetails: React.FC<{
             min={1}
             max={20}
             onChange={onEndingLevelChange}
-            value={endingLevel}
+            value={endingLevel || 10}
           />
           .
         </LevelText>

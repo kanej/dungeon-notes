@@ -1,7 +1,8 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
-import { Welcome } from './Welcome'
+
 import { Adventure } from '../domain'
+import AdventureDetails from '../components/AdventureDetails'
 
 const exampleAdventure: Adventure = {
   name: 'Dungeon of Doom',
@@ -13,10 +14,10 @@ const exampleAdventure: Adventure = {
 
 test('Renders loading', () => {
   render(
-    <Welcome
+    <AdventureDetails
       loading={true}
       name={exampleAdventure.name}
-      description={exampleAdventure.description}
+      description={[]}
       edition={exampleAdventure.edition}
       startingLevel={3}
       endingLevel={8}

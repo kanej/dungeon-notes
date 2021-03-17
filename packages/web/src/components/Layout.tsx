@@ -1,51 +1,29 @@
-import { useQuery } from '@apollo/client'
 import React from 'react'
 import styled from 'styled-components'
 import useCreateAChapter from '../hooks/useCreateAChapter'
-import CHAPTERS_QUERY from '../queries/chaptersQuery'
+import { Chapter } from '../domain'
 
 const Layout: React.FC = ({ children }) => {
-  const { loading, error, data } = useQuery(CHAPTERS_QUERY, {
-    pollInterval: 1000,
-  })
-
   const handleCreateAChapter = useCreateAChapter()
-
-  if (loading) {
-    return <div>loading...</div>
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>
-  }
-
-  const {
-    adventure: { chapters },
-  } = data
+  const chapters: Array<Chapter> = []
 
   return (
     <Page>
       <LeftDrawer>
         <h2>Dungeon Notes</h2>
 
-        {loading ? (
-          <div>...</div>
-        ) : (
-          <NavPanel>
-            <List>
-              {chapters.map(
-                ({ name, slug }: { name: string; slug: string }) => (
-                  <li key={slug}>
-                    <a href={slug}>{name}</a>
-                  </li>
-                ),
-              )}
-            </List>
-            <AddChapterBtnWrap>
-              <button onClick={handleCreateAChapter}>Add chapter</button>
-            </AddChapterBtnWrap>
-          </NavPanel>
-        )}
+        <NavPanel>
+          <List>
+            {chapters.map(({ name, slug }: { name: string; slug: string }) => (
+              <li key={slug}>
+                <a href={slug}>{name}</a>
+              </li>
+            ))}
+          </List>
+          <AddChapterBtnWrap>
+            <button onClick={handleCreateAChapter}>Add chapter</button>
+          </AddChapterBtnWrap>
+        </NavPanel>
       </LeftDrawer>
       <Main>{children}</Main>
     </Page>

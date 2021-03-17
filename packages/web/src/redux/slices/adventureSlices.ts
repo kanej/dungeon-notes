@@ -5,7 +5,8 @@ export const adventureSlice = createSlice({
   name: 'adventure',
   initialState: {
     name: '',
-    edition: '5e',
+    version: '0.1',
+    edition: 5,
     levels: '1-10',
     description: '',
     chapters: [],
@@ -19,10 +20,35 @@ export const adventureSlice = createSlice({
       state.description = payload.description
       state.chapters = payload.chapters
     },
+    updateAdventureName: (state, action: PayloadAction<{ name: string }>) => {
+      state.name = action.payload.name
+    },
+    updateAdventureLevels: (
+      state,
+      {
+        payload: { startingLevel, endingLevel },
+      }: PayloadAction<{ startingLevel: number; endingLevel: number }>,
+    ) => {
+      state.levels = `${startingLevel}-${endingLevel}`
+    },
+    updateAdventureDescription: (
+      state,
+      action: PayloadAction<{ description: string }>,
+    ) => {
+      if (!action.payload.description) {
+        return
+      }
+
+      state.description = action.payload.description
+    },
   },
 })
 
-// Action creators are generated for each case reducer function
-export const { setAdventure } = adventureSlice.actions
+export const {
+  setAdventure,
+  updateAdventureName,
+  updateAdventureLevels,
+  updateAdventureDescription,
+} = adventureSlice.actions
 
 export default adventureSlice.reducer

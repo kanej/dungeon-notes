@@ -1,31 +1,31 @@
-import { gql, useMutation, useQuery } from '@apollo/client'
-import React, { memo, useCallback, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import unified from 'unified'
-import markdown from 'remark-parse'
-import slate from 'remark-slate'
+// import { gql, useMutation, useQuery } from '@apollo/client'
+import React, { memo } from 'react'
+// import { useParams } from 'react-router-dom'
+// import unified from 'unified'
+// import markdown from 'remark-parse'
+// import slate from 'remark-slate'
 import PluginEditor from '../components/PluginEditor'
 import Layout from '../components/Layout'
 import { Title } from '../components/Typography'
 
-const CHAPTER_QUERY = gql`
-  query GetChapterDetails($slug: String!) {
-    chapter(slug: $slug) {
-      name
-      slug
-      description
-      body
-    }
-  }
-`
+// const CHAPTER_QUERY = gql`
+//   query GetChapterDetails($slug: String!) {
+//     chapter(slug: $slug) {
+//       name
+//       slug
+//       description
+//       body
+//     }
+//   }
+// `
 
-const UPDATE_CHAPTER_BODY = gql`
-  mutation UpdateChapterBody($slug: String!, $body: String!) {
-    updateChapterBody(slug: $slug, body: $body)
-  }
-`
+// const UPDATE_CHAPTER_BODY = gql`
+//   mutation UpdateChapterBody($slug: String!, $body: String!) {
+//     updateChapterBody(slug: $slug, body: $body)
+//   }
+// `
 
-const markdownToSlateConvertor = unified().use(markdown).use(slate)
+// const markdownToSlateConvertor = unified().use(markdown).use(slate)
 
 export const Chapter: React.FC<{
   name: string
@@ -48,77 +48,76 @@ export const Chapter: React.FC<{
 })
 
 const SmartChapter = () => {
-  const { chapter: chapterSlug } = useParams<{ chapter: string }>()
+  // const { chapter: chapterSlug } = useParams<{ chapter: string }>()
 
-  const { loading, error, data } = useQuery(CHAPTER_QUERY, {
-    variables: { slug: chapterSlug },
-  })
+  // const { loading, error, data } = useQuery(CHAPTER_QUERY, {
+  //   variables: { slug: chapterSlug },
+  // })
 
-  const [updateChapterBody] = useMutation(UPDATE_CHAPTER_BODY)
+  // const [updateChapterBody] = useMutation(UPDATE_CHAPTER_BODY)
 
-  const [slateInitialState, setSlateInitialState] = useState<any | null>(null)
+  // const [slateInitialState, setSlateInitialState] = useState<any | null>(null)
 
-  const handleSave = useCallback(
-    (text: string) => {
-      return updateChapterBody({
-        variables: { slug: chapterSlug, body: text },
-      })
-    },
-    [chapterSlug, updateChapterBody],
-  )
+  // const handleSave = useCallback((text: string) => {
+  //   console.log('TBD')
+  //   // return updateChapterBody({
+  //   //   variables: { slug: chapterSlug, body: text },
+  //   // })
+  // }, [])
 
-  useEffect(() => {
-    let mounted = true
-    if (!data) {
-      setSlateInitialState(null)
-      return () => {}
-    }
+  // useEffect(() => {
+  //   let mounted = true
+  //   if (!data) {
+  //     setSlateInitialState(null)
+  //     return () => {}
+  //   }
 
-    const convert = async () => {
-      const slateState = await markdownToSlateConvertor.process(
-        data.chapter.body,
-      )
+  //   const convert = async () => {
+  //     const slateState = await markdownToSlateConvertor.process(
+  //       data.chapter.body,
+  //     )
 
-      if (!mounted) {
-        return
-      }
+  //     if (!mounted) {
+  //       return
+  //     }
 
-      setSlateInitialState(slateState.result)
-    }
+  //     setSlateInitialState(slateState.result)
+  //   }
 
-    convert()
+  //   convert()
 
-    return () => (mounted = false)
-  }, [data])
+  //   return () => (mounted = false)
+  // }, [data])
 
-  if (loading || !slateInitialState) {
-    return (
-      <Layout>
-        <div>Loading...</div>
-      </Layout>
-    )
-  }
+  // if (loading || !slateInitialState) {
+  //   return (
+  //     <Layout>
+  //       <div>Loading...</div>
+  //     </Layout>
+  //   )
+  // }
 
-  if (error) {
-    return (
-      <Layout>
-        <div>{error}</div>
-      </Layout>
-    )
-  }
+  // if (error) {
+  //   return (
+  //     <Layout>
+  //       <div>{error}</div>
+  //     </Layout>
+  //   )
+  // }
 
-  const {
-    chapter: { name, description },
-  } = data
+  // const {
+  //   chapter: { name, description },
+  // } = data
 
   return (
     <Layout>
-      <Chapter
+      <div>TBD</div>
+      {/* <Chapter
         name={name}
         description={description}
         body={slateInitialState}
         onSave={handleSave}
-      />
+      /> */}
     </Layout>
   )
 }
