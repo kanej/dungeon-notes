@@ -10,7 +10,8 @@
     "postinstall": "husky install",
     "test": "cross-env CI=true lerna run test",
     "format": "lerna run format",
-    "format:check": "lerna run format:check"
+    "format:check": "lerna run format:check",
+    "lint": "lerna run lint --stream --concurrency 1"
   },
   "devDependencies": {
     "@commitlint/cli": "11.0.0",

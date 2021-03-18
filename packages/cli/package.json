@@ -79,7 +79,8 @@
     "test": "jest",
     "version": "oclif-dev readme && git add README.md",
     "format": "prettier --write \"./src/**/*.{ts,tsx,js,jsx}\"",
-    "format:check": "prettier --check \"./src/**/*.{ts,tsx,js,jsx}\""
+    "format:check": "prettier --check \"./src/**/*.{ts,tsx,js,jsx}\"",
+    "lint": "eslint src --ext ts"
   },
   "types": "lib/index.d.ts",
   "volta": {
