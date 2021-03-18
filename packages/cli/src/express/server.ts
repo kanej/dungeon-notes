@@ -15,7 +15,7 @@ export default class Server {
 
   port: number
 
-  adventure: Adventure | null = null
+  adventure: Adventure | undefined = undefined
 
   chapters: { [key: string]: Chapter }
 
@@ -164,7 +164,7 @@ export default class Server {
 
       return writeFile(
         adventureFilePath,
-        JSON.stringify(adventureInfo, null, 2),
+        JSON.stringify(adventureInfo, undefined, 2),
       )
     } catch {
       throw new Error("Unable to write to 'adventure.json' file")

@@ -21,9 +21,12 @@ export default class Build extends Command {
     const { flags } = this.parse(Build)
 
     const adventureFilePath = path.join(flags.path, './adventure.json')
-    const outputDirPath = './site'
-    const outputChaptersDirPath = path.join(outputDirPath, 'chapters')
-    const indexFilePath = path.join(outputDirPath, 'index.html')
+    const outputDirectoryPath = './site'
+    const outputChaptersDirectoryPath = path.join(
+      outputDirectoryPath,
+      'chapters',
+    )
+    const indexFilePath = path.join(outputDirectoryPath, 'index.html')
 
     try {
       try {
@@ -41,14 +44,14 @@ export default class Build extends Command {
       this.log('')
       this.log(`Building website for the adventure ${chalk.bold(name)}`)
       this.log('')
-      cli.action.start(`Creating ${outputDirPath} directory`)
+      cli.action.start(`Creating ${outputDirectoryPath} directory`)
 
-      if (!fs.existsSync(outputDirPath)) {
-        await fs.promises.mkdir(outputDirPath)
+      if (!fs.existsSync(outputDirectoryPath)) {
+        await fs.promises.mkdir(outputDirectoryPath)
       }
 
-      if (!fs.existsSync(outputChaptersDirPath)) {
-        await fs.promises.mkdir(outputChaptersDirPath)
+      if (!fs.existsSync(outputChaptersDirectoryPath)) {
+        await fs.promises.mkdir(outputChaptersDirectoryPath)
       }
 
       cli.action.stop()

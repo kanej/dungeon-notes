@@ -27,7 +27,7 @@ export default class Init extends Command {
     fs.writeFileSync(
       './adventure.json',
       JSON.stringify(
-        { name: adventure, version: '0.1', edition: 5, description: null },
+        { name: adventure, version: '0.1', edition: 5, description: '' },
         undefined,
         2,
       ),
