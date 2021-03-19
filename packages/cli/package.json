@@ -1,12 +1,12 @@
 {
-  "name": "dmnotes",
+  "name": "@dungeon-notes/writer",
   "description": "Run a server that hosts your DM notes",
   "version": "0.1.0",
   "author": "John Kane @kanej",
   "bin": {
-    "dmnotes": "./bin/run"
+    "dnwriter": "./bin/run"
   },
-  "bugs": "https://github.com/kanej/dmnotes/issues",
+  "bugs": "https://github.com/kanej/dungeon-notes/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
@@ -58,7 +58,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/kanej/dmnotes",
+  "homepage": "https://github.com/kanej/dungeon-notes",
   "keywords": [
     "oclif"
   ],
@@ -71,7 +71,7 @@
       "@oclif/plugin-help"
     ]
   },
-  "repository": "kanej/dmnotes",
+  "repository": "kanej/dungeon-notes",
   "scripts": {
     "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/development-server.ts\"",
     "postpack": "rm -f oclif.manifest.json",
