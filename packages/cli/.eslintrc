@@ -1,5 +1,6 @@
 {
-  "extends": ["oclif", "oclif-typescript", "prettier"],
+  "root": true,
+  "extends": ["oclif", "oclif-typescript", "../../.eslintrc"],
   "parserOptions": {
     "project": "tsconfig.json"
   }

@@ -38,33 +38,6 @@ export default class Server {
     const app = express()
     app.use(cors())
 
-    // const resolvers = {
-    //   Query: {
-    //     adventure: () => {
-    //       return {
-    //         ...adventureInfo,
-    //         chapters: this.chapterService.listNames(),
-    //       }
-    //     },
-    //     chapter: async (_: any, { slug }: { slug: string }) => {
-    //       const chapter = this.chapterService.get(slug)
-
-    //       return chapter
-    //     },
-    //   },
-    //   Mutation: {
-    //     addChapter: (_: any, { name }: { name: string }) => {
-    //       return this.chapterService.add(name)
-    //     },
-    //     updateChapterBody: (
-    //       _: any,
-    //       { slug, body }: { slug: string; body: string },
-    //     ) => {
-    //       return this.chapterService.updateBody(slug, body)
-    //     },
-    //   },
-    // }
-
     app.get('/api/adventure', async (_request, response) => {
       response.json(this.adventure)
     })

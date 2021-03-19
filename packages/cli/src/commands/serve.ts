@@ -1,5 +1,5 @@
 import { Command, flags } from '@oclif/command'
-import Server from '../graphql/server'
+import Server from '../express/server'
 
 // eslint-disable-next-line import/no-unused-modules
 export default class Serve extends Command {

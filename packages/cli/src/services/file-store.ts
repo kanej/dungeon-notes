@@ -21,7 +21,6 @@ export default class FileStore {
   }
 
   async writeChapter(chapter: Chapter): Promise<void> {
-    // write to file
     await mkdir(path.join(this.basePath, 'chapters', chapter.slug), {
       recursive: true,
     })
