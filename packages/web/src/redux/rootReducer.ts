@@ -1,7 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit'
 
-import loadingReducer from './slices/loadingSlice'
 import adventureReducer from './slices/adventureSlices'
+import loadingReducer from './slices/loadingSlice'
 
 const rootReducer = combineReducers({
   loading: loadingReducer,

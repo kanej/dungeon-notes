@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import useCreateAChapter from '../hooks/useCreateAChapter'
 import { Chapter } from '../domain'
+import useCreateAChapter from '../hooks/useCreateAChapter'
 
 const Layout: React.FC = ({ children }) => {
   const handleCreateAChapter = useCreateAChapter()

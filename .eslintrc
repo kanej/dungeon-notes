@@ -19,6 +19,10 @@
   "plugins": ["@typescript-eslint", "unicorn"],
   "rules": {
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": ["error"]
+    "@typescript-eslint/no-unused-vars": ["error"],
+    "import/order": [
+      "error",
+      { "alphabetize": { "order": "asc", "caseInsensitive": true } }
+    ]
   }
 }

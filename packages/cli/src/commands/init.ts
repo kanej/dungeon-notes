@@ -1,6 +1,6 @@
+import fs from 'fs'
 import { Command, flags } from '@oclif/command'
 import cli from 'cli-ux'
-import fs from 'fs'
 
 export default class Init extends Command {
   static description = 'Setup a new notes repo'

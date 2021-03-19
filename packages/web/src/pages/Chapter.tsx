@@ -1,12 +1,13 @@
 import React, { memo } from 'react'
-import PluginEditor from '../components/PluginEditor'
+import { Node as SlateNode } from 'slate/dist/interfaces/node'
 import Layout from '../components/Layout'
+import PluginEditor from '../components/PluginEditor'
 import { Title } from '../components/Typography'
 
 export const Chapter: React.FC<{
   name: string
   description: string
-  body: any
+  body: SlateNode[]
   onSave: (text: string) => void
 }> = memo(({ name, description, body, onSave }) => {
   return (
@@ -20,7 +21,7 @@ export const Chapter: React.FC<{
   )
 })
 
-const SmartChapter = () => {
+const SmartChapter: React.FC = () => {
   return (
     <Layout>
       <div>TBD</div>

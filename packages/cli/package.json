@@ -18,6 +18,7 @@
     "express": "4.17.1",
     "handlebars": "4.7.7",
     "js-yaml": "3.14.1",
+    "mdast": "3.0.0",
     "rehype-format": "3.1.0",
     "rehype-stringify": "8.0.0",
     "remark-frontmatter": "3.0.0",
@@ -80,7 +81,8 @@
     "version": "oclif-dev readme && git add README.md",
     "format": "prettier --write \"./src/**/*.{ts,tsx,js,jsx}\"",
     "format:check": "prettier --check \"./src/**/*.{ts,tsx,js,jsx}\"",
-    "lint": "eslint src --ext ts"
+    "lint": "eslint src --ext ts",
+    "lint:fix": "eslint --fix src --ext ts"
   },
   "types": "lib/index.d.ts",
   "volta": {

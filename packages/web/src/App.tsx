@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { createGlobalStyle } from 'styled-components'
 import { useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import SmartWelcome from './pages/Welcome'
+import { createGlobalStyle } from 'styled-components'
+import { Adventure } from './domain'
 import SmartChapter from './pages/Chapter'
+import SmartWelcome from './pages/Welcome'
 import { setAdventure } from './redux/slices/adventureSlices'
 import { complete } from './redux/slices/loadingSlice'
-import { Adventure } from './domain'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -14,7 +14,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-const App = () => {
+const App: React.FC = () => {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(true)
 

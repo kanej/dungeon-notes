@@ -1,4 +1,5 @@
 import React, { ChangeEvent, memo } from 'react'
+import { Node as SlateNode } from 'slate/dist/interfaces/node'
 import styled from 'styled-components'
 import { MAX_ADVENTURE_NAME_LENGTH } from '../constants'
 import PluginEditor from './PluginEditor'
@@ -6,7 +7,7 @@ import PluginEditor from './PluginEditor'
 const AdventureDetails: React.FC<{
   loading: boolean
   name: string
-  description: any
+  description: SlateNode[]
   edition: number
   startingLevel: number | null
   endingLevel: number | null

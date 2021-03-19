@@ -1,13 +1,13 @@
 import fs from 'fs'
 import path from 'path'
-import express from 'express'
-import { ApolloServer } from 'apollo-server-express'
 import { promisify } from 'util'
+import { ApolloServer } from 'apollo-server-express'
+import express from 'express'
 
-import ChapterService from '../services/chapter-service'
 import { Chapter } from '../domain'
-import schema from './schema'
+import ChapterService from '../services/chapter-service'
 import FileStore from '../services/file-store'
+import schema from './schema'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)

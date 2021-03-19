@@ -1,8 +1,11 @@
-import React from 'react'
 import { render, screen } from '@testing-library/react'
-
-import { Adventure } from '../domain'
+import React from 'react'
 import AdventureDetails from '../components/AdventureDetails'
+import { Adventure } from '../domain'
+
+const noop = () => {
+  // Do nothing
+}
 
 const exampleAdventure: Adventure = {
   name: 'Dungeon of Doom',
@@ -22,10 +25,10 @@ test('Renders loading', () => {
       edition={exampleAdventure.edition}
       startingLevel={3}
       endingLevel={8}
-      onNameChange={() => {}}
-      onDescriptionChange={() => {}}
-      onStartingLevelChange={() => {}}
-      onEndingLevelChange={() => {}}
+      onNameChange={noop}
+      onDescriptionChange={noop}
+      onStartingLevelChange={noop}
+      onEndingLevelChange={noop}
     />,
   )
   const linkElement = screen.getByText(/Loading.../i)

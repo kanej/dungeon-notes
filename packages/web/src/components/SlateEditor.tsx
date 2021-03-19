@@ -1,11 +1,16 @@
+import isHotkey from 'is-hotkey'
 import React, {
   PropsWithChildren,
+  Ref,
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from 'react'
+import ReactDOM from 'react-dom'
+import { serialize } from 'remark-slate'
+import { BlockType } from 'remark-slate/dist/serialize'
 import {
   createEditor,
   Editor,
@@ -13,24 +18,32 @@ import {
   Transforms,
   Element as SlateElement,
 } from 'slate'
-import { Slate, Editable, withReact, useSlate, ReactEditor } from 'slate-react'
 import { withHistory } from 'slate-history'
-import { useDebounce } from 'use-debounce'
-import { serialize } from 'remark-slate'
-import isHotkey from 'is-hotkey'
-import ReactDOM from 'react-dom'
+import {
+  Slate,
+  Editable,
+  withReact,
+  useSlate,
+  ReactEditor,
+  RenderElementProps,
+} from 'slate-react'
+import { Node as SlateNode } from 'slate/dist/interfaces/node'
 import styled from 'styled-components'
+import { useDebounce } from 'use-debounce'
 import { BlockQuote, Heading1, Heading2, Paragraph } from './Typography'
 
 const SlateEditor: React.FC<{
-  value: string
+  value: SlateNode[]
   onSave: (text: string) => void
 }> = ({ value: initialValue, onSave }) => {
   const editor = useMemo(() => withHistory(withReact(createEditor())), [])
-  const renderElement = useCallback((props: any) => <Element {...props} />, [])
+  const renderElement = useCallback(
+    (props: RenderElementProps) => <Element {...props} />,
+    [],
+  )
   const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
 
-  const [value, setValue] = useState<any>(
+  const [value, setValue] = useState<SlateNode[]>(
     initialValue || [
       {
         type: 'paragraph',
@@ -66,7 +79,9 @@ const SlateEditor: React.FC<{
   const [snapshot] = useDebounce(value, 3000)
 
   useEffect(() => {
-    const markdown = snapshot.map((v: any) => serialize(v)).join('')
+    const markdown = snapshot
+      .map((v) => serialize((v as unknown) as BlockType))
+      .join('')
 
     onSave(markdown)
   }, [onSave, snapshot])
@@ -74,8 +89,7 @@ const SlateEditor: React.FC<{
   return (
     <div>
       <Slate
-        // @ts-ignore
-        editor={editor}
+        editor={editor as ReactEditor}
         value={value}
         onChange={handleChange}
       >
@@ -125,8 +139,9 @@ const toggleBlock = (editor: Editor, format: string) => {
   Transforms.unwrapNodes(editor, {
     match: (n) =>
       LIST_TYPES.includes(
-        // @ts-ignore
-        (!Editor.isEditor(n) && SlateElement.isElement(n) && n.type) || '',
+        ((!Editor.isEditor(n) &&
+          SlateElement.isElement(n) &&
+          n.type) as string) || '',
       ),
     split: true,
   })
@@ -141,7 +156,10 @@ const toggleBlock = (editor: Editor, format: string) => {
   }
 }
 
-const Element = ({ attributes, children, element }: any) => {
+const Element: React.FC<{
+  attributes: Record<string, unknown>
+  element: Record<string, unknown>
+}> = ({ attributes, children, element }) => {
   switch (element.type) {
     case 'heading_one':
       return <Heading1 {...attributes}>{children}</Heading1>
@@ -160,7 +178,10 @@ const Element = ({ attributes, children, element }: any) => {
   }
 }
 
-const Leaf = ({ attributes, children, leaf }: any) => {
+const Leaf: React.FC<{
+  attributes: Record<string, unknown>
+  leaf: Record<string, unknown>
+}> = ({ attributes, children, leaf }) => {
   if (leaf.bold) {
     children = <strong>{children}</strong>
   }
@@ -237,7 +258,9 @@ const HoveringToolbar = () => {
   )
 }
 
-const FormatButton = ({ format }: any) => {
+const FormatButton: React.FC<{ format: string; icon: string }> = ({
+  format,
+}) => {
   const editor = useSlate()
 
   return (
@@ -255,7 +278,9 @@ const FormatButton = ({ format }: any) => {
   )
 }
 
-const BlockButton = ({ format }: any) => {
+const BlockButton: React.FC<{ format: string; icon: string }> = ({
+  format,
+}) => {
   const editor = useSlate()
 
   return (
@@ -279,9 +304,10 @@ interface BaseProps {
 }
 
 export const Menu = React.forwardRef(
-  ({ className, ...props }: PropsWithChildren<BaseProps>, ref: any) => (
-    <div {...props} ref={ref} className={className} />
-  ),
+  (
+    { className, ...props }: PropsWithChildren<BaseProps>,
+    ref: Ref<HTMLDivElement>,
+  ) => <div {...props} ref={ref} className={className} />,
 )
 
 const StyledMenu = styled(Menu)`
@@ -307,7 +333,7 @@ const StyledMenu = styled(Menu)`
   background: blue;
 `
 
-const Portal = ({ children }: any) => {
+const Portal: React.FC = ({ children }) => {
   return ReactDOM.createPortal(children, document.body)
 }
 

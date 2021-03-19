@@ -1,10 +1,4 @@
 /* eslint-disable new-cap */
-import React, { useEffect, useMemo, useState } from 'react'
-import { createEditor } from 'slate'
-import { withHistory } from 'slate-history'
-import { Slate, withReact } from 'slate-react'
-import { useDebounce } from 'use-debounce'
-import { serialize } from 'remark-slate'
 import {
   FormatBold,
   FormatItalic,
@@ -34,6 +28,14 @@ import {
   DEFAULTS_BLOCKQUOTE,
   BlockquotePlugin,
 } from '@udecode/slate-plugins'
+import React, { useEffect, useMemo, useState } from 'react'
+import { serialize } from 'remark-slate'
+import { BlockType } from 'remark-slate/dist/serialize'
+import { createEditor } from 'slate'
+import { withHistory } from 'slate-history'
+import { Slate, withReact } from 'slate-react'
+import { Node as SlateNode } from 'slate/dist/interfaces/node'
+import { useDebounce } from 'use-debounce'
 
 const plugins = [
   BoldPlugin(),
@@ -47,7 +49,7 @@ const plugins = [
 
 const withPlugins = [withReact, withHistory, withMarks()] as const
 
-function mapType(v: any) {
+function mapType(v: SlateNode) {
   if (v.type === 'h1') {
     return { ...v, type: 'heading_one' }
   }
@@ -63,7 +65,7 @@ function mapType(v: any) {
   return v
 }
 
-function unmapType(v: any) {
+function unmapType(v: SlateNode) {
   if (v.type === 'heading_one') {
     return { ...v, type: 'h1' }
   }
@@ -80,12 +82,12 @@ function unmapType(v: any) {
 }
 
 export const Editor: React.FC<{
-  value: Array<any>
+  value: SlateNode[]
   onSave: (text: string) => void
 }> = ({ value: initialValue, onSave }) => {
   const editor = useMemo(() => pipe(createEditor(), ...withPlugins), [])
 
-  const [value, setValue] = useState<any>(() =>
+  const [value, setValue] = useState<SlateNode[]>(() =>
     initialValue
       ? initialValue.map(unmapType)
       : [
@@ -99,10 +101,16 @@ export const Editor: React.FC<{
   const [snapshot] = useDebounce(value, 3000)
 
   useEffect(() => {
-    const markdown = snapshot.map((v: any) => serialize(mapType(v))).join('')
+    const markdown = snapshot
+      .map((v) => serialize((mapType(v) as unknown) as BlockType))
+      .join('')
 
     onSave(markdown)
   }, [onSave, snapshot])
+
+  if (!DEFAULTS_PARAGRAPH.p.type || !DEFAULTS_BLOCKQUOTE.blockquote.type) {
+    throw new Error('Slate formatting setup fails')
+  }
 
   return (
     <Slate
@@ -131,13 +139,13 @@ export const Editor: React.FC<{
         />
         <ToolbarElement
           reversed
-          type={DEFAULTS_PARAGRAPH.p.type!}
+          type={DEFAULTS_PARAGRAPH.p.type}
           icon={<ShortText />}
           tooltip={{ content: 'Paragraph' }}
         />
         <ToolbarElement
           reversed
-          type={DEFAULTS_BLOCKQUOTE.blockquote.type!}
+          type={DEFAULTS_BLOCKQUOTE.blockquote.type}
           icon={<FormatQuote />}
           tooltip={{ content: 'Blockquote' }}
         />

@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import unified from 'unified'
+import { useSelector, useDispatch } from 'react-redux'
 import markdown from 'remark-parse'
 import slate from 'remark-slate'
+import { Node as SlateNode } from 'slate/dist/interfaces/node'
+import unified from 'unified'
+import AdventureDetails from '../components/AdventureDetails'
 import Layout from '../components/Layout'
 import { LoadingStates } from '../domain'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from '../redux/rootReducer'
-import AdventureDetails from '../components/AdventureDetails'
 import useDebounce from '../hooks/useDebounce'
+import { RootState } from '../redux/rootReducer'
 import {
   updateAdventureDescription,
   updateAdventureLevels,
@@ -16,7 +17,7 @@ import {
 
 const markdownToSlateConvertor = unified().use(markdown).use(slate)
 
-const SmartWelcome = () => {
+const SmartWelcome: React.FC = () => {
   const dispatch = useDispatch()
   const { loading: adventureLoading, adventure } = useSelector(
     (state: RootState) => ({
@@ -33,7 +34,9 @@ const SmartWelcome = () => {
     [],
   )
 
-  const [slateInitialState, setSlateInitialState] = useState<any | null>(null)
+  const [slateInitialState, setSlateInitialState] = useState<
+    SlateNode[] | null
+  >(null)
 
   const [adventureDescription, setAdventureDescription] = useState<
     null | string
@@ -84,7 +87,7 @@ const SmartWelcome = () => {
         adventure.description,
       )
 
-      setSlateInitialState(slateState.result)
+      setSlateInitialState(slateState.result as SlateNode[])
       setLoading(false)
     }
 
@@ -229,7 +232,7 @@ const SmartWelcome = () => {
     }
   }, [debouncedDescription, dispatch, loading])
 
-  if (loading) {
+  if (loading || !slateInitialState) {
     return (
       <Layout>
         <div>Loading ...</div>

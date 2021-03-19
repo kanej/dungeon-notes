@@ -1,8 +1,8 @@
-import unified from 'unified'
+import html from 'rehype-stringify'
 import markdown from 'remark-parse'
 import remark2rehype from 'remark-rehype'
+import unified from 'unified'
 // import format from 'rehype-format'
-import html from 'rehype-stringify'
 
 const convertor = unified()
   .use(markdown)

@@ -1,15 +1,15 @@
-import unified from 'unified'
-import parse from 'remark-parse'
-import stringify from 'remark-stringify'
-import frontmatter from 'remark-frontmatter'
 import yaml from 'js-yaml'
-import is from 'unist-util-is'
-import find from 'unist-util-find'
-import remove from 'unist-util-remove'
 // eslint-disable-next-line import/no-unresolved
 import { Root } from 'mdast'
-import toSlug from './to-slug'
+import frontmatter from 'remark-frontmatter'
+import parse from 'remark-parse'
+import stringify from 'remark-stringify'
+import unified from 'unified'
+import find from 'unist-util-find'
+import is from 'unist-util-is'
+import remove from 'unist-util-remove'
 import { Chapter } from '../domain'
+import toSlug from './to-slug'
 
 const processor = unified().use(parse).use(stringify).use(frontmatter, ['yaml'])
 
