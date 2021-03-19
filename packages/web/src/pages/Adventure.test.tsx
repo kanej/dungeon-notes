@@ -16,6 +16,31 @@ const exampleAdventure: Adventure = {
   chapters: [],
 }
 
+test('Renders adventure description', () => {
+  render(
+    <AdventureDetails
+      loading={false}
+      name={exampleAdventure.name}
+      description={[]}
+      edition={exampleAdventure.edition}
+      startingLevel={3}
+      endingLevel={8}
+      onNameChange={noop}
+      onDescriptionChange={noop}
+      onStartingLevelChange={noop}
+      onEndingLevelChange={noop}
+    />,
+  )
+  const title = screen.getByDisplayValue(/Dungeon of Doom/i)
+  expect(title).toBeInTheDocument()
+
+  const startingLevel = screen.getByDisplayValue(/3/i)
+  expect(startingLevel).toBeInTheDocument()
+
+  const endingLevel = screen.getByDisplayValue(/8/i)
+  expect(endingLevel).toBeInTheDocument()
+})
+
 test('Renders loading', () => {
   render(
     <AdventureDetails

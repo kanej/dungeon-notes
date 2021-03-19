@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { createGlobalStyle } from 'styled-components'
 import { Adventure } from './domain'
+import SmartAdventure from './pages/Adventure'
 import SmartChapter from './pages/Chapter'
-import SmartWelcome from './pages/Welcome'
 import { setAdventure } from './redux/slices/adventureSlices'
 import { complete } from './redux/slices/loadingSlice'
 
@@ -58,7 +58,7 @@ const App: React.FC = () => {
           <SmartChapter />
         </Route>
         <Route exact path="/">
-          <SmartWelcome />
+          <SmartAdventure />
         </Route>
       </Router>
       <GlobalStyle />

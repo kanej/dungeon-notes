@@ -17,7 +17,7 @@ import {
 
 const markdownToSlateConvertor = unified().use(markdown).use(slate)
 
-const SmartWelcome: React.FC = () => {
+const SmartAdventure: React.FC = () => {
   const dispatch = useDispatch()
   const { loading: adventureLoading, adventure } = useSelector(
     (state: RootState) => ({
@@ -258,4 +258,4 @@ const SmartWelcome: React.FC = () => {
   )
 }
 
-export default SmartWelcome
+export default SmartAdventure
