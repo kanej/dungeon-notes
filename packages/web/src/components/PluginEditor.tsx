@@ -81,7 +81,7 @@ function unmapType(v: SlateNode) {
   return v
 }
 
-export const Editor: React.FC<{
+const Editor: React.FC<{
   value: SlateNode[]
   onSave: (text: string) => void
 }> = ({ value: initialValue, onSave }) => {

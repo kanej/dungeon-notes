@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Adventure } from '../../domain'
 
-export const adventureSlice = createSlice({
+const adventureSlice = createSlice({
   name: 'adventure',
   initialState: {
     name: '',
@@ -44,6 +44,7 @@ export const adventureSlice = createSlice({
   },
 })
 
+// eslint-disable-next-line import/no-unused-modules
 export const {
   setAdventure,
   updateAdventureName,

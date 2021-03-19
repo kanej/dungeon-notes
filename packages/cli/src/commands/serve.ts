@@ -1,6 +1,7 @@
 import { Command, flags } from '@oclif/command'
 import Server from '../graphql/server'
 
+// eslint-disable-next-line import/no-unused-modules
 export default class Serve extends Command {
   static description = 'serves the notes'
 

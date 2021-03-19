@@ -7,6 +7,7 @@ import handlebars from 'handlebars'
 import { Adventure } from '../domain'
 import convertMarkdownToHtml from '../utils/convert-markdown-to-html'
 
+// eslint-disable-next-line import/no-unused-modules
 export default class Build extends Command {
   static description = 'build a static site from the repo'
 

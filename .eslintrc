@@ -23,6 +23,7 @@
     "import/order": [
       "error",
       { "alphabetize": { "order": "asc", "caseInsensitive": true } }
-    ]
+    ],
+    "import/no-unused-modules": [1, { "unusedExports": true }]
   }
 }

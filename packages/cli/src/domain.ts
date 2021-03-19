@@ -1,8 +1,8 @@
 type GUID = string & { isGuid: true }
 
-export function guid(guid: string): GUID {
-  return guid as GUID
-}
+// export function guid(guid: string): GUID {
+//   return guid as GUID
+// }
 
 export type AdventureInfo = {
   name: string

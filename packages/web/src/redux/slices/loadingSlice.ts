@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unused-modules */
 import { createSlice } from '@reduxjs/toolkit'
 import { LoadingStates } from '../../domain'
 

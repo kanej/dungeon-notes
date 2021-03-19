@@ -1,10 +1,11 @@
 type GUID = string & { isGuid: true }
 
+// eslint-disable-next-line import/no-unused-modules
 export function guid(guid: string): GUID {
   return guid as GUID
 }
 
-export type AdventureInfo = {
+type AdventureInfo = {
   name: string
   version: string
   edition: number
@@ -23,6 +24,7 @@ export type Chapter = {
   body: string
 }
 
+// eslint-disable-next-line import/no-unused-modules
 export type ChapterDescriptor = {
   name: string
   slug: string

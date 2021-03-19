@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unused-modules */
 import { configureStore, Action } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 import { ThunkAction } from 'redux-thunk'

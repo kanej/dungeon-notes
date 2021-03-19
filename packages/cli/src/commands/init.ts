@@ -2,6 +2,7 @@ import fs from 'fs'
 import { Command, flags } from '@oclif/command'
 import cli from 'cli-ux'
 
+// eslint-disable-next-line import/no-unused-modules
 export default class Init extends Command {
   static description = 'Setup a new notes repo'
 
