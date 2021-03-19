@@ -1,15 +1,21 @@
-# dmnotes
-
-Run a server that hosts your DM notes
+# Dungeon Notes Writer
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/dmnotes.svg)](https://npmjs.org/package/dmnotes)
 [![Downloads/week](https://img.shields.io/npm/dw/dmnotes.svg)](https://npmjs.org/package/dmnotes)
 [![License](https://img.shields.io/npm/l/dmnotes.svg)](https://github.com/kanej/dmnotes/blob/master/package.json)
 
+> Write D & D 5e adventures in markdown
+
+The dungeon notes writer is a cli tool that supports
+writing D & D 5e adventures in markdown by providing
+a local web-based editor for authoring the adventure,
+saving as markdown files in a local directory and
+generating html from saved files.
+
 <!-- toc -->
 
-- [dmnotes](#dmnotes)
+- [Dungeon Notes Writer](#dungeon-notes-writer)
 - [Usage](#usage)
 - [Commands](#commands)
 - [Development](#development)
@@ -21,13 +27,13 @@ Run a server that hosts your DM notes
 
 ```sh-session
 $ npm install -g @dungeon-notes/writer
-$ dmnotes COMMAND
+$ dnwriter COMMAND
 running command...
-$ dmnotes (-v|--version|version)
-@dungeon-notes/writer/0.1.8 darwin-x64 node-v14.15.3
-$ dmnotes --help [COMMAND]
+$ dnwriter (-v|--version|version)
+@dungeon-notes/writer/0.0.2 darwin-x64 node-v14.15.3
+$ dnwriter --help [COMMAND]
 USAGE
-  $ dmnotes COMMAND
+  $ dnwriter COMMAND
 ...
 ```
 
@@ -37,33 +43,33 @@ USAGE
 
 <!-- commands -->
 
-- [`dmnotes build [FILE]`](#dmnotes-build-file)
-- [`dmnotes help [COMMAND]`](#dmnotes-help-command)
-- [`dmnotes init [FILE]`](#dmnotes-init-file)
-- [`dmnotes serve [FILE]`](#dmnotes-serve-file)
+- [`dnwriter build [FILE]`](#dnwriter-build-file)
+- [`dnwriter help [COMMAND]`](#dnwriter-help-command)
+- [`dnwriter init [FILE]`](#dnwriter-init-file)
+- [`dnwriter serve [FILE]`](#dnwriter-serve-file)
 
-## `dmnotes build [FILE]`
+## `dnwriter build [FILE]`
 
 build a static site from the repo
 
 ```
 USAGE
-  $ dmnotes build [FILE]
+  $ dnwriter build [FILE]
 
 OPTIONS
   -h, --help       show CLI help
   -p, --path=path  [default: .]
 ```
 
-_See code: [src/commands/build.ts](https://github.com/kanej/dungeon-notes/blob/v0.1.8/src/commands/build.ts)_
+_See code: [src/commands/build.ts](https://github.com/kanej/dungeon-notes/blob/v0.0.2/src/commands/build.ts)_
 
-## `dmnotes help [COMMAND]`
+## `dnwriter help [COMMAND]`
 
-display help for dmnotes
+display help for dnwriter
 
 ```
 USAGE
-  $ dmnotes help [COMMAND]
+  $ dnwriter help [COMMAND]
 
 ARGUMENTS
   COMMAND  command to show help for
@@ -74,27 +80,27 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0/src/commands/help.ts)_
 
-## `dmnotes init [FILE]`
+## `dnwriter init [FILE]`
 
 Setup a new notes repo
 
 ```
 USAGE
-  $ dmnotes init [FILE]
+  $ dnwriter init [FILE]
 
 OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/init.ts](https://github.com/kanej/dungeon-notes/blob/v0.1.8/src/commands/init.ts)_
+_See code: [src/commands/init.ts](https://github.com/kanej/dungeon-notes/blob/v0.0.2/src/commands/init.ts)_
 
-## `dmnotes serve [FILE]`
+## `dnwriter serve [FILE]`
 
 serves the notes
 
 ```
 USAGE
-  $ dmnotes serve [FILE]
+  $ dnwriter serve [FILE]
 
 OPTIONS
   -h, --help       show CLI help
@@ -104,7 +110,7 @@ EXAMPLE
   $ dmnotes serve
 ```
 
-_See code: [src/commands/serve.ts](https://github.com/kanej/dungeon-notes/blob/v0.1.8/src/commands/serve.ts)_
+_See code: [src/commands/serve.ts](https://github.com/kanej/dungeon-notes/blob/v0.0.2/src/commands/serve.ts)_
 
 <!-- commandsstop -->
 
