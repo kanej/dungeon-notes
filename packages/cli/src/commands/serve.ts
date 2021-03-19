@@ -5,7 +5,7 @@ import Server from '../express/server'
 export default class Serve extends Command {
   static description = 'serves the notes'
 
-  static examples = [`$ dmnotes serve`]
+  static examples = [`$ dnwriter serve`]
 
   static flags = {
     help: flags.help({ char: 'h' }),

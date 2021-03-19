@@ -8,11 +8,13 @@
     "strict": true,
     "target": "es2017",
     "esModuleInterop": true,
-    "lib": ["ESNext"]
+    "lib": ["ESNext"],
+    "skipLibCheck": true
   },
   "include": ["src/**/*"],
   "ts-node": {
     "files": true
   },
-  "files": ["src/lib.d.ts"]
+  "files": ["src/libs.d.ts"],
+  "exclude": ["**/node_modules/**", "../../node_modules"]
 }

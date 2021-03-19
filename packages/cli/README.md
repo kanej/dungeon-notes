@@ -1,9 +1,9 @@
 # Dungeon Notes Writer
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
-[![Version](https://img.shields.io/npm/v/dmnotes.svg)](https://npmjs.org/package/dmnotes)
-[![Downloads/week](https://img.shields.io/npm/dw/dmnotes.svg)](https://npmjs.org/package/dmnotes)
-[![License](https://img.shields.io/npm/l/dmnotes.svg)](https://github.com/kanej/dmnotes/blob/master/package.json)
+[![Version](https://img.shields.io/npm/v/dnwriter.svg)](https://npmjs.org/package/dnwriter)
+[![Downloads/week](https://img.shields.io/npm/dw/dnwriter.svg)](https://npmjs.org/package/dnwriter)
+[![License](https://img.shields.io/npm/l/dnwriter.svg)](https://github.com/kanej/dungeon-notes/blob/master/package.json)
 
 > Write D & D 5e adventures in markdown
 
@@ -18,6 +18,10 @@ generating html from saved files.
 - [Dungeon Notes Writer](#dungeon-notes-writer)
 - [Usage](#usage)
 - [Commands](#commands)
+  - [`dnwriter build [FILE]`](#dnwriter-build-file)
+  - [`dnwriter help [COMMAND]`](#dnwriter-help-command)
+  - [`dnwriter init [FILE]`](#dnwriter-init-file)
+  - [`dnwriter serve [FILE]`](#dnwriter-serve-file)
 - [Development](#development)
 <!-- tocstop -->
 
@@ -107,7 +111,7 @@ OPTIONS
   -p, --port=port  [default: 9898] the port to serve on
 
 EXAMPLE
-  $ dmnotes serve
+  $ dnwriter serve
 ```
 
 _See code: [src/commands/serve.ts](https://github.com/kanej/dungeon-notes/blob/v0.0.2/src/commands/serve.ts)_
