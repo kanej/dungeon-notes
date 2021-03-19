@@ -16,7 +16,9 @@ jobs:
           node-version: '14.x'
       - name: Install
         run: yarn
-      - name: Lint
+      - name: Format
         run: yarn format:check
+      - name: Lint
+        run: yarn lint
       - name: Test
         run: yarn test
