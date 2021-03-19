@@ -37,8 +37,8 @@ const AdventureDetails: React.FC<{
           <NameInput
             type="text"
             maxLength={MAX_ADVENTURE_NAME_LENGTH}
-            onChange={onNameChange}
             value={name}
+            onChange={onNameChange}
           />
         </form>
 
@@ -48,26 +48,19 @@ const AdventureDetails: React.FC<{
             type="number"
             min={1}
             max={20}
-            onChange={onStartingLevelChange}
             value={startingLevel || 1}
+            onChange={onStartingLevelChange}
           />{' '}
           -{' '}
           <LevelInput
             type="number"
             min={1}
             max={20}
-            onChange={onEndingLevelChange}
             value={endingLevel || 10}
+            onChange={onEndingLevelChange}
           />
           .
         </LevelText>
-
-        {/* <form>
-          <DescriptionTextArea
-            onChange={onDescriptionChange}
-            value={description}
-          />
-        </form> */}
 
         <DescriptionWrap>
           <PluginEditor value={description} onSave={onDescriptionChange} />

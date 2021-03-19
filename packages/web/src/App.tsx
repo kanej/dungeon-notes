@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createGlobalStyle } from 'styled-components'
 import { useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
@@ -14,7 +14,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-function App() {
+const App = () => {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(true)
 

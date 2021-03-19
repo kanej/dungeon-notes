@@ -103,7 +103,7 @@ const isBlockActive = (editor: Editor, format: string) => {
       !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === format,
   })
 
-  return !!match
+  return Boolean(match)
 }
 
 const toggleMark = (editor: Editor, format: string) => {
@@ -115,7 +115,9 @@ const toggleMark = (editor: Editor, format: string) => {
     Editor.addMark(editor, format, true)
   }
 }
+
 const LIST_TYPES = ['numbered_list', 'bulleted_list']
+
 const toggleBlock = (editor: Editor, format: string) => {
   const isActive = isBlockActive(editor, format)
   const isList = LIST_TYPES.includes(format)
@@ -235,12 +237,13 @@ const HoveringToolbar = () => {
   )
 }
 
-const FormatButton = ({ format, icon }: any) => {
+const FormatButton = ({ format }: any) => {
   const editor = useSlate()
 
   return (
     <div>
       <button
+        type="button"
         onClick={(event) => {
           event.preventDefault()
           toggleMark(editor, format)
@@ -252,12 +255,13 @@ const FormatButton = ({ format, icon }: any) => {
   )
 }
 
-const BlockButton = ({ format, icon }: any) => {
+const BlockButton = ({ format }: any) => {
   const editor = useSlate()
 
   return (
     <div>
       <button
+        type="button"
         onClick={(event) => {
           event.preventDefault()
           toggleBlock(editor, format)

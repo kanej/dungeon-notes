@@ -6,16 +6,17 @@ import AdventureDetails from '../components/AdventureDetails'
 
 const exampleAdventure: Adventure = {
   name: 'Dungeon of Doom',
+  version: '0.1',
   description: 'Fun in a dungeon',
   levels: '3-8',
-  edition: '5',
+  edition: 5,
   chapters: [],
 }
 
 test('Renders loading', () => {
   render(
     <AdventureDetails
-      loading={true}
+      loading
       name={exampleAdventure.name}
       description={[]}
       edition={exampleAdventure.edition}
@@ -30,37 +31,3 @@ test('Renders loading', () => {
   const linkElement = screen.getByText(/Loading.../i)
   expect(linkElement).toBeInTheDocument()
 })
-
-// test('Renders error', () => {
-//   render(
-//     <Welcome loading={false} error={'Fail'} onCreateAChapter={undefined} />,
-//   )
-//   const linkElement = screen.getByText(/Error :\(/i)
-//   expect(linkElement).toBeInTheDocument()
-// })
-
-// test('Renders layout after load', () => {
-//   const exampleAdventure: Adventure = {
-//     name: 'Dungeon of Doom',
-//     description: 'Fun in a dungeon',
-//     edition: '5',
-//     levels: '3-10',
-//   }
-
-//   render(
-//     <Welcome
-//       loading={false}
-//       adventure={exampleAdventure}
-//       onCreateAChapter={undefined}
-//     />,
-//   )
-
-//   const titleElement = screen.getByText(/Dungeon of Doom/i)
-//   expect(titleElement).toBeInTheDocument()
-
-//   const descriptionElement = screen.getByText(/Fun in a dungeon/i)
-//   expect(descriptionElement).toBeInTheDocument()
-
-//   const infoElement = screen.getByText(/A D & D 5e Adventure for levels 3-10/i)
-//   expect(infoElement).toBeInTheDocument()
-// })

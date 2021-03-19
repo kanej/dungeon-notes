@@ -59,7 +59,7 @@ const withLayout = (editor: Editor) => {
   return editor
 }
 
-function Scene({ initialDoc = undefined }: { initialDoc: any | undefined }) {
+const Scene = ({ initialDoc = undefined }: { initialDoc: any | undefined }) => {
   const editor = useMemo(
     () => withLayout(withHistory(withReact(createEditor()))),
     [],
@@ -89,10 +89,12 @@ function Scene({ initialDoc = undefined }: { initialDoc: any | undefined }) {
         e.preventDefault()
         toggleMark(editor, 'bold')
       }
+
       if (isHotkey('mod+i', e)) {
         e.preventDefault()
         toggleMark(editor, 'italic')
       }
+
       if (isHotkey('mod+u', e)) {
         e.preventDefault()
         toggleMark(editor, 'underline')

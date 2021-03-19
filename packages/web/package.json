@@ -43,12 +43,6 @@
     "format:check": "prettier --check \"./src/**/*.{ts,tsx,js,jsx}\"",
     "lint": "eslint src --ext ts,tsx"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",

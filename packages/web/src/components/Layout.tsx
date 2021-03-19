@@ -21,7 +21,9 @@ const Layout: React.FC = ({ children }) => {
             ))}
           </List>
           <AddChapterBtnWrap>
-            <button onClick={handleCreateAChapter}>Add chapter</button>
+            <button type="button" onClick={handleCreateAChapter}>
+              Add chapter
+            </button>
           </AddChapterBtnWrap>
         </NavPanel>
       </LeftDrawer>

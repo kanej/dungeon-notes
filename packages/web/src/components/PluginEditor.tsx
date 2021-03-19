@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 import React, { useEffect, useMemo, useState } from 'react'
 import { createEditor } from 'slate'
 import { withHistory } from 'slate-history'

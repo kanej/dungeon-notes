@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import unified from 'unified'
 import markdown from 'remark-parse'
 import slate from 'remark-slate'
@@ -47,13 +47,13 @@ const SmartWelcome = () => {
 
   const [startingLevel, setStartingLevel] = useState<null | number>(null)
   const onStartingLevelChange = useCallback(
-    (ev) => setStartingLevel(parseInt(ev.target.value)),
+    (ev) => setStartingLevel(parseInt(ev.target.value, 10)),
     [],
   )
 
   const [endingLevel, setEndingLevel] = useState<null | number>(null)
   const onEndingLevelChange = useCallback(
-    (ev) => setEndingLevel(parseInt(ev.target.value)),
+    (ev) => setEndingLevel(parseInt(ev.target.value, 10)),
     [],
   )
 
@@ -75,8 +75,8 @@ const SmartWelcome = () => {
 
       const parts = adventure.levels.split('-')
 
-      setStartingLevel(parseInt(parts[0]))
-      setEndingLevel(parseInt(parts[1]))
+      setStartingLevel(parseInt(parts[0], 10))
+      setEndingLevel(parseInt(parts[1], 10))
 
       setAdventureDescription(adventure.description)
 
