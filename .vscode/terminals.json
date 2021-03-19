@@ -9,8 +9,8 @@
       "command": "BROWSER=none yarn start"
     },
     {
-      "name": "Graphql",
-      "description": "The graphql backend",
+      "name": "Server",
+      "description": "The express backend",
       "focus": false,
       "cwd": "packages/cli",
       "command": "yarn dev"

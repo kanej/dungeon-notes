@@ -3,7 +3,7 @@ import Server from '../express/server'
 
 // eslint-disable-next-line import/no-unused-modules
 export default class Serve extends Command {
-  static description = 'serves the notes'
+  static description = 'serves the notes editor'
 
   static examples = [`$ dnwriter serve`]
 
@@ -16,13 +16,13 @@ export default class Serve extends Command {
     }),
   }
 
-  static args = [{ name: 'file', required: false, default: '.' }]
+  static args = [{ name: 'path', required: false, default: '.' }]
 
   async run(): Promise<void> {
     const { args, flags } = this.parse(Serve)
 
     const port = flags.port
-    const basePath = args.file
+    const basePath = args.path
 
     this.log(`Starting server: ${basePath}`)
 

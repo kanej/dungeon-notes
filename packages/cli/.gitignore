@@ -5,4 +5,6 @@
 /lib
 /package-lock.json
 /tmp
+/www
 node_modules
+

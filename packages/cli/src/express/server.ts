@@ -37,6 +37,7 @@ export default class Server {
 
     const app = express()
     app.use(cors())
+    app.use(express.static('./www'))
 
     app.get('/api/adventure', async (_request, response) => {
       response.json(this.adventure)

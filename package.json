@@ -13,7 +13,9 @@
     "format": "lerna run format",
     "format:check": "lerna run format:check",
     "lint": "lerna run lint --stream --concurrency 1",
-    "lint:fix": "lerna run lint:fix --stream --concurrency 1"
+    "lint:fix": "lerna run lint:fix --stream --concurrency 1",
+    "prerelease": "lerna run build --scope @dungeon-notes/writer-web && mv packages/web/build packages/cli/www",
+    "release": "echo Boom"
   },
   "devDependencies": {
     "@commitlint/cli": "11.0.0",
