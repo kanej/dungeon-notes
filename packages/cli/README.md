@@ -18,10 +18,6 @@ generating html from saved files.
 - [Dungeon Notes Writer](#dungeon-notes-writer)
 - [Usage](#usage)
 - [Commands](#commands)
-  - [`dnwriter build [FILE]`](#dnwriter-build-file)
-  - [`dnwriter help [COMMAND]`](#dnwriter-help-command)
-  - [`dnwriter init [FILE]`](#dnwriter-init-file)
-  - [`dnwriter serve [FILE]`](#dnwriter-serve-file)
 - [Development](#development)
 <!-- tocstop -->
 
@@ -34,7 +30,7 @@ $ npm install -g @dungeon-notes/writer
 $ dnwriter COMMAND
 running command...
 $ dnwriter (-v|--version|version)
-@dungeon-notes/writer/0.0.2 darwin-x64 node-v14.15.3
+@dungeon-notes/writer/0.2.0 darwin-x64 node-v14.15.3
 $ dnwriter --help [COMMAND]
 USAGE
   $ dnwriter COMMAND
@@ -50,7 +46,7 @@ USAGE
 - [`dnwriter build [FILE]`](#dnwriter-build-file)
 - [`dnwriter help [COMMAND]`](#dnwriter-help-command)
 - [`dnwriter init [FILE]`](#dnwriter-init-file)
-- [`dnwriter serve [FILE]`](#dnwriter-serve-file)
+- [`dnwriter serve [PATH]`](#dnwriter-serve-path)
 
 ## `dnwriter build [FILE]`
 
@@ -65,7 +61,7 @@ OPTIONS
   -p, --path=path  [default: .]
 ```
 
-_See code: [src/commands/build.ts](https://github.com/kanej/dungeon-notes/blob/v0.0.2/src/commands/build.ts)_
+_See code: [src/commands/build.ts](https://github.com/kanej/dungeon-notes/blob/v0.2.0/src/commands/build.ts)_
 
 ## `dnwriter help [COMMAND]`
 
@@ -82,7 +78,7 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
 ## `dnwriter init [FILE]`
 
@@ -96,15 +92,15 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/init.ts](https://github.com/kanej/dungeon-notes/blob/v0.0.2/src/commands/init.ts)_
+_See code: [src/commands/init.ts](https://github.com/kanej/dungeon-notes/blob/v0.2.0/src/commands/init.ts)_
 
-## `dnwriter serve [FILE]`
+## `dnwriter serve [PATH]`
 
-serves the notes
+serves the notes editor
 
 ```
 USAGE
-  $ dnwriter serve [FILE]
+  $ dnwriter serve [PATH]
 
 OPTIONS
   -h, --help       show CLI help
@@ -114,7 +110,7 @@ EXAMPLE
   $ dnwriter serve
 ```
 
-_See code: [src/commands/serve.ts](https://github.com/kanej/dungeon-notes/blob/v0.0.2/src/commands/serve.ts)_
+_See code: [src/commands/serve.ts](https://github.com/kanej/dungeon-notes/blob/v0.2.0/src/commands/serve.ts)_
 
 <!-- commandsstop -->
 
