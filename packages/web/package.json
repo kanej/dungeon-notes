@@ -1,6 +1,6 @@
 {
   "name": "@dungeon-notes/writer-web",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "private": true,
   "license": "GPL-3.0",
   "proxy": "http://localhost:9898",
