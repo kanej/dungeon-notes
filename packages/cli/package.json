@@ -57,6 +57,7 @@
   "files": [
     "/bin",
     "/lib",
+    "/www",
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
@@ -65,7 +66,7 @@
     "dungeon-notes",
     "dnd"
   ],
-  "license": "GPLV3",
+  "license": "GPL-3.0",
   "main": "lib/index.js",
   "oclif": {
     "commands": "./lib/commands",
@@ -79,7 +80,7 @@
     "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/development-server.ts\"",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint ./src --ext .ts --config .eslintrc",
-    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "prepack": "rm -rf lib && tsc -b && cpx ./src/templates/*.handlebars ./lib/templates --clean && oclif-dev manifest && oclif-dev readme",
     "test": "jest",
     "version": "oclif-dev readme && git add README.md",
     "format": "prettier --write \"./src/**/*.{ts,tsx,js,jsx}\"",

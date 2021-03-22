@@ -2,6 +2,7 @@
   "name": "@dungeon-notes/writer-web",
   "version": "0.2.0",
   "private": true,
+  "license": "GPL-3.0",
   "proxy": "http://localhost:9898",
   "dependencies": {
     "@apollo/client": "3.3.6",
