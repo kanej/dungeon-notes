@@ -1,3 +1,4 @@
+import { Chapter } from '@dungeon-notes/types'
 import yaml from 'js-yaml'
 // eslint-disable-next-line import/no-unresolved
 import { Root } from 'mdast'
@@ -8,7 +9,6 @@ import unified from 'unified'
 import find from 'unist-util-find'
 import is from 'unist-util-is'
 import remove from 'unist-util-remove'
-import { Chapter } from '../domain'
 import toSlug from './to-slug'
 
 const processor = unified().use(parse).use(stringify).use(frontmatter, ['yaml'])

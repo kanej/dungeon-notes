@@ -1,4 +1,4 @@
-import { Chapter, ChapterDescriptor } from '../domain'
+import { Chapter, ChapterDescriptor } from '@dungeon-notes/types'
 import toSlug from '../utils/to-slug'
 import FileStore from './file-store'
 

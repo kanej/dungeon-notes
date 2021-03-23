@@ -1,10 +1,10 @@
 import fs from 'fs'
 import path from 'path'
+import { Adventure } from '@dungeon-notes/types'
 import { Command, flags } from '@oclif/command'
 import chalk from 'chalk'
 import cli from 'cli-ux'
 import handlebars from 'handlebars'
-import { Adventure } from '../domain'
 import convertMarkdownToHtml from '../utils/convert-markdown-to-html'
 
 // eslint-disable-next-line import/no-unused-modules

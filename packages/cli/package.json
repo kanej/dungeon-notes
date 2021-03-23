@@ -9,6 +9,7 @@
   "bugs": "https://github.com/kanej/dungeon-notes/issues",
   "dependencies": {
     "@dungeon-notes/engine": "^0.0.1",
+    "@dungeon-notes/types": "^0.0.1",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
