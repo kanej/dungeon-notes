@@ -1,5 +1,5 @@
+import { Adventure } from '@dungeon-notes/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Adventure } from '../../domain'
 
 const adventureSlice = createSlice({
   name: 'adventure',

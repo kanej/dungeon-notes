@@ -1,4 +1,9 @@
 {
   "files": [],
-  "references": [{ "path": "cli" }, { "path": "web" }, { "path": "engine" }]
+  "references": [
+    { "path": "cli" },
+    { "path": "web" },
+    { "path": "engine" },
+    { "path": "types" }
+  ]
 }

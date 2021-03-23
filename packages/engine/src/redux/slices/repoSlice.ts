@@ -1,6 +1,12 @@
 /* eslint-disable import/no-unused-modules */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RepoState } from '../../domain'
+
+export enum RepoState {
+  UNINITIALISED = 'UNINITIALISED',
+  EMPTY = 'EMPTY',
+  VALID = 'VALID',
+  INVALID = 'INVALID',
+}
 
 type RepoSlice = {
   state: RepoState

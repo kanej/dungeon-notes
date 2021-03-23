@@ -1,10 +1,10 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { promisify } from 'util'
-import { Adventure, AdventureInfo, RepoState } from './domain'
+import { Adventure, AdventureInfo } from '@dungeon-notes/types'
 import rootReducer, { RootState } from './redux/rootReducer'
 import { setAdventure } from './redux/slices/adventureSlice'
-import { initialise } from './redux/slices/repoSlice'
+import { initialise, RepoState } from './redux/slices/repoSlice'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)

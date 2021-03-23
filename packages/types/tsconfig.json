@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "CommonJS",
-    "types": ["jest"],
+    "types": [],
     "sourceMap": true,
     "target": "ES2018",
     "strict": true,
@@ -12,9 +12,7 @@
 
     // "composite": true,
     "outDir": "dist",
-    "rootDir": "src",
-    "skipLibCheck": false,
-    "allowSyntheticDefaultImports": true
+    "rootDir": "src"
   },
   "include": ["src"]
 }

@@ -1,6 +1,5 @@
-import { RepoState } from './domain'
 import Engine from './engine'
-import { setup } from './redux/slices/repoSlice'
+import { RepoState, setup } from './redux/slices/repoSlice'
 
 const actions = {
   setup,
