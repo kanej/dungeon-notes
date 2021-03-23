@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { promisify } from 'util'
+import { Engine, RepoState } from '@dungeon-notes/engine'
 import cors from 'cors'
 import express from 'express'
 import { Adventure, AdventureInfo, Chapter } from '../domain'
@@ -11,9 +12,11 @@ const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
 
 export default class Server {
-  basePath: string
+  private basePath: string
 
-  port: number
+  private port: number
+
+  private engine: Engine
 
   adventure: Adventure | undefined = undefined
 
@@ -25,6 +28,8 @@ export default class Server {
     this.basePath = basePath
     this.port = port
 
+    this.engine = new Engine(this.basePath)
+
     this.chapters = {}
 
     const fileStore = new FileStore(basePath)
@@ -32,6 +37,12 @@ export default class Server {
   }
 
   async listen(): Promise<void> {
+    const { success, error } = await this.engine.init()
+
+    if (!success) {
+      throw new Error(error)
+    }
+
     this.adventure = await this._readAdventureFile(this.basePath)
     await this.chapterService.load()
 
@@ -40,70 +51,29 @@ export default class Server {
     app.use(express.static(path.resolve(__dirname, '../../www')))
 
     app.get('/api/adventure', async (_request, response) => {
-      response.json(this.adventure)
+      response.json(this.engine.getAdventure())
     })
 
     app.post('/api/adventure', express.json(), async (request, response) => {
       const { type, payload } = request.body
 
-      if (!this.adventure) {
-        return response.status(500).send({ error: 'adventure not loaded' })
+      if (this.engine.getState() !== RepoState.VALID) {
+        return response.status(500).send({ error: 'Adventure repo not loaded' })
       }
 
-      if (type === 'adventure/updateAdventureName') {
-        this.adventure.name = payload.name
-
-        await this._writeAdventureFile(this.basePath, this.adventure)
+      try {
+        await this.engine.apply({ type, payload })
 
         return response.send({})
+      } catch (error) {
+        return response.status(500).send({ error })
       }
-
-      if (type === 'adventure/updateAdventureLevels') {
-        const { startingLevel, endingLevel } = payload
-
-        this.adventure.levels = `${startingLevel}-${endingLevel}`
-
-        await this._writeAdventureFile(this.basePath, this.adventure)
-
-        return response.send({})
-      }
-
-      if (type === 'adventure/updateAdventureDescription') {
-        const { description } = payload
-
-        if (!description) {
-          return response
-            .status(400)
-            .send({ error: 'Description must be a string' })
-        }
-
-        this.adventure.description = description
-
-        await this._writeAdventureFile(this.basePath, this.adventure)
-
-        return response.send({})
-      }
-
-      return response
-        .status(400)
-        .send({ error: `Unknown command type: ${type}` })
-    })
-
-    app.get('/api', async (_request, response) => {
-      const contents = await readFile(this.basePath)
-
-      response.setHeader('content-type', 'text/markdown')
-      response.send(contents.toString())
-    })
-
-    app.post('/api', express.text(), async (request, response) => {
-      await writeFile(this.basePath, request.body)
-
-      response.status(200).send()
     })
 
     app.listen(this.port, () => {
-      console.log(`DM Notes listening at http://localhost:${this.port}`)
+      console.log(
+        `Dungeon Notes Writer listening at http://localhost:${this.port}`,
+      )
     })
   }
 

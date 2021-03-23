@@ -3,9 +3,11 @@ import * as path from 'path'
 import { promisify } from 'util'
 import { Adventure, AdventureInfo, RepoState } from './domain'
 import rootReducer, { RootState } from './redux/rootReducer'
+import { setAdventure } from './redux/slices/adventureSlice'
 import { initialise } from './redux/slices/repoSlice'
 
 const readFile = promisify(fs.readFile)
+const writeFile = promisify(fs.writeFile)
 
 const ADVENTURE_FILE = 'adventure.json'
 
@@ -18,7 +20,6 @@ export type EngineInitialisationResult = {
 export default class Engine {
   private state: RootState
   private basePath: string
-  private adventure?: Adventure
 
   constructor(basePath: string) {
     this.basePath = basePath
@@ -46,7 +47,9 @@ export default class Engine {
       }
     }
 
-    this.adventure = adventure
+    if (adventure) {
+      this.state = rootReducer(this.state, setAdventure(adventure))
+    }
 
     return {
       success: true,
@@ -60,6 +63,10 @@ export default class Engine {
     }
 
     this.state = rootReducer(this.state, action)
+
+    if (action.type.startsWith('adventure')) {
+      await this._flush()
+    }
   }
 
   public getState(): RepoState {
@@ -67,11 +74,11 @@ export default class Engine {
   }
 
   public getAdventure(): Adventure {
-    if (!this.adventure) {
+    if (!this.state.adventure) {
       throw new Error('Adventure not loaded')
     }
 
-    return this.adventure
+    return this.state.adventure
   }
 
   private async _setupRepo(adventureName: string): Promise<void> {
@@ -126,5 +133,32 @@ export default class Engine {
         error: 'Unable to read `adventure.json` file',
       }
     }
+  }
+
+  private async _writeAdventureFile(adventure: Adventure) {
+    const adventureFilePath = path.join(this.basePath, ADVENTURE_FILE)
+
+    try {
+      const adventureInfo: AdventureInfo = {
+        name: adventure.name,
+        version: adventure.version,
+        edition: adventure.edition,
+        levels: adventure.levels,
+        description: adventure.description,
+      }
+
+      return writeFile(
+        adventureFilePath,
+        JSON.stringify(adventureInfo, undefined, 2),
+      )
+    } catch {
+      throw new Error("Unable to write to 'adventure.json' file")
+    }
+  }
+
+  private async _flush() {
+    const adventure = this.state.adventure
+
+    return this._writeAdventureFile(adventure)
   }
 }

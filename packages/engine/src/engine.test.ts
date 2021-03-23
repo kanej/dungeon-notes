@@ -3,13 +3,18 @@ import * as path from 'path'
 import mock from 'mock-fs'
 import { AdventureInfo, RepoState } from './domain'
 import Engine from './engine'
+import {
+  updateAdventureDescription,
+  updateAdventureLevels,
+  updateAdventureName,
+} from './redux/slices/adventureSlice'
 import { setup } from './redux/slices/repoSlice'
 
 const exampleAdventure: AdventureInfo = {
   name: 'Challenge in Green',
   version: '0.1',
   edition: 5,
-  levels: '1-5',
+  levels: '2-9',
   description: 'The one with the green knight',
 }
 
@@ -41,7 +46,16 @@ describe('Engine', () => {
       const { success } = await engine.init()
 
       expect(success).toBe(true)
+
       expect(engine.getState()).toBe(RepoState.VALID)
+      expect(engine.getAdventure()).toStrictEqual({
+        name: 'Challenge in Green',
+        version: '0.1',
+        edition: 5,
+        levels: '2-9',
+        description: 'The one with the green knight',
+        chapters: [],
+      })
     })
 
     it('should be uninitialised if the engine has not been initialised', () => {
@@ -102,6 +116,89 @@ describe('Engine', () => {
         levels: '1-5',
         description: '',
       })
+    })
+  })
+
+  describe('adventure updates', () => {
+    let engine: Engine
+    beforeEach(async () => {
+      mock({
+        [basicAdventureDirectory]: {
+          'adventure.json': JSON.stringify(exampleAdventure),
+        },
+      })
+
+      engine = new Engine(basicAdventureDirectory)
+
+      const { success } = await engine.init()
+      expect(success).toBe(true)
+    })
+
+    afterEach(() => {
+      mock.restore()
+    })
+
+    const expectStateAndFileToBe = (expectedAdventure: AdventureInfo) => {
+      expect(engine.getState()).toBe(RepoState.VALID)
+
+      const adventureFileText = fs.readFileSync(
+        path.join(basicAdventureDirectory, 'adventure.json'),
+      )
+
+      expect(JSON.parse(adventureFileText.toString())).toStrictEqual(
+        expectedAdventure,
+      )
+
+      expect(engine.getAdventure()).toStrictEqual({
+        ...expectedAdventure,
+        chapters: [],
+      })
+    }
+
+    it('should allow updating adventure name', async () => {
+      await engine.apply(updateAdventureName({ name: 'changed' }))
+
+      const expectedAdventure: AdventureInfo = {
+        name: 'changed',
+        version: '0.1',
+        edition: 5,
+        levels: '2-9',
+        description: 'The one with the green knight',
+      }
+
+      expectStateAndFileToBe(expectedAdventure)
+    })
+
+    it('should allow updating adventure levels', async () => {
+      await engine.apply(
+        updateAdventureLevels({ startingLevel: 11, endingLevel: 14 }),
+      )
+
+      const expectedAdventure: AdventureInfo = {
+        name: 'Challenge in Green',
+        version: '0.1',
+        edition: 5,
+        levels: '11-14',
+        description: 'The one with the green knight',
+      }
+
+      expectStateAndFileToBe(expectedAdventure)
+    })
+
+    it('should allow updating adventure description', async () => {
+      await engine.apply(
+        updateAdventureDescription({ description: 'No the other one' }),
+      )
+
+      const expectedAdventure: AdventureInfo = {
+        name: 'Challenge in Green',
+        version: '0.1',
+        edition: 5,
+        levels: '2-9',
+        description: 'No the other one',
+      }
+
+      expectStateAndFileToBe(expectedAdventure)
     })
   })
 })
