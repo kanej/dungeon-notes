@@ -30,7 +30,7 @@ $ npm install -g @dungeon-notes/writer
 $ dnwriter COMMAND
 running command...
 $ dnwriter (-v|--version|version)
-@dungeon-notes/writer/0.2.3 darwin-x64 node-v14.15.3
+@dungeon-notes/writer/0.2.4 darwin-x64 node-v14.15.3
 $ dnwriter --help [COMMAND]
 USAGE
   $ dnwriter COMMAND
@@ -61,7 +61,7 @@ OPTIONS
   -p, --path=path  [default: .]
 ```
 
-_See code: [src/commands/build.ts](https://github.com/kanej/dungeon-notes/blob/v0.2.3/src/commands/build.ts)_
+_See code: [src/commands/build.ts](https://github.com/kanej/dungeon-notes/blob/v0.2.4/src/commands/build.ts)_
 
 ## `dnwriter help [COMMAND]`
 
@@ -92,7 +92,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/init.ts](https://github.com/kanej/dungeon-notes/blob/v0.2.3/src/commands/init.ts)_
+_See code: [src/commands/init.ts](https://github.com/kanej/dungeon-notes/blob/v0.2.4/src/commands/init.ts)_
 
 ## `dnwriter serve [PATH]`
 
@@ -110,7 +110,7 @@ EXAMPLE
   $ dnwriter serve
 ```
 
-_See code: [src/commands/serve.ts](https://github.com/kanej/dungeon-notes/blob/v0.2.3/src/commands/serve.ts)_
+_See code: [src/commands/serve.ts](https://github.com/kanej/dungeon-notes/blob/v0.2.4/src/commands/serve.ts)_
 
 <!-- commandsstop -->
 
