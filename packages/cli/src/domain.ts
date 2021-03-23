@@ -2,7 +2,7 @@ type GUID = string & { isGuid: true }
 
 export type AdventureInfo = {
   name: string
-  version: string
+  version: '0.1'
   edition: number
   levels: string
   description: string
