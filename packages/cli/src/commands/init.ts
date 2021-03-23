@@ -1,7 +1,10 @@
 import fs from 'fs'
+import { Engine, actions } from '@dungeon-notes/engine'
 import { Command, flags } from '@oclif/command'
+import chalk from 'chalk'
 import cli from 'cli-ux'
-import { AdventureInfo } from '../domain'
+
+const { setup } = actions
 
 // eslint-disable-next-line import/no-unused-modules
 export default class Init extends Command {
@@ -11,9 +14,11 @@ export default class Init extends Command {
     help: flags.help({ char: 'h' }),
   }
 
-  static args = [{ name: 'file' }]
+  static args = [{ name: 'path' }]
 
   async run(): Promise<void> {
+    const { args } = this.parse(Init)
+
     try {
       await fs.promises.access('./adventure.json', fs.constants.F_OK)
       this.log('adventure.json file already exists')
@@ -26,20 +31,16 @@ export default class Init extends Command {
 
     cli.action.start(`Setting up ${adventureName} campaign ...`)
 
-    const adventure: AdventureInfo = {
-      name: adventureName,
-      version: '0.1',
-      edition: 5,
-      levels: '1-5',
-      description: '',
+    const engine = new Engine(args.path)
+
+    const { success, error } = await engine.init()
+
+    if (!success) {
+      this.log(`${chalk.red('Error:')} ${error}`)
+      this.exit(1)
     }
 
-    fs.writeFileSync(
-      './adventure.json',
-      JSON.stringify(adventure, undefined, 2),
-    )
-
-    fs.mkdirSync('./chapters')
+    await engine.apply(setup({ name: adventureName }))
 
     cli.action.stop()
   }
