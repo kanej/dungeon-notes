@@ -1,11 +1,10 @@
+import { Adventure, setAdventure } from '@dungeon-notes/types'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { createGlobalStyle } from 'styled-components'
-import { Adventure } from './domain'
 import SmartAdventure from './pages/Adventure'
 import SmartChapter from './pages/Chapter'
-import { setAdventure } from './redux/slices/adventureSlices'
 import { complete } from './redux/slices/loadingSlice'
 
 const GlobalStyle = createGlobalStyle`

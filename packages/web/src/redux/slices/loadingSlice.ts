@@ -1,6 +1,10 @@
 /* eslint-disable import/no-unused-modules */
 import { createSlice } from '@reduxjs/toolkit'
-import { LoadingStates } from '../../domain'
+
+export enum LoadingStates {
+  'LOADING' = 'LOADING',
+  'COMPLETE' = 'COMPLETE',
+}
 
 export const loadingSlice = createSlice({
   name: 'loading',

@@ -1,7 +1,7 @@
+import { Adventure } from '@dungeon-notes/types'
 import { render, screen } from '@testing-library/react'
 import React from 'react'
 import AdventureDetails from '../components/AdventureDetails'
-import { Adventure } from '../domain'
 
 const noop = () => {
   // Do nothing

@@ -1,13 +1,13 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { AdventureInfo } from '@dungeon-notes/types'
-import mock from 'mock-fs'
-import Engine from './engine'
 import {
+  AdventureInfo,
   updateAdventureDescription,
   updateAdventureLevels,
   updateAdventureName,
-} from './redux/slices/adventureSlice'
+} from '@dungeon-notes/types'
+import mock from 'mock-fs'
+import Engine from './engine'
 import { RepoState, setup } from './redux/slices/repoSlice'
 
 const exampleAdventure: AdventureInfo = {

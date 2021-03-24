@@ -52,4 +52,4 @@ export const {
   updateAdventureDescription,
 } = adventureSlice.actions
 
-export default adventureSlice.reducer
+export const adventureSliceReducer = adventureSlice.reducer

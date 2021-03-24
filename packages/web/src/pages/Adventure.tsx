@@ -1,3 +1,8 @@
+import {
+  updateAdventureDescription,
+  updateAdventureLevels,
+  updateAdventureName,
+} from '@dungeon-notes/types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import markdown from 'remark-parse'
@@ -6,14 +11,9 @@ import { Node as SlateNode } from 'slate/dist/interfaces/node'
 import unified from 'unified'
 import AdventureDetails from '../components/AdventureDetails'
 import Layout from '../components/Layout'
-import { LoadingStates } from '../domain'
 import useDebounce from '../hooks/useDebounce'
 import { RootState } from '../redux/rootReducer'
-import {
-  updateAdventureDescription,
-  updateAdventureLevels,
-  updateAdventureName,
-} from '../redux/slices/adventureSlices'
+import { LoadingStates } from '../redux/slices/loadingSlice'
 
 const markdownToSlateConvertor = unified().use(markdown).use(slate)
 

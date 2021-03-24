@@ -1,11 +1,10 @@
+import { adventureSliceReducer } from '@dungeon-notes/types'
 import { combineReducers } from '@reduxjs/toolkit'
-
-import adventureReducer from './slices/adventureSlice'
 import repoReducer from './slices/repoSlice'
 
 const rootReducer = combineReducers({
   repo: repoReducer,
-  adventure: adventureReducer,
+  adventure: adventureSliceReducer,
 })
 
 export type RootState = ReturnType<typeof rootReducer>
