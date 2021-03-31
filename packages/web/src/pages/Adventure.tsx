@@ -232,6 +232,7 @@ const SmartAdventure: React.FC = () => {
     }
   }, [debouncedDescription, dispatch, loading])
 
+  console.log(loading)
   if (loading || !slateInitialState) {
     return (
       <Layout>

@@ -4,7 +4,8 @@ export {
   AdventureInfo,
   Chapter,
   ChapterDescriptor,
-  guid,
+  toGuid,
+  GUID,
 } from './domain'
 
 // eslint-disable-next-line import/no-unused-modules
@@ -13,5 +14,10 @@ export {
   updateAdventureName,
   updateAdventureLevels,
   updateAdventureDescription,
+  addChapter,
   adventureSliceReducer,
-} from './redux/slices/adventureSlices'
+  AdventureSliceState,
+} from './redux/slices/adventureSlice'
+
+// eslint-disable-next-line import/no-unused-modules
+export { toSlug } from './utils/toSlug'

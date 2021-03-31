@@ -1,12 +1,24 @@
-import * as fs from 'fs'
-import * as path from 'path'
+import {
+  readFile as readFileRaw,
+  writeFile as writeFileRaw,
+  writeFileSync,
+  mkdirSync,
+} from 'fs'
+import { join } from 'path'
 import { promisify } from 'util'
-import { Adventure, AdventureInfo, setAdventure } from '@dungeon-notes/types'
+import {
+  Adventure,
+  AdventureInfo,
+  Chapter,
+  GUID,
+  setAdventure,
+} from '@dungeon-notes/types'
 import rootReducer, { RootState } from './redux/rootReducer'
 import { initialise, RepoState } from './redux/slices/repoSlice'
+import FileStore from './stores/file-store'
 
-const readFile = promisify(fs.readFile)
-const writeFile = promisify(fs.writeFile)
+const readFile = promisify(readFileRaw)
+const writeFile = promisify(writeFileRaw)
 
 const ADVENTURE_FILE = 'adventure.json'
 
@@ -19,6 +31,7 @@ export type EngineInitialisationResult = {
 export default class Engine {
   private state: RootState
   private basePath: string
+  private store: FileStore
 
   constructor(basePath: string) {
     this.basePath = basePath
@@ -31,15 +44,19 @@ export default class Engine {
         levels: '1-10',
         description: '',
         chapters: [],
+        chapterMap: {},
       },
     }
+    this.store = new FileStore(this.basePath)
   }
 
   public async init(): Promise<EngineInitialisationResult> {
     const { success, state, adventure, error } = await this._readAdventureFile()
-    this.state = rootReducer(this.state, initialise(state))
+    const chapters = await this.store.readAllChapters()
 
     if (!success) {
+      this.state = rootReducer(this.state, initialise(state))
+
       return {
         success: false,
         error,
@@ -47,8 +64,13 @@ export default class Engine {
     }
 
     if (adventure) {
-      this.state = rootReducer(this.state, setAdventure(adventure))
+      this.state = rootReducer(
+        this.state,
+        setAdventure({ adventure, chapters }),
+      )
     }
+
+    this.state = rootReducer(this.state, initialise(state))
 
     return {
       success: true,
@@ -66,6 +88,17 @@ export default class Engine {
     if (action.type.startsWith('adventure')) {
       await this._flush()
     }
+
+    if (action.type === 'adventure/addChapter') {
+      const {
+        payload: { id: chapterId },
+      } = action
+
+      const chapter = this.state.adventure.chapterMap[chapterId]
+      const index = this.state.adventure.chapters.indexOf(chapterId)
+
+      await this.store.writeChapter(index + 1, chapter)
+    }
   }
 
   public getState(): RepoState {
@@ -77,12 +110,21 @@ export default class Engine {
       throw new Error('Adventure not loaded')
     }
 
-    return this.state.adventure
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { chapterMap, ...withoutChapterMap } = this.state.adventure
+
+    return withoutChapterMap
+  }
+
+  public getChapter(chapterId: GUID): Chapter | null {
+    const chapter = this.state.adventure.chapterMap[chapterId]
+
+    return chapter || null
   }
 
   private async _setupRepo(adventureName: string): Promise<void> {
-    const adventureFilePath = path.join(this.basePath, ADVENTURE_FILE)
-    const chaptersDirectoryPath = path.join(this.basePath, './chapters')
+    const adventureFilePath = join(this.basePath, ADVENTURE_FILE)
+    const chaptersDirectoryPath = join(this.basePath, './chapters')
 
     const adventure: AdventureInfo = {
       name: adventureName,
@@ -92,9 +134,9 @@ export default class Engine {
       description: '',
     }
 
-    fs.writeFileSync(adventureFilePath, JSON.stringify(adventure, undefined, 2))
+    writeFileSync(adventureFilePath, JSON.stringify(adventure, undefined, 2))
 
-    fs.mkdirSync(chaptersDirectoryPath)
+    mkdirSync(chaptersDirectoryPath)
   }
 
   private async _readAdventureFile(): Promise<{
@@ -103,7 +145,7 @@ export default class Engine {
     adventure?: Adventure
     error?: string
   }> {
-    const adventureFilePath = path.join(this.basePath, ADVENTURE_FILE)
+    const adventureFilePath = join(this.basePath, ADVENTURE_FILE)
 
     try {
       const content = await readFile(adventureFilePath)
@@ -135,7 +177,7 @@ export default class Engine {
   }
 
   private async _writeAdventureFile(adventure: Adventure) {
-    const adventureFilePath = path.join(this.basePath, ADVENTURE_FILE)
+    const adventureFilePath = join(this.basePath, ADVENTURE_FILE)
 
     try {
       const adventureInfo: AdventureInfo = {

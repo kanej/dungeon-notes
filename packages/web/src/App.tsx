@@ -32,7 +32,7 @@ const App: React.FC = () => {
         return
       }
 
-      dispatch(setAdventure(adventure))
+      dispatch(setAdventure({ adventure, chapters: [] }))
 
       dispatch(complete())
 

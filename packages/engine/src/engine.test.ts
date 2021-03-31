@@ -1,7 +1,9 @@
-import * as fs from 'fs'
-import * as path from 'path'
+import { readFileSync } from 'fs'
+import { join } from 'path'
 import {
+  addChapter,
   AdventureInfo,
+  toGuid,
   updateAdventureDescription,
   updateAdventureLevels,
   updateAdventureName,
@@ -18,10 +20,40 @@ const exampleAdventure: AdventureInfo = {
   description: 'The one with the green knight',
 }
 
+function space(strings: TemplateStringsArray) {
+  const lines = strings[0].split('\n')
+
+  return `${lines
+    .slice(1)
+    .map((l) => l.trim())
+    .join('\n')}\n`
+}
+
+const expectAdventureStateAndFileToBe = (
+  engine: Engine,
+  directory: string,
+  expectedAdventure: AdventureInfo,
+  expectedChapters: Array<string> = [],
+) => {
+  expect(engine.getState()).toBe(RepoState.VALID)
+
+  const adventureFileText = readFileSync(join(directory, 'adventure.json'))
+
+  expect(JSON.parse(adventureFileText.toString())).toStrictEqual(
+    expectedAdventure,
+  )
+
+  expect(engine.getAdventure()).toStrictEqual({
+    ...expectedAdventure,
+    chapters: expectedChapters,
+  })
+}
+
 describe('Engine', () => {
   const emptyDirectory = 'test/empty'
   const basicAdventureDirectory = 'test/basic'
   const noneJsonAdventureFile = 'test/nonjson'
+  const adventureWithChapters = 'test/withchapters'
 
   describe('state', () => {
     beforeEach(() => {
@@ -105,8 +137,8 @@ describe('Engine', () => {
 
       expect(engine.getState()).toBe(RepoState.VALID)
 
-      const adventureFileText = fs.readFileSync(
-        path.join(emptyDirectory, 'adventure.json'),
+      const adventureFileText = readFileSync(
+        join(emptyDirectory, 'adventure.json'),
       )
 
       expect(JSON.parse(adventureFileText.toString())).toStrictEqual({
@@ -138,23 +170,6 @@ describe('Engine', () => {
       mock.restore()
     })
 
-    const expectStateAndFileToBe = (expectedAdventure: AdventureInfo) => {
-      expect(engine.getState()).toBe(RepoState.VALID)
-
-      const adventureFileText = fs.readFileSync(
-        path.join(basicAdventureDirectory, 'adventure.json'),
-      )
-
-      expect(JSON.parse(adventureFileText.toString())).toStrictEqual(
-        expectedAdventure,
-      )
-
-      expect(engine.getAdventure()).toStrictEqual({
-        ...expectedAdventure,
-        chapters: [],
-      })
-    }
-
     it('should allow updating adventure name', async () => {
       await engine.apply(updateAdventureName({ name: 'changed' }))
 
@@ -166,7 +181,11 @@ describe('Engine', () => {
         description: 'The one with the green knight',
       }
 
-      expectStateAndFileToBe(expectedAdventure)
+      expectAdventureStateAndFileToBe(
+        engine,
+        basicAdventureDirectory,
+        expectedAdventure,
+      )
     })
 
     it('should allow updating adventure levels', async () => {
@@ -182,7 +201,11 @@ describe('Engine', () => {
         description: 'The one with the green knight',
       }
 
-      expectStateAndFileToBe(expectedAdventure)
+      expectAdventureStateAndFileToBe(
+        engine,
+        basicAdventureDirectory,
+        expectedAdventure,
+      )
     })
 
     it('should allow updating adventure description', async () => {
@@ -198,7 +221,168 @@ describe('Engine', () => {
         description: 'No the other one',
       }
 
-      expectStateAndFileToBe(expectedAdventure)
+      expectAdventureStateAndFileToBe(
+        engine,
+        basicAdventureDirectory,
+        expectedAdventure,
+      )
+    })
+  })
+
+  describe('chapter updates', () => {
+    let engine: Engine
+    beforeEach(async () => {
+      mock({
+        [basicAdventureDirectory]: {
+          'adventure.json': JSON.stringify(exampleAdventure),
+          chapters: {},
+        },
+        [adventureWithChapters]: {
+          'adventure.json': JSON.stringify(exampleAdventure),
+          chapters: {
+            '1-on-a-moor': {
+              'chapter.md': space`
+                ---
+                id: ef059162-ad39-48e9-bbdd-c94e10d08cfb
+                name: On a moor
+                ---
+
+                Fog drifts over a lonely moor as ...
+              `,
+            },
+            '2-in-a-cave': {
+              'chapter.md': space`
+                ---
+                id: ea2a1776-c2be-4b5e-aca0-16f54ec02d07
+                name: In a Cave
+                ---
+
+                The drip and dank of the sea cave hold your attention when ...
+              `,
+            },
+          },
+        },
+      })
+    })
+
+    afterEach(() => {
+      mock.restore()
+    })
+
+    it('should allow adding a first chapter', async () => {
+      engine = new Engine(basicAdventureDirectory)
+
+      const { success } = await engine.init()
+      expect(success).toBe(true)
+
+      const chapterId = toGuid(toGuid('2b49ab2d-0af5-4323-ad21-de441cfd9862'))
+
+      await engine.apply(
+        addChapter({ id: chapterId, name: 'It begins in a tavern' }),
+      )
+
+      const expectedAdventure: AdventureInfo = {
+        name: 'Challenge in Green',
+        version: '0.1',
+        edition: 5,
+        levels: '2-9',
+        description: 'The one with the green knight',
+      }
+
+      expectAdventureStateAndFileToBe(
+        engine,
+        basicAdventureDirectory,
+        expectedAdventure,
+        [chapterId],
+      )
+
+      const chapterFileText = readFileSync(
+        join(
+          basicAdventureDirectory,
+          'chapters',
+          '1-it-begins-in-a-tavern',
+          'chapter.md',
+        ),
+      )
+
+      const expectedChapterText = space`
+        ---
+        id: 2b49ab2d-0af5-4323-ad21-de441cfd9862
+        name: It begins in a tavern
+        ---
+
+        And so our adventurers where in the pub when ...`
+
+      expect(chapterFileText.toString()).toStrictEqual(expectedChapterText)
+
+      // Expect chapter state
+
+      expect(
+        engine.getChapter(toGuid('2b49ab2d-0af5-4323-ad21-de441cfd9862')),
+      ).toStrictEqual({
+        id: toGuid('2b49ab2d-0af5-4323-ad21-de441cfd9862'),
+        name: 'It begins in a tavern',
+        slug: 'it-begins-in-a-tavern',
+        body: 'And so our adventurers where in the pub when ...',
+      })
+    })
+
+    it('should allow adding a chapter after existing chapters', async () => {
+      engine = new Engine(adventureWithChapters)
+
+      const { success } = await engine.init()
+      expect(success).toBe(true)
+
+      const chapterId = toGuid('917de715-1721-4fb9-9526-df8dba28d536')
+
+      await engine.apply(addChapter({ id: chapterId, name: 'In a lava pit' }))
+
+      const expectedAdventure: AdventureInfo = {
+        name: 'Challenge in Green',
+        version: '0.1',
+        edition: 5,
+        levels: '2-9',
+        description: 'The one with the green knight',
+      }
+
+      expectAdventureStateAndFileToBe(
+        engine,
+        adventureWithChapters,
+        expectedAdventure,
+        [
+          toGuid('ef059162-ad39-48e9-bbdd-c94e10d08cfb'),
+          toGuid('ea2a1776-c2be-4b5e-aca0-16f54ec02d07'),
+          chapterId,
+        ],
+      )
+
+      const chapterFileText = readFileSync(
+        join(
+          adventureWithChapters,
+          'chapters',
+          '3-in-a-lava-pit',
+          'chapter.md',
+        ),
+      )
+
+      const expectedChapterText = space`
+        ---
+        id: 917de715-1721-4fb9-9526-df8dba28d536
+        name: In a lava pit
+        ---
+
+        And so our adventurers where in the pub when ...`
+
+      expect(chapterFileText.toString()).toStrictEqual(expectedChapterText)
+
+      expect(
+        engine.getChapter(toGuid('917de715-1721-4fb9-9526-df8dba28d536')),
+      ).toStrictEqual({
+        id: toGuid('917de715-1721-4fb9-9526-df8dba28d536'),
+        name: 'In a lava pit',
+        slug: 'in-a-lava-pit',
+        body: 'And so our adventurers where in the pub when ...',
+      })
     })
   })
 })

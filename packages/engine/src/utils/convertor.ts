@@ -1,4 +1,4 @@
-import { Chapter, toGuid } from '@dungeon-notes/types'
+import { Chapter, GUID, toSlug } from '@dungeon-notes/types'
 import yaml from 'js-yaml'
 // eslint-disable-next-line import/no-unresolved
 import { Root } from 'mdast'
@@ -9,7 +9,6 @@ import unified from 'unified'
 import find from 'unist-util-find'
 import is from 'unist-util-is'
 import remove from 'unist-util-remove'
-import toSlug from './to-slug'
 
 const processor = unified().use(parse).use(stringify).use(frontmatter, ['yaml'])
 
@@ -47,7 +46,7 @@ export async function convertMarkdownToChapter(
   }
 
   const { id, name } = yaml.safeLoad(yamlNode.value) as {
-    id: string
+    id: GUID
     name: string
   }
 
@@ -56,8 +55,8 @@ export async function convertMarkdownToChapter(
   const withoutFrontmatter = await processor.stringify(astWithoutFrontmatter)
 
   return {
-    id: toGuid(id),
-    name: name,
+    id,
+    name,
     slug: toSlug(name),
     body: withoutFrontmatter.slice(0, -1),
   }

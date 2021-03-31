@@ -1,4 +1,5 @@
-import { Chapter, ChapterDescriptor } from '@dungeon-notes/types'
+import { Chapter, ChapterDescriptor, toGuid } from '@dungeon-notes/types'
+import { v4 as uuidV4 } from 'uuid'
 import toSlug from '../utils/to-slug'
 import FileStore from './file-store'
 
@@ -13,20 +14,20 @@ export default class ChapterService {
   }
 
   async add(name: string): Promise<ChapterDescriptor> {
-    const adventure: Chapter = {
+    const chapter: Chapter = {
+      id: toGuid(uuidV4()),
       name,
       slug: toSlug(name),
-      description: '',
       body: 'Start your chapter ...',
     }
 
-    this.chapters[adventure.slug] = adventure
+    this.chapters[chapter.slug] = chapter
 
-    await this.fileStore.writeChapter(adventure)
+    await this.fileStore.writeChapter(chapter)
 
     return {
       name,
-      slug: adventure.slug,
+      slug: chapter.slug,
     }
   }
 

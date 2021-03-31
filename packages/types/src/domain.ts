@@ -1,6 +1,6 @@
-type GUID = string & { isGuid: true }
+export type GUID = string & { isGuid: true }
 
-export function guid(guid: string): GUID {
+export function toGuid(guid: string): GUID {
   return guid as GUID
 }
 
@@ -17,9 +17,9 @@ export interface Adventure extends AdventureInfo {
 }
 
 export type Chapter = {
+  id: GUID
   name: string
   slug: string
-  description: string
   body: string
 }
 

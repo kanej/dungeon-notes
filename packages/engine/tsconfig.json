@@ -9,6 +9,7 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "declaration": true,
+    "esModuleInterop": true,
 
     // "composite": true,
     "outDir": "dist",

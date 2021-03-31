@@ -1,15 +1,15 @@
 import { Chapter, toGuid } from '@dungeon-notes/types'
 import { convertChapterToMarkdown, convertMarkdownToChapter } from './convertor'
 
-const exampleAdventure: Chapter = {
-  id: toGuid('7ada3478-30e1-4663-8de3-39ea5b70f885'),
+const exampleChapter: Chapter = {
+  id: toGuid('c815311e-93ec-43a5-af1e-d55306b83124'),
   name: 'In the Tavern',
   slug: 'in-the-tavern',
   body: '## The pub\n\nWelcome.',
 }
 
-const exampleAdventureMarkdown = `---
-id: 7ada3478-30e1-4663-8de3-39ea5b70f885
+const exampleChapterMarkdown = `---
+id: c815311e-93ec-43a5-af1e-d55306b83124
 name: In the Tavern
 ---
 
@@ -21,15 +21,15 @@ Welcome.
 describe('convertor', () => {
   describe('Adventure', () => {
     it('should serialize to markdown with frontmatter', async () => {
-      const markdown = await convertChapterToMarkdown(exampleAdventure)
+      const markdown = await convertChapterToMarkdown(exampleChapter)
 
-      expect(markdown).toBe(exampleAdventureMarkdown)
+      expect(markdown).toBe(exampleChapterMarkdown)
     })
 
     it('should deserialize to adventure', async () => {
-      const adventure = await convertMarkdownToChapter(exampleAdventureMarkdown)
+      const adventure = await convertMarkdownToChapter(exampleChapterMarkdown)
 
-      expect(adventure).toStrictEqual(exampleAdventure)
+      expect(adventure).toStrictEqual(exampleChapter)
     })
   })
 })
