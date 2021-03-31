@@ -2,11 +2,9 @@ import fs from 'fs'
 import path from 'path'
 import { promisify } from 'util'
 import { Engine, RepoState } from '@dungeon-notes/engine'
-import { Adventure, AdventureInfo, Chapter } from '@dungeon-notes/types'
+import { Adventure, AdventureInfo } from '@dungeon-notes/types'
 import cors from 'cors'
 import express from 'express'
-import ChapterService from '../services/chapter-service'
-import FileStore from '../services/file-store'
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
@@ -20,20 +18,11 @@ export default class Server {
 
   adventure: Adventure | undefined = undefined
 
-  chapters: { [key: string]: Chapter }
-
-  chapterService: ChapterService
-
   constructor(basePath: string, port: number) {
     this.basePath = basePath
     this.port = port
 
     this.engine = new Engine(this.basePath)
-
-    this.chapters = {}
-
-    const fileStore = new FileStore(basePath)
-    this.chapterService = new ChapterService(fileStore, this.chapters)
   }
 
   async listen(): Promise<void> {
@@ -42,9 +31,6 @@ export default class Server {
     if (!success) {
       throw new Error(error)
     }
-
-    this.adventure = await this._readAdventureFile(this.basePath)
-    await this.chapterService.load()
 
     const app = express()
     app.use(cors())
