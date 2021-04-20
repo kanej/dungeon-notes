@@ -40,6 +40,10 @@ export default class Server {
       response.json(this.engine.getAdventure())
     })
 
+    app.get('/api/adventure/chapters', async (_request, response) => {
+      response.json(this.engine.getChapters())
+    })
+
     app.post('/api/adventure', express.json(), async (request, response) => {
       const { type, payload } = request.body
 
@@ -52,6 +56,7 @@ export default class Server {
 
         return response.send({})
       } catch (error) {
+        console.error(error)
         return response.status(500).send({ error })
       }
     })

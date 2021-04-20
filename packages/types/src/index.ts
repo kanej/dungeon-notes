@@ -15,6 +15,7 @@ export {
   updateAdventureLevels,
   updateAdventureDescription,
   addChapter,
+  updateChapterName,
   adventureSliceReducer,
   AdventureSliceState,
 } from './redux/slices/adventureSlice'

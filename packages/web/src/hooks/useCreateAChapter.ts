@@ -1,17 +1,32 @@
+import { addChapter, toGuid } from '@dungeon-notes/types'
 import { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { v4 as uuidV4 } from 'uuid'
 
 export default function useCreateAChapter(): () => Promise<void> {
-  const handleCreateAChapter = useCallback(async () => {
-    // eslint-disable-next-line no-alert
-    const chapter = window.prompt('What is the name of this chapter')
+  const dispatch = useDispatch()
 
-    if (!chapter) {
+  const handleCreateAChapter = useCallback(async () => {
+    const id = toGuid(uuidV4())
+    const name = 'New chapter'
+
+    const command = addChapter({ id, name })
+
+    const response = await fetch('http://localhost:9898/api/adventure', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(command),
+    })
+
+    if (response.status !== 200) {
+      console.error(response.text)
       return
     }
 
-    // eslint-disable-next-line no-alert
-    alert('TBD')
-  }, [])
+    dispatch(command)
+  }, [dispatch])
 
   return handleCreateAChapter
 }

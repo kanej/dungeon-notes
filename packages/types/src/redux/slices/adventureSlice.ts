@@ -72,6 +72,19 @@ const adventureSlice = createSlice({
       state.chapters = [...state.chapters, id]
       state.chapterMap[id] = newChapter
     },
+    updateChapterName: (
+      state,
+      { payload: { id, name } }: PayloadAction<{ id: GUID; name: string }>,
+    ) => {
+      state.chapterMap[id].name = name
+      state.chapterMap[id].slug = toSlug(name)
+    },
+    updateChapterBody: (
+      state,
+      { payload: { id, body } }: PayloadAction<{ id: GUID; body: string }>,
+    ) => {
+      state.chapterMap[id].body = body
+    },
   },
 })
 
@@ -82,6 +95,8 @@ export const {
   updateAdventureLevels,
   updateAdventureDescription,
   addChapter,
+  updateChapterName,
+  updateChapterBody,
 } = adventureSlice.actions
 
 export const adventureSliceReducer = adventureSlice.reducer

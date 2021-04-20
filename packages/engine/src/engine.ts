@@ -83,13 +83,18 @@ export default class Engine {
       await this._setupRepo(action.payload.name)
     }
 
+    const previousState = this.state
+
     this.state = rootReducer(this.state, action)
 
     if (action.type.startsWith('adventure')) {
       await this._flush()
     }
 
-    if (action.type === 'adventure/addChapter') {
+    if (
+      action.type === 'adventure/addChapter' ||
+      action.type === 'adventure/updateChapterBody'
+    ) {
       const {
         payload: { id: chapterId },
       } = action
@@ -98,6 +103,19 @@ export default class Engine {
       const index = this.state.adventure.chapters.indexOf(chapterId)
 
       await this.store.writeChapter(index + 1, chapter)
+    }
+
+    if (action.type === 'adventure/updateChapterName') {
+      const {
+        payload: { id: chapterId },
+      } = action
+
+      const chapter = this.state.adventure.chapterMap[chapterId]
+      const index = this.state.adventure.chapters.indexOf(chapterId)
+
+      const previousChapter = previousState.adventure.chapterMap[chapterId]
+
+      await this.store.renameChapter(index + 1, previousChapter, chapter)
     }
   }
 
@@ -114,6 +132,14 @@ export default class Engine {
     const { chapterMap, ...withoutChapterMap } = this.state.adventure
 
     return withoutChapterMap
+  }
+
+  public getChapters(): Chapter[] {
+    const chapters = this.state.adventure.chapters
+
+    return chapters.map(
+      (chapterId) => this.state.adventure.chapterMap[chapterId],
+    )
   }
 
   public getChapter(chapterId: GUID): Chapter | null {

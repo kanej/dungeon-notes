@@ -3,6 +3,7 @@ import {
   readFile as readFileRaw,
   mkdir as mkdirRaw,
   readdir as readdirRaw,
+  rename as renameRaw,
 } from 'fs'
 import { join } from 'path'
 import { promisify } from 'util'
@@ -17,6 +18,7 @@ const writeFile = promisify(writeFileRaw)
 const readFile = promisify(readFileRaw)
 const mkdir = promisify(mkdirRaw)
 const readdir = promisify(readdirRaw)
+const rename = promisify(renameRaw)
 
 export default class FileStore {
   private basePath: string
@@ -38,6 +40,31 @@ export default class FileStore {
       join(this.basePath, 'chapters', chapterDirectoryName, 'chapter.md'),
       markdown,
     )
+  }
+
+  async renameChapter(
+    index: number,
+    previous: Chapter,
+    current: Chapter,
+  ): Promise<void> {
+    const from = `${index}-${previous.slug}`
+    const to = `${index}-${current.slug}`
+
+    const markdown = await convertChapterToMarkdown(current)
+
+    console.log(
+      `renaming ${join(this.basePath, 'chapters', from)} to ${join(
+        this.basePath,
+        'chapters',
+        to,
+      )}`,
+    )
+
+    await rename(
+      join(this.basePath, 'chapters', from),
+      join(this.basePath, 'chapters', to),
+    )
+    await writeFile(join(this.basePath, 'chapters', to, 'chapter.md'), markdown)
   }
 
   async readAllChapters(): Promise<Array<Chapter>> {
@@ -66,6 +93,7 @@ export default class FileStore {
         return []
       }
 
+      console.error(error)
       throw error
     }
   }

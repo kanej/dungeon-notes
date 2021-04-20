@@ -1,11 +1,25 @@
 import { Chapter } from '@dungeon-notes/types'
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import useCreateAChapter from '../hooks/useCreateAChapter'
+import { RootState } from '../redux/rootReducer'
+import { LoadingStates } from '../redux/slices/loadingSlice'
 
 const Layout: React.FC = ({ children }) => {
+  const chapters = useSelector<RootState, Chapter[]>((state) =>
+    state.loading.state === LoadingStates.COMPLETE
+      ? state.adventure.chapters.reduce(
+          (acc: Chapter[], item: string) => [
+            ...acc,
+            state.adventure.chapterMap[item],
+          ],
+          [],
+        )
+      : [],
+  )
   const handleCreateAChapter = useCreateAChapter()
-  const chapters: Array<Chapter> = []
 
   return (
     <Page>
@@ -14,9 +28,9 @@ const Layout: React.FC = ({ children }) => {
 
         <NavPanel>
           <List>
-            {chapters.map(({ name, slug }: { name: string; slug: string }) => (
-              <li key={slug}>
-                <a href={slug}>{name}</a>
+            {chapters.map(({ id, name, slug }) => (
+              <li key={id}>
+                <Link to={`/chapters/${id}/${slug}`}>{name}</Link>
               </li>
             ))}
           </List>
