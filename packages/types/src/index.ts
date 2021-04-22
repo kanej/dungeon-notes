@@ -5,6 +5,7 @@ export {
   Chapter,
   ChapterDescriptor,
   toGuid,
+  isGuid,
   GUID,
 } from './domain'
 
@@ -16,6 +17,7 @@ export {
   updateAdventureDescription,
   addChapter,
   updateChapterName,
+  updateChapterOrder,
   adventureSliceReducer,
   AdventureSliceState,
 } from './redux/slices/adventureSlice'

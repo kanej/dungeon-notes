@@ -174,8 +174,6 @@ const SmartChapter: React.FC = () => {
         return
       }
 
-      console.log(loading, debouncedChapterBody)
-
       const command = updateChapterBody({
         id: chapterId,
         body: debouncedChapterBody,

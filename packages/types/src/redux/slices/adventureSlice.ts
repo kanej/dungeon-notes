@@ -85,6 +85,12 @@ const adventureSlice = createSlice({
     ) => {
       state.chapterMap[id].body = body
     },
+    updateChapterOrder: (
+      state,
+      { payload: { chapters } }: PayloadAction<{ chapters: GUID[] }>,
+    ) => {
+      state.chapters = chapters
+    },
   },
 })
 
@@ -97,6 +103,7 @@ export const {
   addChapter,
   updateChapterName,
   updateChapterBody,
+  updateChapterOrder,
 } = adventureSlice.actions
 
 export const adventureSliceReducer = adventureSlice.reducer

@@ -1,13 +1,8 @@
-import fs from 'fs'
 import path from 'path'
-import { promisify } from 'util'
 import { Engine, RepoState } from '@dungeon-notes/engine'
-import { Adventure, AdventureInfo } from '@dungeon-notes/types'
+import { Adventure } from '@dungeon-notes/types'
 import cors from 'cors'
 import express from 'express'
-
-const readFile = promisify(fs.readFile)
-const writeFile = promisify(fs.writeFile)
 
 export default class Server {
   private basePath: string
@@ -66,43 +61,5 @@ export default class Server {
         `Dungeon Notes Writer listening at http://localhost:${this.port}`,
       )
     })
-  }
-
-  private async _readAdventureFile(basePath: string) {
-    const adventureFilePath = path.join(basePath, 'adventure.json')
-
-    try {
-      const content = await readFile(adventureFilePath)
-
-      const json: AdventureInfo = JSON.parse(content.toString())
-
-      return {
-        ...json,
-        chapters: [],
-      }
-    } catch {
-      throw new Error('No `adventure.json` file.')
-    }
-  }
-
-  private async _writeAdventureFile(basePath: string, adventure: Adventure) {
-    const adventureFilePath = path.join(basePath, 'adventure.json')
-
-    try {
-      const adventureInfo: AdventureInfo = {
-        name: adventure.name,
-        version: adventure.version,
-        edition: adventure.edition,
-        levels: adventure.levels,
-        description: adventure.description,
-      }
-
-      return writeFile(
-        adventureFilePath,
-        JSON.stringify(adventureInfo, undefined, 2),
-      )
-    } catch {
-      throw new Error("Unable to write to 'adventure.json' file")
-    }
   }
 }

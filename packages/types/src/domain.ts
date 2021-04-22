@@ -4,6 +4,10 @@ export function toGuid(guid: string): GUID {
   return guid as GUID
 }
 
+export function isGuid(text: string): text is GUID {
+  return typeof text === 'string'
+}
+
 export type AdventureInfo = {
   name: string
   version: '0.1'

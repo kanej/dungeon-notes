@@ -117,6 +117,30 @@ export default class Engine {
 
       await this.store.renameChapter(index + 1, previousChapter, chapter)
     }
+
+    if (action.type === 'adventure/updateChapterOrder') {
+      const previousMapping: {
+        [key: string]: number
+      } = previousState.adventure.chapters.reduce(
+        (acc, item, index) => ({ ...acc, [item]: index }),
+        {},
+      )
+
+      for (const {
+        id: chapterId,
+        index,
+      } of this.state.adventure.chapters.map((id, index) => ({ id, index }))) {
+        if (previousMapping[chapterId] === index) {
+          continue
+        }
+
+        const chapter = this.state.adventure.chapterMap[chapterId]
+        const previousChapter = previousState.adventure.chapterMap[chapterId]
+
+        // eslint-disable-next-line no-await-in-loop
+        await this.store.renameChapter(index + 1, previousChapter, chapter)
+      }
+    }
   }
 
   public getState(): RepoState {
