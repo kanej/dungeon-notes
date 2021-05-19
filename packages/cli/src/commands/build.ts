@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import { convertMarkdownToAdventure } from '@dungeon-notes/engine'
 import { Adventure } from '@dungeon-notes/types'
 import { Command, flags } from '@oclif/command'
 import chalk from 'chalk'
@@ -21,7 +22,7 @@ export default class Build extends Command {
   async run(): Promise<void> {
     const { flags } = this.parse(Build)
 
-    const adventureFilePath = path.join(flags.path, './adventure.json')
+    const adventureFilePath = path.join(flags.path, './adventure.md')
     const outputDirectoryPath = './site'
     const outputChaptersDirectoryPath = path.join(
       outputDirectoryPath,
@@ -37,8 +38,14 @@ export default class Build extends Command {
         this.exit(1)
       }
 
-      const adventureText = await fs.promises.readFile(adventureFilePath)
-      const adventure = JSON.parse(adventureText.toString())
+      const adventureMarkdown = await fs.promises.readFile(adventureFilePath)
+      const adventureInfo = await convertMarkdownToAdventure(
+        adventureMarkdown.toString(),
+      )
+      const adventure = {
+        ...adventureInfo,
+        chapters: [],
+      }
 
       const { name } = adventure
 

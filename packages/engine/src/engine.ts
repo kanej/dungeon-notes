@@ -16,11 +16,15 @@ import {
 import rootReducer, { RootState } from './redux/rootReducer'
 import { initialise, RepoState } from './redux/slices/repoSlice'
 import FileStore from './stores/file-store'
+import {
+  convertAdventureToMarkdown,
+  convertMarkdownToAdventure,
+} from './utils/convertor'
 
 const readFile = promisify(readFileRaw)
 const writeFile = promisify(writeFileRaw)
 
-const ADVENTURE_FILE = 'adventure.json'
+const ADVENTURE_FILE = 'adventure.md'
 
 // eslint-disable-next-line import/no-unused-modules
 export type EngineInitialisationResult = {
@@ -181,10 +185,12 @@ export default class Engine {
       version: '0.1',
       edition: 5,
       levels: '1-5',
-      description: '',
+      description: 'The adventurers where in the pub when ...',
     }
 
-    writeFileSync(adventureFilePath, JSON.stringify(adventure, undefined, 2))
+    const markdown = await convertAdventureToMarkdown(adventure)
+
+    writeFileSync(adventureFilePath, markdown)
 
     mkdirSync(chaptersDirectoryPath)
   }
@@ -200,13 +206,15 @@ export default class Engine {
     try {
       const content = await readFile(adventureFilePath)
 
-      const json: AdventureInfo = JSON.parse(content.toString())
+      const adventure: AdventureInfo = await convertMarkdownToAdventure(
+        content.toString(),
+      )
 
       return {
         success: true,
         state: RepoState.VALID,
         adventure: {
-          ...json,
+          ...adventure,
           chapters: [],
         },
       }
@@ -221,7 +229,7 @@ export default class Engine {
       return {
         success: false,
         state: RepoState.INVALID,
-        error: 'Unable to read `adventure.json` file',
+        error: 'Unable to read `adventure.md` file',
       }
     }
   }
@@ -238,12 +246,11 @@ export default class Engine {
         description: adventure.description,
       }
 
-      return writeFile(
-        adventureFilePath,
-        JSON.stringify(adventureInfo, undefined, 2),
-      )
+      const markdown = await convertAdventureToMarkdown(adventureInfo)
+
+      return writeFile(adventureFilePath, markdown)
     } catch {
-      throw new Error("Unable to write to 'adventure.json' file")
+      throw new Error("Unable to write to 'adventure.md' file")
     }
   }
 

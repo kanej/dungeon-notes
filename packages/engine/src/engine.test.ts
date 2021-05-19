@@ -11,6 +11,8 @@ import {
 import mock from 'mock-fs'
 import Engine from './engine'
 import { RepoState, setup } from './redux/slices/repoSlice'
+import { convertMarkdownToAdventure } from '.'
+import { convertAdventureToMarkdown } from './utils/convertor'
 
 const exampleAdventure: AdventureInfo = {
   name: 'Challenge in Green',
@@ -29,7 +31,7 @@ function space(strings: TemplateStringsArray) {
     .join('\n')}\n`
 }
 
-const expectAdventureStateAndFileToBe = (
+const expectAdventureStateAndFileToBe = async (
   engine: Engine,
   directory: string,
   expectedAdventure: AdventureInfo,
@@ -37,11 +39,13 @@ const expectAdventureStateAndFileToBe = (
 ) => {
   expect(engine.getState()).toBe(RepoState.VALID)
 
-  const adventureFileText = readFileSync(join(directory, 'adventure.json'))
+  const adventureFileText = readFileSync(join(directory, 'adventure.md'))
 
-  expect(JSON.parse(adventureFileText.toString())).toStrictEqual(
-    expectedAdventure,
+  const savedAdventure = await convertMarkdownToAdventure(
+    adventureFileText.toString(),
   )
+
+  expect(savedAdventure).toStrictEqual(expectedAdventure)
 
   expect(engine.getAdventure()).toStrictEqual({
     ...expectedAdventure,
@@ -56,14 +60,14 @@ describe('Engine', () => {
   const adventureWithChapters = 'test/withchapters'
 
   describe('state', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       mock({
         [emptyDirectory]: {},
         [basicAdventureDirectory]: {
-          'adventure.json': JSON.stringify(exampleAdventure),
+          'adventure.md': await convertAdventureToMarkdown(exampleAdventure),
         },
         [noneJsonAdventureFile]: {
-          'adventure.json': 'not really json',
+          'adventure.md': 'not really json',
         },
       })
     })
@@ -111,7 +115,7 @@ describe('Engine', () => {
       const { success, error } = await engine.init()
 
       expect(success).toBe(false)
-      expect(error).toBe('Unable to read `adventure.json` file')
+      expect(error).toBe('Unable to read `adventure.md` file')
       expect(engine.getState()).toBe(RepoState.INVALID)
     })
   })
@@ -138,15 +142,19 @@ describe('Engine', () => {
       expect(engine.getState()).toBe(RepoState.VALID)
 
       const adventureFileText = readFileSync(
-        join(emptyDirectory, 'adventure.json'),
+        join(emptyDirectory, 'adventure.md'),
       )
 
-      expect(JSON.parse(adventureFileText.toString())).toStrictEqual({
+      const savedAdventure = await convertMarkdownToAdventure(
+        adventureFileText.toString(),
+      )
+
+      expect(savedAdventure).toStrictEqual({
         name: 'example',
         version: '0.1',
         edition: 5,
         levels: '1-5',
-        description: '',
+        description: 'The adventurers where in the pub when ...',
       })
     })
   })
@@ -156,7 +164,7 @@ describe('Engine', () => {
     beforeEach(async () => {
       mock({
         [basicAdventureDirectory]: {
-          'adventure.json': JSON.stringify(exampleAdventure),
+          'adventure.md': await convertAdventureToMarkdown(exampleAdventure),
         },
       })
 
@@ -181,7 +189,7 @@ describe('Engine', () => {
         description: 'The one with the green knight',
       }
 
-      expectAdventureStateAndFileToBe(
+      await expectAdventureStateAndFileToBe(
         engine,
         basicAdventureDirectory,
         expectedAdventure,
@@ -201,7 +209,7 @@ describe('Engine', () => {
         description: 'The one with the green knight',
       }
 
-      expectAdventureStateAndFileToBe(
+      await expectAdventureStateAndFileToBe(
         engine,
         basicAdventureDirectory,
         expectedAdventure,
@@ -221,7 +229,7 @@ describe('Engine', () => {
         description: 'No the other one',
       }
 
-      expectAdventureStateAndFileToBe(
+      await expectAdventureStateAndFileToBe(
         engine,
         basicAdventureDirectory,
         expectedAdventure,
@@ -234,11 +242,11 @@ describe('Engine', () => {
     beforeEach(async () => {
       mock({
         [basicAdventureDirectory]: {
-          'adventure.json': JSON.stringify(exampleAdventure),
+          'adventure.md': await convertAdventureToMarkdown(exampleAdventure),
           chapters: {},
         },
         [adventureWithChapters]: {
-          'adventure.json': JSON.stringify(exampleAdventure),
+          'adventure.md': await convertAdventureToMarkdown(exampleAdventure),
           chapters: {
             '1-on-a-moor': {
               'chapter.md': space`
@@ -289,7 +297,7 @@ describe('Engine', () => {
         description: 'The one with the green knight',
       }
 
-      expectAdventureStateAndFileToBe(
+      await expectAdventureStateAndFileToBe(
         engine,
         basicAdventureDirectory,
         expectedAdventure,

@@ -20,11 +20,11 @@ export default class Init extends Command {
     const { args } = this.parse(Init)
 
     try {
-      await fs.promises.access('./adventure.json', fs.constants.F_OK)
-      this.log('adventure.json file already exists')
+      await fs.promises.access('./adventure.md', fs.constants.F_OK)
+      this.log('adventure.md file already exists')
       this.exit(1)
     } catch {
-      this.debug('adventure.json file not found')
+      this.debug('adventure.md file not found')
     }
 
     const adventureName = await cli.prompt('What is the adventure called?')
