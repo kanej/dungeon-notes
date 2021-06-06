@@ -2,7 +2,7 @@ import Server from './express/server'
 
 const main = async () => {
   const port = 9898
-  const basePath = '../../examples/basic'
+  const basePath = '../../tmp/adventure'
 
   const server = new Server(basePath, port)
 

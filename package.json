@@ -8,7 +8,7 @@
     ]
   },
   "scripts": {
-    "postinstall": "husky install",
+    "postinstall": "husky install && ./scripts/copy-basic-adventure-to-tmp.sh",
     "test": "cross-env CI=true lerna run test",
     "format": "lerna run format",
     "format:check": "lerna run format:check",
@@ -38,6 +38,7 @@
     "lerna": "^3.22.1",
     "prettier": "2.2.0",
     "pretty-quick": "3.1.0",
+    "rimraf": "3.0.2",
     "typescript": "4.1.3"
   },
   "commitizen": {
