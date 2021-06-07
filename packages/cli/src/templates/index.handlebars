@@ -2,26 +2,61 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{name}}</title>
-    <style>
-        .adventure-title {
-            border-bottom: 1px solid gray;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{name}}</title>
+  <style>
+    .page {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+    }
+
+    .left-nav {
+
+    }
+
+    .left-nav .brand {
+      font-size: 24px;
+    }
+
+    .left-nav .chapter-list {
+      padding-left: 0;
+    }
+
+    .left-nav .chapter-item {
+      list-style-type: none;
+      margin-bottom: 0.5rem;
+    }
+
+    .adventure-title {
+      border-bottom: 1px solid gray;
+    }
+  </style>
 </head>
 
 <body>
-    <div>
-        <h1 class="adventure-title">{{name}}</h1>
-        <p>A D &amp; D 5e Adventure for levels {{levels}}</p>
+  <div class="page">
+    <div class="left-nav">
+      <h1 class="brand">Dungeon Notes</h1>
 
-        <div>
-            {{{description}}}
-        </div>
+      <div>
+        <ul class="chapter-list">
+          {{#each chapters}}
+            <li class="chapter-item"><a href="./chapters/{{this.slug}}">{{this.name}}</a></li>
+          {{/each}}
+        </ul>
+      </div>
     </div>
+    <main>
+      <h1 class="adventure-title">{{name}}</h1>
+      <p>A D &amp; D 5e Adventure for levels {{levels}}</p>
+
+      <div>
+        {{{description}}}
+      </div>
+    </main>
+  </div>
 </body>
 
 </html>

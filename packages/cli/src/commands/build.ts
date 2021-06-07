@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
-import { convertMarkdownToAdventure } from '@dungeon-notes/engine'
-import { Adventure } from '@dungeon-notes/types'
+import { Engine } from '@dungeon-notes/engine'
+import { Adventure, Chapter } from '@dungeon-notes/types'
 import { Command, flags } from '@oclif/command'
 import chalk from 'chalk'
 import cli from 'cli-ux'
@@ -21,9 +21,16 @@ export default class Build extends Command {
 
   async run(): Promise<void> {
     const { flags } = this.parse(Build)
-
-    const adventureFilePath = path.join(flags.path, './adventure.md')
     const outputDirectoryPath = './site'
+
+    const engine = new Engine(flags.path)
+
+    const { success, error } = await engine.init()
+
+    if (!success) {
+      throw new Error(error)
+    }
+
     const outputChaptersDirectoryPath = path.join(
       outputDirectoryPath,
       'chapters',
@@ -31,21 +38,8 @@ export default class Build extends Command {
     const indexFilePath = path.join(outputDirectoryPath, 'index.html')
 
     try {
-      try {
-        await fs.promises.access(adventureFilePath, fs.constants.F_OK)
-      } catch (error) {
-        this.log(chalk.red(`${chalk.bold('Error:')} ${error}`))
-        this.exit(1)
-      }
-
-      const adventureMarkdown = await fs.promises.readFile(adventureFilePath)
-      const adventureInfo = await convertMarkdownToAdventure(
-        adventureMarkdown.toString(),
-      )
-      const adventure = {
-        ...adventureInfo,
-        chapters: [],
-      }
+      const adventure = await engine.getAdventure()
+      const chapters = await engine.getChapters()
 
       const { name } = adventure
 
@@ -66,7 +60,7 @@ export default class Build extends Command {
 
       cli.action.start('Creating index.html from adventure')
 
-      const indexContent = await this._generateIndexFrom(adventure)
+      const indexContent = await this._generateIndexFrom(adventure, chapters)
       await fs.promises.writeFile(indexFilePath, indexContent)
 
       cli.action.stop()
@@ -76,14 +70,19 @@ export default class Build extends Command {
     }
   }
 
-  private async _generateIndexFrom(adventure: Adventure) {
+  private async _generateIndexFrom(adventure: Adventure, chapters: Chapter[]) {
     const indexTemplateText = await fs.promises.readFile(
       path.resolve(__dirname, '../templates/index.handlebars'),
     )
+
     const template = handlebars.compile(indexTemplateText.toString())
 
     const descriptionHtml = await convertMarkdownToHtml(adventure.description)
 
-    return template({ ...adventure, description: descriptionHtml })
+    return template({
+      ...adventure,
+      chapters: chapters,
+      description: descriptionHtml,
+    })
   }
 }
