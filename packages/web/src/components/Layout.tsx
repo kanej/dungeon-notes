@@ -29,6 +29,10 @@ const reorder = (
 const Layout: React.FC = ({ children }) => {
   const dispatch: AppDispatch = useDispatch()
 
+  const adventureTitle = useSelector<RootState, string>((state) =>
+    state.loading.state === LoadingStates.COMPLETE ? state.adventure.name : '',
+  )
+
   const chapters = useSelector<RootState, Chapter[]>((state) =>
     state.loading.state === LoadingStates.COMPLETE
       ? state.adventure.chapters.reduce(
@@ -40,6 +44,7 @@ const Layout: React.FC = ({ children }) => {
         )
       : [],
   )
+
   const handleCreateAChapter = useCreateAChapter()
 
   const handleDragEnd = useCallback(
@@ -83,6 +88,9 @@ const Layout: React.FC = ({ children }) => {
     <Page>
       <LeftDrawer>
         <h2>Dungeon Notes</h2>
+        <Link to="/">
+          <h3>{adventureTitle}</h3>
+        </Link>
 
         <NavPanel>
           <DragDropContext onDragEnd={handleDragEnd}>
