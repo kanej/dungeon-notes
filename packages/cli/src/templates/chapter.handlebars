@@ -42,21 +42,20 @@
 
       <div>
         <a href="../">
-          <h3>{{name}}</h3>
+          <h3>{{adventureTitle}}</h3>
         </a>
         <ul class="chapter-list">
           {{#each chapters}}
-            <li class="chapter-item"><a href="./chapters/{{this.slug}}">{{this.name}}</a></li>
+            <li class="chapter-item"><a href="../chapters/{{this.slug}}">{{this.name}}</a></li>
           {{/each}}
         </ul>
       </div>
     </div>
     <main>
       <h1 class="adventure-title">{{name}}</h1>
-      <p>A D &amp; D 5e Adventure for levels {{levels}}</p>
 
       <div>
-        {{{description}}}
+        {{{body}}}
       </div>
     </main>
   </div>

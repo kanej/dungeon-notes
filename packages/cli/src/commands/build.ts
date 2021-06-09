@@ -35,7 +35,6 @@ export default class Build extends Command {
       outputDirectoryPath,
       'chapters',
     )
-    const indexFilePath = path.join(outputDirectoryPath, 'index.html')
 
     try {
       const adventure = await engine.getAdventure()
@@ -61,7 +60,26 @@ export default class Build extends Command {
       cli.action.start('Creating index.html from adventure')
 
       const indexContent = await this._generateIndexFrom(adventure, chapters)
+      const indexFilePath = path.join(outputDirectoryPath, 'index.html')
       await fs.promises.writeFile(indexFilePath, indexContent)
+
+      for (const chapter of chapters) {
+        // eslint-disable-next-line no-await-in-loop
+        const chapterContent = await this._generateChapterFrom(
+          adventure,
+          chapter,
+          chapters,
+        )
+
+        const chapterFilePath = path.join(
+          outputDirectoryPath,
+          'chapters',
+          `${chapter.slug}.html`,
+        )
+
+        // eslint-disable-next-line no-await-in-loop
+        await fs.promises.writeFile(chapterFilePath, chapterContent)
+      }
 
       cli.action.stop()
     } catch (error) {
@@ -83,6 +101,27 @@ export default class Build extends Command {
       ...adventure,
       chapters: chapters,
       description: descriptionHtml,
+    })
+  }
+
+  private async _generateChapterFrom(
+    adventure: Adventure,
+    chapter: Chapter,
+    chapters: Chapter[],
+  ) {
+    const chapterTemplateText = await fs.promises.readFile(
+      path.resolve(__dirname, '../templates/chapter.handlebars'),
+    )
+
+    const template = handlebars.compile(chapterTemplateText.toString())
+
+    const bodyHtml = await convertMarkdownToHtml(chapter.body)
+
+    return template({
+      ...chapter,
+      adventureTitle: adventure.name,
+      chapters,
+      body: bodyHtml,
     })
   }
 }
