@@ -16,5 +16,7 @@
     "files": true
   },
   "files": ["src/libs.d.ts"],
-  "exclude": ["**/node_modules/**", "../../node_modules"]
+  "exclude": ["**/node_modules/**", "../../node_modules"],
+  "composite": true,
+  "references": [{ "path": "../engine" }, { "path": "../types" }]
 }

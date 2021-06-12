@@ -15,7 +15,9 @@
     "lint": "lerna run lint --stream --concurrency 1",
     "lint:fix": "lerna run lint:fix --stream --concurrency 1",
     "prerelease": "lerna run build --scope @dungeon-notes/writer-web && rm -r packages/cli/www && mv packages/web/build packages/cli/www",
-    "release": "lerna publish --conventional-commits"
+    "release": "lerna publish --conventional-commits",
+    "build": "lerna run build",
+    "clean": "lerna run clean --concurrency 4"
   },
   "devDependencies": {
     "@commitlint/cli": "11.0.0",

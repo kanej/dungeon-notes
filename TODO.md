@@ -1,6 +1,6 @@
 # TODO
 
-- [ ] Setup github actions
+- [x] Setup github actions
 
 ## Features
 

@@ -10,7 +10,7 @@ export function isGuid(text: string): text is GUID {
 
 export type AdventureInfo = {
   name: string
-  version: '0.1'
+  version: string
   edition: number
   levels: string
   description: string

@@ -11,11 +11,12 @@
     "declaration": true,
     "esModuleInterop": true,
 
-    // "composite": true,
+    "composite": true,
     "outDir": "dist",
     "rootDir": "src",
     "skipLibCheck": false,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [{ "path": "../types" }]
 }

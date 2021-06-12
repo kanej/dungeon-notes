@@ -9,10 +9,9 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "declaration": true,
-
-    // "composite": true,
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "composite": true
   },
   "include": ["src"]
 }

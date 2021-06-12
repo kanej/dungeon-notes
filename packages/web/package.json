@@ -45,7 +45,8 @@
     "format": "prettier --write \"./src/**/*.{ts,tsx,js,jsx}\"",
     "format:check": "prettier --check \"./src/**/*.{ts,tsx,js,jsx}\"",
     "lint": "eslint src --ext ts,tsx",
-    "lint:fix": "eslint --fix src --ext ts"
+    "lint:fix": "eslint --fix src --ext ts",
+    "clean": "rimraf build *.tsbuildinfo"
   },
   "browserslist": {
     "production": [

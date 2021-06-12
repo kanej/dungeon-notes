@@ -88,7 +88,9 @@
     "format": "prettier --write \"./src/**/*.{ts,tsx,js,jsx}\"",
     "format:check": "prettier --check \"./src/**/*.{ts,tsx,js,jsx}\"",
     "lint": "eslint src --ext ts",
-    "lint:fix": "eslint --fix src --ext ts"
+    "lint:fix": "eslint --fix src --ext ts",
+    "build": "tsc --build",
+    "clean": "rimraf build *.tsbuildinfo"
   },
   "types": "lib/index.d.ts",
   "volta": {
