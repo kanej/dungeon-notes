@@ -30,7 +30,7 @@ $ npm install -g @dungeon-notes/writer
 $ dnwriter COMMAND
 running command...
 $ dnwriter (-v|--version|version)
-@dungeon-notes/writer/0.2.6 darwin-x64 node-v14.15.3
+@dungeon-notes/writer/0.3.0 darwin-x64 node-v14.15.3
 $ dnwriter --help [COMMAND]
 USAGE
   $ dnwriter COMMAND
@@ -45,7 +45,7 @@ USAGE
 
 - [`dnwriter build [FILE]`](#dnwriter-build-file)
 - [`dnwriter help [COMMAND]`](#dnwriter-help-command)
-- [`dnwriter init [FILE]`](#dnwriter-init-file)
+- [`dnwriter init [PATH]`](#dnwriter-init-path)
 - [`dnwriter serve [PATH]`](#dnwriter-serve-path)
 
 ## `dnwriter build [FILE]`
@@ -61,7 +61,7 @@ OPTIONS
   -p, --path=path  [default: .]
 ```
 
-_See code: [src/commands/build.ts](https://github.com/kanej/dungeon-notes/blob/v0.2.6/src/commands/build.ts)_
+_See code: [lib/commands/build.js](https://github.com/kanej/dungeon-notes/blob/v0.3.0/lib/commands/build.js)_
 
 ## `dnwriter help [COMMAND]`
 
@@ -78,21 +78,21 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
-## `dnwriter init [FILE]`
+## `dnwriter init [PATH]`
 
 Setup a new notes repo
 
 ```
 USAGE
-  $ dnwriter init [FILE]
+  $ dnwriter init [PATH]
 
 OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/init.ts](https://github.com/kanej/dungeon-notes/blob/v0.2.6/src/commands/init.ts)_
+_See code: [lib/commands/init.js](https://github.com/kanej/dungeon-notes/blob/v0.3.0/lib/commands/init.js)_
 
 ## `dnwriter serve [PATH]`
 
@@ -110,7 +110,7 @@ EXAMPLE
   $ dnwriter serve
 ```
 
-_See code: [src/commands/serve.ts](https://github.com/kanej/dungeon-notes/blob/v0.2.6/src/commands/serve.ts)_
+_See code: [lib/commands/serve.js](https://github.com/kanej/dungeon-notes/blob/v0.3.0/lib/commands/serve.js)_
 
 <!-- commandsstop -->
 

@@ -1,6 +1,6 @@
 {
   "name": "@dungeon-notes/types",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "description": "The types that underly dungeon notes",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,6 +18,5 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "1.5.0"
-  },
-  "devDependencies": {}
+  }
 }
