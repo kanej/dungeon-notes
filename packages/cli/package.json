@@ -79,7 +79,7 @@
   "scripts": {
     "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/development-server.ts\"",
     "postpack": "rm -f oclif.manifest.json",
-    "prepack": "rm -rf lib && tsc -b && cpx ./src/templates/*.handlebars ./lib/templates --clean && oclif-dev manifest && oclif-dev readme",
+    "prepack": "rm -rf lib && tsc -b && cpx \"./src/templates/*.handlebars\" ./lib/templates --clean && oclif-dev manifest && oclif-dev readme",
     "test": "jest --passWithNoTests",
     "version": "oclif-dev readme && git add README.md",
     "format": "prettier --write \"./src/**/*.{ts,tsx,js,jsx}\"",
