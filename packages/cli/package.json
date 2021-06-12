@@ -10,6 +10,7 @@
   "dependencies": {
     "@dungeon-notes/engine": "^0.3.0",
     "@dungeon-notes/types": "^0.3.0",
+    "@dungeon-notes/writer-web": "^0.3.0",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
