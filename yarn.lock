@@ -1023,7 +1023,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.14.5"
 
-"@babel/plugin-transform-typescript@^7.12.1":
+"@babel/plugin-transform-typescript@^7.12.1", "@babel/plugin-transform-typescript@^7.14.5":
   version "7.14.5"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-typescript/-/plugin-transform-typescript-7.14.5.tgz#5b41b59072f765bd1ec1d0b694e08c7df0f6f8a0"
   integrity sha512-cFD5PKp4b8/KkwQ7h71FdPXFvz1RgwTFF9akRZwFldb9G0AHf7CgoPx96c4Q/ZVjh6V81tqQwW5YiHws16OzPg==
@@ -1191,7 +1191,7 @@
     core-js-compat "^3.8.0"
     semver "^5.5.0"
 
-"@babel/preset-env@^7.8.4", "@babel/preset-env@^7.9.5":
+"@babel/preset-env@7.14.5", "@babel/preset-env@^7.8.4", "@babel/preset-env@^7.9.5":
   version "7.14.5"
   resolved "https://registry.yarnpkg.com/@babel/preset-env/-/preset-env-7.14.5.tgz#c0c84e763661fd0e74292c3d511cb33b0c668997"
   integrity sha512-ci6TsS0bjrdPpWGnQ+m4f+JSSzDKlckqKIJJt9UZ/+g7Zz9k0N8lYU8IeLg/01o2h8LyNZDMLGgRLDTxpudLsA==
@@ -1322,6 +1322,15 @@
     "@babel/helper-plugin-utils" "^7.10.4"
     "@babel/helper-validator-option" "^7.12.1"
     "@babel/plugin-transform-typescript" "^7.12.1"
+
+"@babel/preset-typescript@7.14.5":
+  version "7.14.5"
+  resolved "https://registry.yarnpkg.com/@babel/preset-typescript/-/preset-typescript-7.14.5.tgz#aa98de119cf9852b79511f19e7f44a2d379bcce0"
+  integrity sha512-u4zO6CdbRKbS9TypMqrlGH7sd2TAJppZwn3c/ZRLeO/wGsbddxgbPDUZVNrie3JWYLQ9vpineKlsrWFvO6Pwkw==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.14.5"
+    "@babel/helper-validator-option" "^7.14.5"
+    "@babel/plugin-transform-typescript" "^7.14.5"
 
 "@babel/runtime-corejs3@^7.10.2":
   version "7.14.5"
@@ -3444,14 +3453,6 @@
     jest-diff "^26.0.0"
     pretty-format "^26.0.0"
 
-"@types/jest@26.0.21":
-  version "26.0.21"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.21.tgz#3a73c2731e7e4f0fbaea56ce7ff8c79cf812bd24"
-  integrity sha512-ab9TyM/69yg7eew9eOwKMUmvIZAKEGZYlq/dhe5/0IMUd/QLJv5ldRMdddSn+u22N13FP3s5jYyktxuBwY0kDA==
-  dependencies:
-    jest-diff "^26.0.0"
-    pretty-format "^26.0.0"
-
 "@types/js-cookie@2.2.6":
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/@types/js-cookie/-/js-cookie-2.2.6.tgz#f1a1cb35aff47bc5cfb05cb0c441ca91e914c26f"
@@ -3551,11 +3552,6 @@
   version "10.17.60"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.60.tgz#35f3d6213daed95da7f0f73e75bcc6980e90597b"
   integrity sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw==
-
-"@types/node@^12.0.0":
-  version "12.20.15"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.20.15.tgz#10ee6a6a3f971966fddfa3f6e89ef7a73ec622df"
-  integrity sha512-F6S4Chv4JicJmyrwlDkxUdGNSplsQdGwp1A0AJloEVDirWdZOAiRHhovDlsFkKUrquUXhz1imJhXHsf59auyAg==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -10660,7 +10656,7 @@ jest-circus@26.6.0:
     stack-utils "^2.0.2"
     throat "^5.0.0"
 
-jest-cli@^26.6.0, jest-cli@^26.6.3:
+jest-cli@^26.6.0:
   version "26.6.3"
   resolved "https://registry.yarnpkg.com/jest-cli/-/jest-cli-26.6.3.tgz#43117cfef24bc4cd691a174a8796a532e135e92a"
   integrity sha512-GF9noBSa9t08pSyl3CY4frMrqp+aQXFGFkf5hEPbh/pIUFYWMK6ZLTfbmadxJVcJrdRoChlWQsA2VkJcDFK8hg==
@@ -11058,15 +11054,6 @@ jest@26.6.0:
     "@jest/core" "^26.6.0"
     import-local "^3.0.2"
     jest-cli "^26.6.0"
-
-jest@26.6.3:
-  version "26.6.3"
-  resolved "https://registry.yarnpkg.com/jest/-/jest-26.6.3.tgz#40e8fdbe48f00dfa1f0ce8121ca74b88ac9148ef"
-  integrity sha512-lGS5PXGAzR4RF7V5+XObhqz2KZIDUA1yD0DG6pBVmy10eh0ZIXQImRuzocsI/N2XZ1GrLFwTS27In2i2jlpq1Q==
-  dependencies:
-    "@jest/core" "^26.6.3"
-    import-local "^3.0.2"
-    jest-cli "^26.6.3"
 
 js-cookie@^2.2.1:
   version "2.2.1"
@@ -12181,10 +12168,10 @@ mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@^0.5.3, mkdirp@^0.5.5, mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.5"
 
-mock-fs@4.13.0:
-  version "4.13.0"
-  resolved "https://registry.yarnpkg.com/mock-fs/-/mock-fs-4.13.0.tgz#31c02263673ec3789f90eb7b6963676aa407a598"
-  integrity sha512-DD0vOdofJdoaRNtnWcrXe6RQbpHkPPmtqGq14uRX0F8ZKJ5nv89CVTYl/BZdppDxBDaV0hl75htg3abpEWlPZA==
+mock-fs@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/mock-fs/-/mock-fs-5.0.0.tgz#5574520ac824c01a10091bf951c66f677c71acaa"
+  integrity sha512-A5mm/SpSDwwc/klSaEvvKMGQQtiGiQy8UcDAd/vpVO1fV+4zaHjt39yKgCSErFzv2zYxZIUx9Ud/7ybeHBf8Fg==
 
 modify-values@^1.0.0:
   version "1.0.1"
@@ -17178,11 +17165,6 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
-
-typescript@4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.1.2.tgz#6369ef22516fe5e10304aae5a5c4862db55380e9"
-  integrity sha512-thGloWsGH3SOxv1SoY7QojKi0tc+8FnOmiarEGMbd/lar7QOEd3hvlx3Fp5y6FlDUGl9L+pd4n2e+oToGMmhRQ==
 
 typescript@4.1.3:
   version "4.1.3"
