@@ -1,6 +1,6 @@
 {
   "name": "@dungeon-notes/engine",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "Update dungeon notes repos with changes",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,7 +17,7 @@
     "clean": "rimraf dist *.tsbuildinfo"
   },
   "dependencies": {
-    "@dungeon-notes/types": "^0.3.0",
+    "@dungeon-notes/types": "^0.3.2",
     "@reduxjs/toolkit": "1.5.0",
     "unist-util-find": "1.0.2",
     "unist-util-remove": "2.0.1",

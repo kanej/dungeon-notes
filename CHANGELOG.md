@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.2](https://github.com/kanej/dungeon-notes/compare/v0.3.1...v0.3.2) (2021-06-12)
+
+### Bug Fixes
+
+- **writer:** copy handlebars templates into the released artifact ([779b958](https://github.com/kanej/dungeon-notes/commit/779b958904dcda6d3be8bf2761d5f012acefbfaa))
+
 ## [0.3.1](https://github.com/kanej/dungeon-notes/compare/v0.3.0...v0.3.1) (2021-06-12)
 
 **Note:** Version bump only for package root

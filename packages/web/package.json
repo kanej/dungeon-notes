@@ -1,12 +1,12 @@
 {
   "name": "@dungeon-notes/writer-web",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "private": true,
   "license": "GPL-3.0",
   "proxy": "http://localhost:9898",
   "dependencies": {
     "@apollo/client": "3.3.6",
-    "@dungeon-notes/types": "^0.3.0",
+    "@dungeon-notes/types": "^0.3.2",
     "@reduxjs/toolkit": "1.5.0",
     "@styled-icons/material": "10.28.0",
     "@testing-library/jest-dom": "^5.11.4",

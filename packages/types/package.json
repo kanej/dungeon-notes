@@ -1,6 +1,6 @@
 {
   "name": "@dungeon-notes/types",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "The types that underly dungeon notes",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
