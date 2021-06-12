@@ -81,16 +81,15 @@
   "scripts": {
     "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/development-server.ts\"",
     "postpack": "rm -f oclif.manifest.json",
-    "posttest": "eslint ./src --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && cpx ./src/templates/*.handlebars ./lib/templates --clean && oclif-dev manifest && oclif-dev readme",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "version": "oclif-dev readme && git add README.md",
     "format": "prettier --write \"./src/**/*.{ts,tsx,js,jsx}\"",
     "format:check": "prettier --check \"./src/**/*.{ts,tsx,js,jsx}\"",
     "lint": "eslint src --ext ts",
     "lint:fix": "eslint --fix src --ext ts",
     "build": "tsc --build",
-    "clean": "rimraf build *.tsbuildinfo"
+    "clean": "rimraf lib *.tsbuildinfo"
   },
   "types": "lib/index.d.ts",
   "volta": {
