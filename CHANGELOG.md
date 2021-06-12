@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.3](https://github.com/kanej/dungeon-notes/compare/v0.3.2...v0.3.3) (2021-06-12)
+
+### Bug Fixes
+
+- **writer:** remove the `writer-web` dep ([d03ca56](https://github.com/kanej/dungeon-notes/commit/d03ca5616eae25e12b3facd631c21aa111bdfa30))
+
 ## [0.3.2](https://github.com/kanej/dungeon-notes/compare/v0.3.1...v0.3.2) (2021-06-12)
 
 ### Bug Fixes
