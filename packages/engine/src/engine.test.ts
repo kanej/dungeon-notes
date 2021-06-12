@@ -11,8 +11,10 @@ import {
 import mock from 'mock-fs'
 import Engine from './engine'
 import { RepoState, setup } from './redux/slices/repoSlice'
-import { convertMarkdownToAdventure } from '.'
-import { convertAdventureToMarkdown } from './utils/convertor'
+import {
+  convertAdventureToMarkdown,
+  convertMarkdownToAdventure,
+} from './utils/convertor'
 
 const exampleAdventure: AdventureInfo = {
   name: 'Challenge in Green',
