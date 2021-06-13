@@ -29,7 +29,7 @@ export default class Init extends Command {
 
     const adventureName = await cli.prompt('What is the adventure called?')
 
-    cli.action.start(`Setting up ${adventureName} campaign ...`)
+    cli.action.start(`Setting up ${chalk.italic(adventureName)} campaign ...`)
 
     const engine = new Engine(args.path)
 
