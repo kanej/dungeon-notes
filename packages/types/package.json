@@ -17,6 +17,7 @@
     "clean": "rimraf dist *.tsbuildinfo"
   },
   "dependencies": {
+    "@dungeon-notes/name-generator": "^0.3.2",
     "@reduxjs/toolkit": "1.5.0"
   }
 }
