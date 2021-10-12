@@ -8,7 +8,7 @@ const { setup } = actions
 
 // eslint-disable-next-line import/no-unused-modules
 export default class Init extends Command {
-  static description = 'Setup a new notes repo'
+  static description = 'setup a new notes repo'
 
   static flags = {
     help: flags.help({ char: 'h' }),
