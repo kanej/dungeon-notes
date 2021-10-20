@@ -3,7 +3,7 @@ module.exports = {
     title: `Dungeon Notes`,
     author: {
       name: `John Kane`,
-      summary: `Programmer reporting from the mines of Moria`,
+      summary: `a programmer reporting from North of the Wall`,
     },
     description: `Tools to aid the the Dungeon Master in their depraved adventures.`,
     siteUrl: `https://dungeonnotes.com/`,
@@ -75,13 +75,13 @@ module.exports = {
         feeds: [
           {
             serialize: ({ query: { site, allMarkdownRemark } }) => {
-              return allMarkdownRemark.nodes.map(node => {
+              return allMarkdownRemark.nodes.map((node) => {
                 return Object.assign({}, node.frontmatter, {
                   description: node.excerpt,
                   date: node.frontmatter.date,
                   url: site.siteMetadata.siteUrl + node.fields.slug,
                   guid: site.siteMetadata.siteUrl + node.fields.slug,
-                  custom_elements: [{ "content:encoded": node.html }],
+                  custom_elements: [{ 'content:encoded': node.html }],
                 })
               })
             },
@@ -104,7 +104,7 @@ module.exports = {
                 }
               }
             `,
-            output: "/rss.xml",
+            output: '/rss.xml',
           },
         ],
       },
@@ -112,13 +112,13 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Gatsby Starter Blog`,
-        short_name: `GatsbyJS`,
+        name: `Dungeon Notes`,
+        short_name: `dnotes`,
         start_url: `/`,
         background_color: `#ffffff`,
         theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        icon: `src/images/icon_512x512.svg`, // This path is relative to the root of the site.
       },
     },
     `gatsby-plugin-react-helmet`,

@@ -1,11 +1,36 @@
-import * as React from "react"
-import { Link, graphql } from "gatsby"
+import * as React from 'react'
+import { PageProps, Link, graphql } from 'gatsby'
 
-import Bio from "../components/bio"
-import Layout from "../components/layout"
-import Seo from "../components/seo"
+import Bio from '../components/bio'
+import Layout from '../components/layout'
+import Seo from '../components/seo'
 
-const BlogPostTemplate = ({ data, location }) => {
+type DataProps = {
+  site: {
+    siteMetadata?: {
+      title: string
+    }
+  }
+  markdownRemark: {
+    frontmatter: { title: string; description: string; date: string }
+    fields: { slug: string }
+    excerpt: string
+    html: string
+  }
+  previous: {
+    frontmatter: { title: string }
+    fields: { slug: string }
+  }
+  next: {
+    frontmatter: { title: string }
+    fields: { slug: string }
+  }
+}
+
+const BlogPostTemplate: React.FC<PageProps<DataProps>> = ({
+  data,
+  location,
+}) => {
   const post = data.markdownRemark
   const siteTitle = data.site.siteMetadata?.title || `Title`
   const { previous, next } = data
@@ -46,14 +71,14 @@ const BlogPostTemplate = ({ data, location }) => {
         >
           <li>
             {previous && (
-              <Link to={previous.fields.slug} rel="prev">
+              <Link to={`/blog${previous.fields.slug}`} rel="prev">
                 ← {previous.frontmatter.title}
               </Link>
             )}
           </li>
           <li>
             {next && (
-              <Link to={next.fields.slug} rel="next">
+              <Link to={`/blog${next.fields.slug}`} rel="next">
                 {next.frontmatter.title} →
               </Link>
             )}

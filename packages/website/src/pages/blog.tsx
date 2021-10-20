@@ -1,11 +1,25 @@
-import * as React from "react"
-import { Link, graphql } from "gatsby"
+import * as React from 'react'
+import { PageProps, Link, graphql } from 'gatsby'
 
-import Bio from "../components/bio"
-import Layout from "../components/layout"
-import Seo from "../components/seo"
+import Layout from '../components/layout'
+import Seo from '../components/seo'
 
-const BlogIndex = ({ data, location }) => {
+type DataProps = {
+  site: {
+    siteMetadata?: {
+      title: string
+    }
+  }
+  allMarkdownRemark: {
+    nodes: {
+      frontmatter: { title: string; description: string; date: string }
+      fields: { slug: string }
+      excerpt: string
+    }[]
+  }
+}
+
+const BlogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
   const siteTitle = data.site.siteMetadata?.title || `Title`
   const posts = data.allMarkdownRemark.nodes
 
@@ -28,7 +42,7 @@ const BlogIndex = ({ data, location }) => {
       <Seo title="All posts" />
       {/* <Bio /> */}
       <ol style={{ listStyle: `none` }}>
-        {posts.map(post => {
+        {posts.map((post) => {
           const title = post.frontmatter.title || post.fields.slug
 
           return (
@@ -40,7 +54,7 @@ const BlogIndex = ({ data, location }) => {
               >
                 <header>
                   <h2>
-                    <Link to={post.fields.slug} itemProp="url">
+                    <Link to={`/blog${post.fields.slug}`} itemProp="url">
                       <span itemProp="headline">{title}</span>
                     </Link>
                   </h2>
