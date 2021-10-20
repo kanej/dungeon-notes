@@ -52,7 +52,7 @@
     "path": "cz-conventional-changelog"
   },
   "volta": {
-    "node": "14.15.3",
-    "yarn": "1.22.10"
+    "node": "14.18.1",
+    "yarn": "1.19.1"
   }
 }
