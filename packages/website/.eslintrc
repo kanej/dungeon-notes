@@ -1,0 +1,17 @@
+{
+  "root": true,
+  "extends": ["../../.eslintrc"],
+  "env": {
+    "browser": true
+  },
+  "parserOptions": {
+    "project": "tsconfig.json"
+  },
+  "rules": {
+    "react/jsx-indent": "off",
+    "react/jsx-indent-props": "off",
+    "react/prop-types": "off",
+    "react/no-unused-prop-types": "off",
+    "react/jsx-tag-spacing": "off"
+  }
+}
