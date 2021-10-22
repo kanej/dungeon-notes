@@ -1,4 +1,5 @@
-// eslint-disable-next-line import/no-unused-modules
+/* eslint-disable import/no-unused-modules */
+
 export {
   Adventure,
   AdventureInfo,
@@ -9,7 +10,6 @@ export {
   GUID,
 } from './domain'
 
-// eslint-disable-next-line import/no-unused-modules
 export {
   setAdventure,
   updateAdventureName,
@@ -22,5 +22,4 @@ export {
   AdventureSliceState,
 } from './redux/slices/adventureSlice'
 
-// eslint-disable-next-line import/no-unused-modules
 export { toSlug } from './utils/toSlug'
