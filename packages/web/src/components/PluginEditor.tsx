@@ -30,11 +30,9 @@ import {
 } from '@udecode/slate-plugins'
 import React, { useEffect, useMemo, useState } from 'react'
 import { serialize } from 'remark-slate'
-import { BlockType } from 'remark-slate/dist/serialize'
-import { createEditor } from 'slate'
+import { createEditor, Node as SlateNode } from 'slate'
 import { withHistory } from 'slate-history'
 import { Slate, withReact } from 'slate-react'
-import { Node as SlateNode } from 'slate/dist/interfaces/node'
 import { useDebounce } from 'use-debounce'
 
 const plugins = [
@@ -102,7 +100,8 @@ const Editor: React.FC<{
 
   useEffect(() => {
     const markdown = snapshot
-      .map((v) => serialize((mapType(v) as unknown) as BlockType))
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .map((v) => serialize((mapType(v) as unknown) as any))
       .join('')
 
     onSave(markdown)

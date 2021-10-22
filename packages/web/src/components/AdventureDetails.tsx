@@ -1,5 +1,5 @@
 import React, { ChangeEvent, memo } from 'react'
-import { Node as SlateNode } from 'slate/dist/interfaces/node'
+import { Node as SlateNode } from 'slate'
 import styled from 'styled-components'
 import { MAX_ADVENTURE_NAME_LENGTH } from '../constants'
 import PluginEditor from './PluginEditor'
