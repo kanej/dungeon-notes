@@ -16,11 +16,18 @@
       "command": "yarn dev"
     },
     {
+      "name": "Website",
+      "description": "The gatsby website",
+      "focus": false,
+      "cwd": "packages/website",
+      "command": "yarn develop"
+    },
+    {
       "name": "Chrome",
       "description": "Run Chrome with remote debugging enabled",
       "focus": false,
       "open": false,
-      "command": "sleep 5 && /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --disable-infobars --pinned-tab-count=2 http://localhost:3000 http://localhost:9898/graphql"
+      "command": "sleep 5 && /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --disable-infobars --pinned-tab-count=2 http://localhost:3000 http://localhost:8000"
     }
   ]
 }
