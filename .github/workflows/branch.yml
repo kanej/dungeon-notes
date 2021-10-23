@@ -36,13 +36,12 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          BRANCH_NAME: ${{ env.BRANCH_NAME }}
         with:
-          args: deploy --dir=public --alias $BRANCH_NAME
+          args: deploy --dir=public --alias staging
       - name: Status check
         uses: Sibz/github-status-action@v1.1.1
         with:
           authToken: ${{ secrets.GITHUB_TOKEN }}
           context: Netlify preview
           state: success
-          target_url: https://${{ env.BRANCH_NAME }}--dungeon-notes.netlify.app
+          target_url: https://staging--dungeon-notes.netlify.app
