@@ -117,3 +117,6 @@ site
 .pnp.*
 
 /tmp
+
+# Local Netlify folder
+.netlify
