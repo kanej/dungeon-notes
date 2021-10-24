@@ -32,7 +32,6 @@ export const repoSlice = createSlice({
   },
 })
 
-/* eslint-disable import/no-unused-modules */
 export const { initialise, setup } = repoSlice.actions
 
 export default repoSlice.reducer

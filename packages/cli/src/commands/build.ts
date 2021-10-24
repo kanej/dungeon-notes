@@ -25,10 +25,10 @@ export default class Build extends Command {
 
     const engine = new Engine(flags.path)
 
-    const { success, error } = await engine.init()
+    const { success, error: engineError } = await engine.init()
 
     if (!success) {
-      throw new Error(error)
+      throw new Error(engineError)
     }
 
     const outputChaptersDirectoryPath = path.join(
