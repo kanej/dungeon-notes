@@ -12,6 +12,7 @@
     "react/jsx-indent-props": "off",
     "react/prop-types": "off",
     "react/no-unused-prop-types": "off",
-    "react/jsx-tag-spacing": "off"
+    "react/jsx-tag-spacing": "off",
+    "import/no-unused-modules": "off"
   }
 }
