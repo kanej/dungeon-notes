@@ -11,3 +11,5 @@ pushd .
 cd packages/website
 yarn
 popd
+
+yarn build

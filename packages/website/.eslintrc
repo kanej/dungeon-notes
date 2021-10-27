@@ -4,15 +4,16 @@
   "env": {
     "browser": true
   },
-  "parserOptions": {
-    "project": "tsconfig.json"
-  },
+  // "parserOptions": {
+  //   "project": "tsconfig.json"
+  // },
   "rules": {
     "react/jsx-indent": "off",
     "react/jsx-indent-props": "off",
     "react/prop-types": "off",
     "react/no-unused-prop-types": "off",
     "react/jsx-tag-spacing": "off",
-    "import/no-unused-modules": "off"
+    "import/no-unused-modules": "off",
+    "react/jsx-curly-newline": "off"
   }
 }
