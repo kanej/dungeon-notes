@@ -26,8 +26,8 @@ export default class Summon extends Command {
   }
 
   async summonName(): Promise<void> {
-    const name = generate()
+    const { firstName, lastName } = generate()
 
-    this.log('\n' + chalk.bold(name))
+    this.log('\n' + chalk.bold(`${firstName} ${lastName}`))
   }
 }

@@ -103,4 +103,4 @@ const DescriptionWrap = styled.div`
   font-size: 18px;
 `
 
-export default memo(AdventureDetails)
+export default AdventureDetails
