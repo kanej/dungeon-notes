@@ -1,5 +1,5 @@
-import * as React from 'react'
 import { PageProps, Link, graphql } from 'gatsby'
+import * as React from 'react'
 
 import Bio from '../components/bio'
 import Layout from '../components/layout'
@@ -42,8 +42,8 @@ const BlogPostTemplate: React.FC<PageProps<DataProps>> = ({
         description={post.frontmatter.description || post.excerpt}
       />
       <article
-        className="blog-post"
         itemScope
+        className="blog-post"
         itemType="http://schema.org/Article"
       >
         <header>
@@ -51,6 +51,7 @@ const BlogPostTemplate: React.FC<PageProps<DataProps>> = ({
           <p>{post.frontmatter.date}</p>
         </header>
         <section
+          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: post.html }}
           itemProp="articleBody"
         />

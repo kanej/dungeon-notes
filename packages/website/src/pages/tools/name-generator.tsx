@@ -1,4 +1,5 @@
 import { generate, Gender } from '@dungeon-notes/name-generator'
+import Tooltip from '@mui/material/Tooltip'
 import { Female } from '@styled-icons/ionicons-sharp/Female'
 import { Male } from '@styled-icons/ionicons-sharp/Male'
 import { ContentCopy } from '@styled-icons/material/ContentCopy'
@@ -6,7 +7,6 @@ import { Refresh } from '@styled-icons/material/Refresh'
 import { PageProps, graphql } from 'gatsby'
 import { lighten } from 'polished'
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
-// import ReactTooltip from 'react-tooltip'
 import styled from 'styled-components'
 
 import Layout from '../../components/layout'
@@ -29,6 +29,7 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
   const [loading, setLoading] = useState(true)
   const [name, setName] = useState('')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [gender, setGender] = useState<Gender | null>()
   const [
     genderSelectionState,
@@ -106,86 +107,74 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
           <Panel>
             <ActionRow>
               <div />
-              <ActionButton
-                data-tip
-                type="reset"
-                data-for="roll-again"
-                data-state="ready"
-                onClick={handleRefresh}
+              <Tooltip
+                arrow
+                title="Roll again"
+                enterDelay={500}
+                placement="right"
               >
-                <Refresh />
-              </ActionButton>
-              {/* <ReactTooltip
-                id="roll-again"
-                place="right"
-                type="dark"
-                effect="solid"
-                delayShow={500}
-              >
-                <span>Roll again</span>
-              </ReactTooltip> */}
+                <ActionButton
+                  type="reset"
+                  data-state="ready"
+                  onClick={handleRefresh}
+                >
+                  <Refresh />
+                </ActionButton>
+              </Tooltip>
             </ActionRow>
             <Name>{name}</Name>
             <ActionRow>
               <GenderPanel>
-                <ActionButton
-                  data-tip
-                  type="button"
-                  data-for="male"
-                  data-state="ready"
-                  className={genderSelectionState === 'Male' ? 'active' : ''}
-                  onClick={handleToggleMale}
+                <Tooltip
+                  arrow
+                  title="Limit to male names"
+                  enterDelay={500}
+                  placement="bottom"
                 >
-                  <Male />
-                </ActionButton>
-                {/* <ReactTooltip
-                  id="male"
-                  place="right"
-                  type="dark"
-                  effect="solid"
-                  delayShow={500}
-                >
-                  <span>Limit to male names</span>
-                </ReactTooltip> */}
+                  <ActionButton
+                    type="button"
+                    data-state="ready"
+                    className={genderSelectionState === 'Male' ? 'active' : ''}
+                    onClick={handleToggleMale}
+                  >
+                    <Male />
+                  </ActionButton>
+                </Tooltip>
 
-                <ActionButton
-                  data-tip
-                  type="button"
-                  data-for="female"
-                  data-state="ready"
-                  className={genderSelectionState === 'Female' ? 'active' : ''}
-                  onClick={handleToggleFemale}
+                <Tooltip
+                  arrow
+                  title="Limit to female names"
+                  enterDelay={500}
+                  placement="bottom"
                 >
-                  <Female />
-                </ActionButton>
-                {/* <ReactTooltip
-                  id="female"
-                  place="right"
-                  type="dark"
-                  effect="solid"
-                  delayShow={500}
-                >
-                  <span>Limit to female names</span>
-                </ReactTooltip> */}
+                  <ActionButton
+                    data-tip
+                    type="button"
+                    data-for="female"
+                    data-state="ready"
+                    className={
+                      genderSelectionState === 'Female' ? 'active' : ''
+                    }
+                    onClick={handleToggleFemale}
+                  >
+                    <Female />
+                  </ActionButton>
+                </Tooltip>
               </GenderPanel>
-              <ActionButton
-                data-tip
-                type="button"
-                data-for="copy"
-                data-state={copyState}
-                onClick={handleCopy}
+              <Tooltip
+                arrow
+                title={copyTooltip}
+                enterDelay={500}
+                placement="right"
               >
-                <ContentCopy />
-              </ActionButton>
-              {/* <ReactTooltip
-                id="copy"
-                place="right"
-                type="dark"
-                effect="solid"
-                delayShow={500}
-              >
-                <span>{copyTooltip}</span>
-              </ReactTooltip> */}
+                <ActionButton
+                  type="button"
+                  data-state={copyState}
+                  onClick={handleCopy}
+                >
+                  <ContentCopy />
+                </ActionButton>
+              </Tooltip>
             </ActionRow>
           </Panel>
         )}
