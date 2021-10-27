@@ -1,4 +1,4 @@
-import { generate, Gender } from '@dungeon-notes/name-generator'
+import { generate, Gender, Race } from '@dungeon-notes/name-generator'
 import Tooltip from '@mui/material/Tooltip'
 import { Female } from '@styled-icons/ionicons-sharp/Female'
 import { Male } from '@styled-icons/ionicons-sharp/Male'
@@ -29,11 +29,18 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
   const [loading, setLoading] = useState(true)
   const [name, setName] = useState('')
-  const [gender, setGender] = useState<Gender | null>()
+
+  const [gender, setGender] = useState<Gender | null>(null)
   const [
     genderSelectionState,
     setGenderSelectionState,
-  ] = useState<Gender | null>()
+  ] = useState<Gender | null>(null)
+
+  const [race, setRace] = useState<Race | null>(null)
+  const [raceSelectionState, setRaceSelectionState] = useState<Race | null>(
+    null,
+  )
+
   const [copyState, setCopyState] = useState<CopyState>('ready')
 
   const copyTooltip = useMemo(() => {
@@ -49,32 +56,97 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
     }
   }, [copyState])
 
-  const maleButtonClasses = useMemo(() => {
-    const active = genderSelectionState === Gender.Male ? 'active' : ''
-    const current = gender === Gender.Male ? 'current' : 'uncurrent'
+  const resolveGenderButtonClasses = useCallback(
+    (
+      buttonGender: Gender,
+      gender: Gender | null,
+      selectionState: Gender | null,
+    ) => {
+      const active = selectionState === buttonGender ? 'active' : ''
+      const current = gender === buttonGender ? 'current' : 'uncurrent'
 
-    return `${current} ${active}`.trim()
-  }, [gender, genderSelectionState])
+      return `${current} ${active}`.trim()
+    },
+    [],
+  )
 
-  const femaleButtonClasses = useMemo(() => {
-    const active = genderSelectionState === Gender.Female ? 'active' : ''
-    const current = gender === Gender.Female ? 'current' : 'uncurrent'
+  const resolveRaceButtonClasses = useCallback(
+    (buttonRace: Race, race: Race | null, selectionState: Race | null) => {
+      const active = selectionState === buttonRace ? 'active' : ''
+      const current = race === buttonRace ? 'current' : 'uncurrent'
 
-    return `${current} ${active}`.trim()
-  }, [gender, genderSelectionState])
+      return `${current} ${active}`.trim()
+    },
+    [],
+  )
 
-  const refresh = useCallback((pinnedGender: Gender | null = null) => {
-    const { gender, firstName, lastName } = generate({
-      gender: pinnedGender,
-    })
-    setName(`${firstName} ${lastName}`)
-    setGender(gender)
-    setLoading(false)
-  }, [])
+  const {
+    maleButtonClasses,
+    femaleButtonClasses,
+    humanButtonClasses,
+    dwarfButtonClasses,
+    elfButtonClasses,
+    halflingButtonClasses,
+  } = useMemo(
+    () => ({
+      maleButtonClasses: resolveGenderButtonClasses(
+        Gender.Male,
+        gender,
+        genderSelectionState,
+      ),
+      femaleButtonClasses: resolveGenderButtonClasses(
+        Gender.Female,
+        gender,
+        genderSelectionState,
+      ),
+      humanButtonClasses: resolveRaceButtonClasses(
+        Race.Human,
+        race,
+        raceSelectionState,
+      ),
+      dwarfButtonClasses: resolveRaceButtonClasses(
+        Race.Dwarf,
+        race,
+        raceSelectionState,
+      ),
+      elfButtonClasses: resolveRaceButtonClasses(
+        Race.Elf,
+        race,
+        raceSelectionState,
+      ),
+      halflingButtonClasses: resolveRaceButtonClasses(
+        Race.Halfling,
+        race,
+        raceSelectionState,
+      ),
+    }),
+    [
+      gender,
+      genderSelectionState,
+      race,
+      raceSelectionState,
+      resolveGenderButtonClasses,
+      resolveRaceButtonClasses,
+    ],
+  )
+
+  const refresh = useCallback(
+    (pinnedGender: Gender | null = null, pinnedRace: Race | null = null) => {
+      const { gender, race, firstName, lastName } = generate({
+        gender: pinnedGender,
+        race: pinnedRace,
+      })
+      setName(`${firstName} ${lastName}`)
+      setGender(gender)
+      setRace(race)
+      setLoading(false)
+    },
+    [],
+  )
 
   const handleRefresh = useCallback(() => {
-    refresh(genderSelectionState)
-  }, [genderSelectionState, refresh])
+    refresh(genderSelectionState, raceSelectionState)
+  }, [genderSelectionState, raceSelectionState, refresh])
 
   const handleCopy = useCallback(async () => {
     try {
@@ -96,10 +168,10 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
       setGenderSelectionState(updatedGenderSelectionState)
 
       if (gender !== buttonGender) {
-        refresh(updatedGenderSelectionState)
+        refresh(updatedGenderSelectionState, raceSelectionState)
       }
     },
-    [gender, genderSelectionState, refresh],
+    [gender, genderSelectionState, raceSelectionState, refresh],
   )
 
   const handleToggleMale = useCallback(() => {
@@ -109,6 +181,36 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
   const handleToggleFemale = useCallback(() => {
     handleGenderToggle(Gender.Female)
   }, [handleGenderToggle])
+
+  const handleRaceToggle = useCallback(
+    (buttonRace: Race) => {
+      const updatedRaceSelectionState =
+        raceSelectionState === buttonRace ? null : buttonRace
+
+      setRaceSelectionState(updatedRaceSelectionState)
+
+      if (race !== buttonRace) {
+        refresh(genderSelectionState, updatedRaceSelectionState)
+      }
+    },
+    [genderSelectionState, race, raceSelectionState, refresh],
+  )
+
+  const handleToggleHuman = useCallback(() => {
+    handleRaceToggle(Race.Human)
+  }, [handleRaceToggle])
+
+  const handleToggleDwarf = useCallback(() => {
+    handleRaceToggle(Race.Dwarf)
+  }, [handleRaceToggle])
+
+  const handleToggleElf = useCallback(() => {
+    handleRaceToggle(Race.Elf)
+  }, [handleRaceToggle])
+
+  const handleToggleHalfling = useCallback(() => {
+    handleRaceToggle(Race.Halfling)
+  }, [handleRaceToggle])
 
   useEffect(() => {
     refresh()
@@ -122,6 +224,8 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
         {!loading && (
           <Panel>
             <ActionRow>
+              <div />
+              <div />
               <div />
               <Tooltip
                 arrow
@@ -174,6 +278,75 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
                   </ActionButton>
                 </Tooltip>
               </GenderPanel>
+
+              <RacePanel>
+                <Tooltip
+                  arrow
+                  title="Pin to human names"
+                  enterDelay={500}
+                  placement="bottom"
+                >
+                  <ActionButton
+                    type="button"
+                    data-state="ready"
+                    className={humanButtonClasses}
+                    onClick={handleToggleHuman}
+                  >
+                    <Male />
+                  </ActionButton>
+                </Tooltip>
+
+                <Tooltip
+                  arrow
+                  title="Pin to dwarven names"
+                  enterDelay={500}
+                  placement="bottom"
+                >
+                  <ActionButton
+                    type="button"
+                    data-state="ready"
+                    className={dwarfButtonClasses}
+                    onClick={handleToggleDwarf}
+                  >
+                    <Male />
+                  </ActionButton>
+                </Tooltip>
+
+                <Tooltip
+                  arrow
+                  title="Pin to elven names"
+                  enterDelay={500}
+                  placement="bottom"
+                >
+                  <ActionButton
+                    type="button"
+                    data-state="ready"
+                    className={elfButtonClasses}
+                    onClick={handleToggleElf}
+                  >
+                    <Male />
+                  </ActionButton>
+                </Tooltip>
+
+                <Tooltip
+                  arrow
+                  title="Pin to halfling names"
+                  enterDelay={500}
+                  placement="bottom"
+                >
+                  <ActionButton
+                    type="button"
+                    data-state="ready"
+                    className={halflingButtonClasses}
+                    onClick={handleToggleHalfling}
+                  >
+                    <Male />
+                  </ActionButton>
+                </Tooltip>
+              </RacePanel>
+
+              <div />
+
               <Tooltip
                 arrow
                 title={copyTooltip}
@@ -208,12 +381,19 @@ const Panel = styled.div`
 
 const ActionRow = styled.div`
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto auto 1fr auto;
+  grid-column-gap: 1rem;
 `
 
 const GenderPanel = styled.div`
   display: grid;
   grid-template-columns: auto auto 1fr;
+  grid-column-gap: 0.5rem;
+`
+
+const RacePanel = styled.div`
+  display: grid;
+  grid-template-columns: auto auto auto auto 1fr;
   grid-column-gap: 0.5rem;
 `
 
