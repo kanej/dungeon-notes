@@ -1,3 +1,4 @@
 /* eslint-disable import/no-unused-modules */
 
-export { generate, Gender, NameGenerationResult } from './generate'
+export { Gender, Race, NameGenerationResult } from './domain'
+export { generate } from './generate'
