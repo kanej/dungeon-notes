@@ -20,8 +20,12 @@
     "@dungeon-notes/name-generator": "^0.3.2",
     "@dungeon-notes/types": "^0.3.2",
     "@reduxjs/toolkit": "1.5.0",
+    "react-redux": "7.2.2",
     "unist-util-find": "1.0.2",
     "unist-util-remove": "2.0.1",
     "uuid": "8.3.2"
+  },
+  "devDependencies": {
+    "@types/react-redux": "7.1.16"
   }
 }

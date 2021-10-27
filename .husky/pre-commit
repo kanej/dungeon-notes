@@ -1,4 +1,21 @@
 npx pretty-quick --staged
 yarn build
+
+if [ $? != 0 ]; then
+  echo "Build failed: $RESULT, abort commit"
+  exit 1
+fi
+
 yarn lint
+
+if [ $? != 0 ]; then
+  echo "Lint failed: $RESULT, abort commit"
+  exit 1
+fi
+
 yarn test
+
+if [ $? != 0 ]; then
+  echo "Test failed: $RESULT, abort commit"
+  exit 1
+fi
