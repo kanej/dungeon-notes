@@ -29,7 +29,6 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
   const [loading, setLoading] = useState(true)
   const [name, setName] = useState('')
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [gender, setGender] = useState<Gender | null>()
   const [
     genderSelectionState,
@@ -50,14 +49,32 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
     }
   }, [copyState])
 
-  const handleRefresh = useCallback(() => {
+  const maleButtonClasses = useMemo(() => {
+    const active = genderSelectionState === Gender.Male ? 'active' : ''
+    const current = gender === Gender.Male ? 'current' : 'uncurrent'
+
+    return `${current} ${active}`.trim()
+  }, [gender, genderSelectionState])
+
+  const femaleButtonClasses = useMemo(() => {
+    const active = genderSelectionState === Gender.Female ? 'active' : ''
+    const current = gender === Gender.Female ? 'current' : 'uncurrent'
+
+    return `${current} ${active}`.trim()
+  }, [gender, genderSelectionState])
+
+  const refresh = useCallback((pinnedGender: Gender | null = null) => {
     const { gender, firstName, lastName } = generate({
-      gender: genderSelectionState,
+      gender: pinnedGender,
     })
     setName(`${firstName} ${lastName}`)
     setGender(gender)
     setLoading(false)
-  }, [genderSelectionState])
+  }, [])
+
+  const handleRefresh = useCallback(() => {
+    refresh(genderSelectionState)
+  }, [genderSelectionState, refresh])
 
   const handleCopy = useCallback(async () => {
     try {
@@ -71,32 +88,31 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
     }
   }, [name])
 
+  const handleGenderToggle = useCallback(
+    (buttonGender: Gender) => {
+      const updatedGenderSelectionState =
+        genderSelectionState === buttonGender ? null : buttonGender
+
+      setGenderSelectionState(updatedGenderSelectionState)
+
+      if (gender !== buttonGender) {
+        refresh(updatedGenderSelectionState)
+      }
+    },
+    [gender, genderSelectionState, refresh],
+  )
+
   const handleToggleMale = useCallback(() => {
-    if (genderSelectionState === 'Male') {
-      setGenderSelectionState(null)
-    } else {
-      setGenderSelectionState('Male')
-    }
-  }, [genderSelectionState])
+    handleGenderToggle(Gender.Male)
+  }, [handleGenderToggle])
 
   const handleToggleFemale = useCallback(() => {
-    console.log(genderSelectionState)
-    if (genderSelectionState === 'Female') {
-      setGenderSelectionState(null)
-    } else {
-      setGenderSelectionState('Female')
-    }
-  }, [genderSelectionState])
+    handleGenderToggle(Gender.Female)
+  }, [handleGenderToggle])
 
   useEffect(() => {
-    const { gender, firstName, lastName } = generate({
-      gender: null,
-    })
-
-    setName(`${firstName} ${lastName}`)
-    setGender(gender)
-    setLoading(false)
-  }, [])
+    refresh()
+  }, [refresh])
 
   return (
     <Layout location={location} title={siteTitle}>
@@ -127,14 +143,14 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
               <GenderPanel>
                 <Tooltip
                   arrow
-                  title="Limit to male names"
+                  title="Pin to male names"
                   enterDelay={500}
                   placement="bottom"
                 >
                   <ActionButton
                     type="button"
                     data-state="ready"
-                    className={genderSelectionState === 'Male' ? 'active' : ''}
+                    className={maleButtonClasses}
                     onClick={handleToggleMale}
                   >
                     <Male />
@@ -143,18 +159,15 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
                 <Tooltip
                   arrow
-                  title="Limit to female names"
+                  title="Pin to female names"
                   enterDelay={500}
                   placement="bottom"
                 >
                   <ActionButton
                     data-tip
                     type="button"
-                    data-for="female"
                     data-state="ready"
-                    className={
-                      genderSelectionState === 'Female' ? 'active' : ''
-                    }
+                    className={femaleButtonClasses}
                     onClick={handleToggleFemale}
                   >
                     <Female />
@@ -220,6 +233,18 @@ const ActionButton = styled.button`
 
   color: ${({ theme }) => theme.text.primary};
 
+  &.active {
+    border: ${({ theme }) => `1px solid ${lighten(0, theme.text.primary)}`};
+  }
+
+  &.current {
+    color: ${({ theme }) => theme.text.primary};
+  }
+
+  &.uncurrent {
+    color: ${({ theme }) => lighten(0.4, theme.text.primary)};
+  }
+
   &:hover {
     background-color: ${({
       theme,
@@ -230,10 +255,6 @@ const ActionButton = styled.button`
     }) => (state === 'success' ? 'green' : theme.text.primary)};
     color: ${({ theme }) => theme.background.color};
     transition: all 0.4s;
-  }
-
-  &.active {
-    border: ${({ theme }) => `1px solid ${lighten(0.4, theme.text.primary)}`};
   }
 `
 
