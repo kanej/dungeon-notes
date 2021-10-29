@@ -8,6 +8,10 @@ import { PageProps, graphql } from 'gatsby'
 import { lighten } from 'polished'
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
+import Cowled from '../../components/icons/cowled'
+import DwarfHelmet from '../../components/icons/dwarf-helmet'
+import ElfHelmet from '../../components/icons/elf-helmet'
+import VisoredHelm from '../../components/icons/visored-helm'
 
 import Layout from '../../components/layout'
 import Seo from '../../components/seo'
@@ -292,7 +296,7 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
                     className={humanButtonClasses}
                     onClick={handleToggleHuman}
                   >
-                    <Male />
+                    <VisoredHelm />
                   </ActionButton>
                 </Tooltip>
 
@@ -308,7 +312,7 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
                     className={dwarfButtonClasses}
                     onClick={handleToggleDwarf}
                   >
-                    <Male />
+                    <DwarfHelmet />
                   </ActionButton>
                 </Tooltip>
 
@@ -324,7 +328,7 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
                     className={elfButtonClasses}
                     onClick={handleToggleElf}
                   >
-                    <Male />
+                    <ElfHelmet />
                   </ActionButton>
                 </Tooltip>
 
@@ -340,7 +344,7 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
                     className={halflingButtonClasses}
                     onClick={handleToggleHalfling}
                   >
-                    <Male />
+                    <Cowled />
                   </ActionButton>
                 </Tooltip>
               </RacePanel>
