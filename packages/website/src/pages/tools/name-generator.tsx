@@ -15,6 +15,7 @@ import VisoredHelm from '../../components/icons/visored-helm'
 
 import Layout from '../../components/layout'
 import Seo from '../../components/seo'
+import SummoningCircle from '../../components/summoning-circle'
 import { theme as styleTheme } from '../../theme'
 import { assertNever } from '../../utils/assertNever'
 
@@ -226,11 +227,10 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
       <Wrap>
         {!loading && (
-          <Panel>
-            <ActionRow>
-              <div />
-              <div />
-              <div />
+          <CirclePlacer>
+            <SummoningCircle />
+
+            <RefreshPlacer>
               <Tooltip
                 arrow
                 title="Roll again"
@@ -245,112 +245,9 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
                   <Refresh />
                 </ActionButton>
               </Tooltip>
-            </ActionRow>
-            <Name>{name}</Name>
-            <ActionRow>
-              <GenderPanel>
-                <Tooltip
-                  arrow
-                  title="Pin to male names"
-                  enterDelay={500}
-                  placement="bottom"
-                >
-                  <ActionButton
-                    type="button"
-                    data-state="ready"
-                    className={maleButtonClasses}
-                    onClick={handleToggleMale}
-                  >
-                    <Male />
-                  </ActionButton>
-                </Tooltip>
+            </RefreshPlacer>
 
-                <Tooltip
-                  arrow
-                  title="Pin to female names"
-                  enterDelay={500}
-                  placement="bottom"
-                >
-                  <ActionButton
-                    data-tip
-                    type="button"
-                    data-state="ready"
-                    className={femaleButtonClasses}
-                    onClick={handleToggleFemale}
-                  >
-                    <Female />
-                  </ActionButton>
-                </Tooltip>
-              </GenderPanel>
-
-              <RacePanel>
-                <Tooltip
-                  arrow
-                  title="Pin to human names"
-                  enterDelay={500}
-                  placement="bottom"
-                >
-                  <ActionButton
-                    type="button"
-                    data-state="ready"
-                    className={humanButtonClasses}
-                    onClick={handleToggleHuman}
-                  >
-                    <VisoredHelm />
-                  </ActionButton>
-                </Tooltip>
-
-                <Tooltip
-                  arrow
-                  title="Pin to dwarven names"
-                  enterDelay={500}
-                  placement="bottom"
-                >
-                  <ActionButton
-                    type="button"
-                    data-state="ready"
-                    className={dwarfButtonClasses}
-                    onClick={handleToggleDwarf}
-                  >
-                    <DwarfHelmet />
-                  </ActionButton>
-                </Tooltip>
-
-                <Tooltip
-                  arrow
-                  title="Pin to elven names"
-                  enterDelay={500}
-                  placement="bottom"
-                >
-                  <ActionButton
-                    type="button"
-                    data-state="ready"
-                    className={elfButtonClasses}
-                    onClick={handleToggleElf}
-                  >
-                    <ElfHelmet />
-                  </ActionButton>
-                </Tooltip>
-
-                <Tooltip
-                  arrow
-                  title="Pin to halfling names"
-                  enterDelay={500}
-                  placement="bottom"
-                >
-                  <ActionButton
-                    type="button"
-                    data-state="ready"
-                    className={halflingButtonClasses}
-                    onClick={handleToggleHalfling}
-                  >
-                    <Cowled />
-                  </ActionButton>
-                </Tooltip>
-              </RacePanel>
-
-              <div />
-
+            <CopyPlacer>
               <Tooltip
                 arrow
                 title={copyTooltip}
@@ -365,8 +262,117 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
                   <ContentCopy />
                 </ActionButton>
               </Tooltip>
-            </ActionRow>
-          </Panel>
+            </CopyPlacer>
+
+            <NameWrap>
+              <Name>{name}</Name>
+            </NameWrap>
+
+            <MalePlacer>
+              <Tooltip
+                arrow
+                title="Pin to male names"
+                enterDelay={500}
+                placement="bottom"
+              >
+                <ActionButton
+                  type="button"
+                  data-state="ready"
+                  className={maleButtonClasses}
+                  onClick={handleToggleMale}
+                >
+                  <Male />
+                </ActionButton>
+              </Tooltip>
+            </MalePlacer>
+            <FemalePlacer>
+              <Tooltip
+                arrow
+                title="Pin to female names"
+                enterDelay={500}
+                placement="bottom"
+              >
+                <ActionButton
+                  data-tip
+                  type="button"
+                  data-state="ready"
+                  className={femaleButtonClasses}
+                  onClick={handleToggleFemale}
+                >
+                  <Female />
+                </ActionButton>
+              </Tooltip>
+            </FemalePlacer>
+
+            <HalflingPlacer>
+              <Tooltip
+                arrow
+                title="Pin to halfling names"
+                enterDelay={500}
+                placement="bottom"
+              >
+                <ActionButton
+                  type="button"
+                  data-state="ready"
+                  className={halflingButtonClasses}
+                  onClick={handleToggleHalfling}
+                >
+                  <Cowled />
+                </ActionButton>
+              </Tooltip>
+            </HalflingPlacer>
+            <ElfPlacer>
+              <Tooltip
+                arrow
+                title="Pin to elven names"
+                enterDelay={500}
+                placement="bottom"
+              >
+                <ActionButton
+                  type="button"
+                  data-state="ready"
+                  className={elfButtonClasses}
+                  onClick={handleToggleElf}
+                >
+                  <ElfHelmet />
+                </ActionButton>
+              </Tooltip>
+            </ElfPlacer>
+            <DwarfPlacer>
+              <Tooltip
+                arrow
+                title="Pin to dwarven names"
+                enterDelay={500}
+                placement="bottom"
+              >
+                <ActionButton
+                  type="button"
+                  data-state="ready"
+                  className={dwarfButtonClasses}
+                  onClick={handleToggleDwarf}
+                >
+                  <DwarfHelmet />
+                </ActionButton>
+              </Tooltip>
+            </DwarfPlacer>
+            <HumanPlacer>
+              <Tooltip
+                arrow
+                title="Pin to human names"
+                enterDelay={500}
+                placement="bottom"
+              >
+                <ActionButton
+                  type="button"
+                  data-state="ready"
+                  className={humanButtonClasses}
+                  onClick={handleToggleHuman}
+                >
+                  <VisoredHelm />
+                </ActionButton>
+              </Tooltip>
+            </HumanPlacer>
+          </CirclePlacer>
         )}
       </Wrap>
     </Layout>
@@ -379,26 +385,94 @@ const Wrap = styled.div`
   place-items: center;
 `
 
-const Panel = styled.div`
-  display: grid;
+const CirclePlacer = styled.div`
+  height: 512;
+  width: 512;
+  position: relative;
+
+  color: ${({ theme }) => theme.text.color};
 `
 
-const ActionRow = styled.div`
+const NameWrap = styled.div`
+  width: 512px;
+  height: 512px;
   display: grid;
-  grid-template-columns: auto auto 1fr auto;
-  grid-column-gap: 1rem;
+  place-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
 `
 
-const GenderPanel = styled.div`
-  display: grid;
-  grid-template-columns: auto auto 1fr;
-  grid-column-gap: 0.5rem;
+const RefreshPlacer = styled.div`
+  position: absolute;
+  top: 77px;
+  left: 395px;
+  z-index: 100;
+  width: 80px;
+  height: 80px;
 `
 
-const RacePanel = styled.div`
-  display: grid;
-  grid-template-columns: auto auto auto auto 1fr;
-  grid-column-gap: 0.5rem;
+const CopyPlacer = styled.div`
+  position: absolute;
+  top: 236px;
+  left: 461px;
+  z-index: 100;
+  width: 80px;
+  height: 80px;
+`
+
+const HalflingPlacer = styled.div`
+  position: absolute;
+  top: 349px;
+  left: 431px;
+  z-index: 100;
+  width: 80px;
+  height: 80px;
+`
+
+const ElfPlacer = styled.div`
+  position: absolute;
+  top: 409px;
+  left: 381px;
+  z-index: 100;
+  width: 80px;
+  height: 80px;
+`
+
+const DwarfPlacer = styled.div`
+  position: absolute;
+  top: 448px;
+  left: 313px;
+  z-index: 100;
+  width: 80px;
+  height: 80px;
+`
+
+const HumanPlacer = styled.div`
+  position: absolute;
+  top: 461px;
+  left: 236px;
+  z-index: 100;
+  width: 80px;
+  height: 80px;
+`
+
+const FemalePlacer = styled.div`
+  position: absolute;
+  top: 408px;
+  left: 91px;
+  z-index: 100;
+  width: 80px;
+  height: 80px;
+`
+
+const MalePlacer = styled.div`
+  position: absolute;
+  top: 348px;
+  left: 41px;
+  z-index: 100;
+  width: 80px;
+  height: 80px;
 `
 
 const Name = styled.p`
