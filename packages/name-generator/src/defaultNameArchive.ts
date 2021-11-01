@@ -112,9 +112,9 @@ export const defaultNameArchive: NameGenerationTable = {
       'Granitehold',
       'Oakhelm',
       'Rowanshield',
-      'redtorc',
-      'hillpipe',
-      'sheeraxe',
+      'Redtorc',
+      'Hillpipe',
+      'Sheeraxe',
     ],
   },
   [Race.Elf]: {
@@ -143,9 +143,9 @@ export const defaultNameArchive: NameGenerationTable = {
   },
   [Race.Halfling]: {
     first: {
-      [Gender.Male]: ['Wilber'],
-      [Gender.Female]: ['Peggy'],
+      [Gender.Male]: ['Wilber', 'Eugene'],
+      [Gender.Female]: ['Peggy', 'Tabbatha'],
     },
-    last: ['Goodman'],
+    last: ['Goodman', 'Lightfoot'],
   },
 }
