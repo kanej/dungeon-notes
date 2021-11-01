@@ -237,13 +237,13 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
                 enterDelay={500}
                 placement="right"
               >
-                <ActionButton
+                <LargeActionButton
                   type="reset"
                   data-state="ready"
                   onClick={handleRefresh}
                 >
-                  <Refresh />
-                </ActionButton>
+                  <Refresh width="34px" />
+                </LargeActionButton>
               </Tooltip>
             </RefreshPlacer>
 
@@ -254,13 +254,13 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
                 enterDelay={500}
                 placement="right"
               >
-                <ActionButton
+                <LargeActionButton
                   type="button"
                   data-state={copyState}
                   onClick={handleCopy}
                 >
-                  <ContentCopy />
-                </ActionButton>
+                  <ContentCopy width="28px" />
+                </LargeActionButton>
               </Tooltip>
             </CopyPlacer>
 
@@ -405,17 +405,17 @@ const NameWrap = styled.div`
 
 const RefreshPlacer = styled.div`
   position: absolute;
-  top: 77px;
-  left: 395px;
+  top: 70px;
+  left: 388px;
   z-index: 100;
-  width: 80px;
-  height: 80px;
+  width: 40px;
+  height: 40px;
 `
 
 const CopyPlacer = styled.div`
   position: absolute;
-  top: 236px;
-  left: 461px;
+  top: 229px;
+  left: 454px;
   z-index: 100;
   width: 80px;
   height: 80px;
@@ -493,7 +493,7 @@ const ActionButton = styled.button`
   color: ${({ theme }) => theme.text.primary};
 
   &.active {
-    border: ${({ theme }) => `1px solid ${lighten(0, theme.text.primary)}`};
+    outline: ${({ theme }) => `1px solid ${lighten(0, theme.text.primary)}`};
   }
 
   &.current {
@@ -515,6 +515,11 @@ const ActionButton = styled.button`
     color: ${({ theme }) => theme.background.color};
     transition: all 0.4s;
   }
+`
+
+const LargeActionButton = styled(ActionButton)`
+  width: 54px;
+  height: 54px;
 `
 
 export default NameGenerator
