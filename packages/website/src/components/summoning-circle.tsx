@@ -158,9 +158,19 @@ const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
       <circle
         cx={centerX}
         cy={centerY}
+        r={radius + 26}
+        fill="none"
+        stroke={lighten(0.5, stroke)}
+        strokeWidth={1}
+        mask="url(#Mask)"
+      />
+
+      <circle
+        cx={centerX}
+        cy={centerY}
         r={radius}
         fill="none"
-        stroke={stroke}
+        stroke={lighten(0.5, stroke)}
         strokeWidth={4}
         mask="url(#Mask)"
       />
@@ -172,7 +182,7 @@ const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
           cy={y}
           r={size === CircleSizes.LARGE ? 28 : 21}
           fill="none"
-          stroke={stroke}
+          stroke={lighten(0.5, stroke)}
           strokeWidth={4}
         />
       ))}
