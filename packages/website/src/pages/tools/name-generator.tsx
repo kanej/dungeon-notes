@@ -492,7 +492,7 @@ const ActionButton = styled.button`
 
   color: ${({ theme }) => theme.text.primary};
 
-  &.active {
+  &:active {
     outline: ${({ theme }) => `1px solid ${lighten(0, theme.text.primary)}`};
   }
 
