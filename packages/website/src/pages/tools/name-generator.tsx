@@ -476,9 +476,10 @@ const MalePlacer = styled.div`
 `
 
 const Name = styled.p`
-  font-size: 4rem;
+  font-size: 3rem;
   color: ${({ theme }) => theme.text.color};
-  padding: 0rem 2rem;
+  padding: 0rem 6rem;
+  margin-bottom: 0;
   text-align: center;
 `
 
