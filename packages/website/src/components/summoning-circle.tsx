@@ -1,21 +1,54 @@
+import { lighten } from 'polished'
 import * as React from 'react'
 import { useTheme } from 'styled-components'
 import { theme as styledTheme } from '../theme'
 
+type CircleOptions = { radius: number; centerX: number; centerY: number }
+type Point = [x: number, y: number]
+type Line = [Point, Point]
+
 const calculateRadiusCirclePosition = (
   degrees: number,
-  {
-    radius,
-    centerX,
-    centerY,
-  }: { radius: number; centerX: number; centerY: number },
-) => {
+  { radius, centerX, centerY }: CircleOptions,
+): Point => {
   const radians = degrees * (Math.PI / 180)
 
   const x = Math.cos(radians) * radius
   const y = Math.sin(radians) * radius
 
-  return { x: x + centerX, y: y + centerY }
+  return [x + centerX, y + centerY]
+}
+
+const resolveCircleTriangle = (
+  startingDegree,
+  options: CircleOptions,
+): Line[] => {
+  const point1 = calculateRadiusCirclePosition(startingDegree, options)
+  const point2 = calculateRadiusCirclePosition(startingDegree + 120, options)
+  const point3 = calculateRadiusCirclePosition(startingDegree + 240, options)
+
+  return [
+    [point1, point2],
+    [point2, point3],
+    [point3, point1],
+  ]
+}
+
+const resolveCircleSquare = (
+  startingDegree,
+  options: CircleOptions,
+): Line[] => {
+  const point1 = calculateRadiusCirclePosition(startingDegree, options)
+  const point2 = calculateRadiusCirclePosition(startingDegree + 90, options)
+  const point3 = calculateRadiusCirclePosition(startingDegree + 180, options)
+  const point4 = calculateRadiusCirclePosition(startingDegree + 270, options)
+
+  return [
+    [point1, point2],
+    [point2, point3],
+    [point3, point4],
+    [point4, point1],
+  ]
 }
 
 const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
@@ -28,6 +61,12 @@ const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
   const centerX = width / 2
   const centerY = height / 2
   const radius = 450 / 2
+
+  const circleOptions = {
+    radius,
+    centerX,
+    centerY,
+  }
 
   const bottomIncrement = (150 - 30) / 6
 
@@ -44,12 +83,13 @@ const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
 
   const circles = radiusCircles.map(({ label, degrees }) => ({
     label,
-    ...calculateRadiusCirclePosition(degrees, {
-      radius,
-      centerX,
-      centerY,
-    }),
+    point: calculateRadiusCirclePosition(degrees, circleOptions),
   }))
+
+  const lines = resolveCircleTriangle(30, circleOptions)
+    .concat(resolveCircleTriangle(90, circleOptions))
+    .concat(resolveCircleSquare(45, circleOptions))
+    .concat(resolveCircleSquare(90, circleOptions))
 
   return (
     <svg
@@ -65,11 +105,24 @@ const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
         <mask id="Mask">
           <rect x={0} y={0} width={width} height={height} fill="white" />
 
-          {circles.map(({ label, x, y }) => (
+          {circles.map(({ label, point: [x, y] }) => (
             <circle key={label} cx={x} cy={y} r={22} fill="black" />
           ))}
         </mask>
       </defs>
+
+      {lines.map(([[x1, y1], [x2, y2]], i) => (
+        <line
+          // eslint-disable-next-line react/no-array-index-key
+          key={`line-${i}`}
+          x1={x1}
+          y1={y1}
+          x2={x2}
+          y2={y2}
+          stroke={lighten(0.5, stroke)}
+          mask="url(#Mask)"
+        />
+      ))}
 
       <circle
         cx={centerX}
@@ -81,7 +134,7 @@ const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
         mask="url(#Mask)"
       />
 
-      {circles.map(({ label, x, y }) => (
+      {circles.map(({ label, point: [x, y] }) => (
         <circle
           key={label}
           cx={x}
