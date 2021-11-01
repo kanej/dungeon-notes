@@ -6,6 +6,10 @@ import { theme as styledTheme } from '../theme'
 type CircleOptions = { radius: number; centerX: number; centerY: number }
 type Point = [x: number, y: number]
 type Line = [Point, Point]
+enum CircleSizes {
+  LARGE = 'LARGE',
+  SMALL = 'SMALL',
+}
 
 const calculateRadiusCirclePosition = (
   degrees: number,
@@ -71,18 +75,39 @@ const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
   const bottomIncrement = (150 - 30) / 6
 
   const radiusCircles = [
-    { label: 'refresh', degrees: 360 - 45 },
-    { label: 'copy', degrees: 0 },
-    { label: 'halfling', degrees: 30 + 0 * bottomIncrement },
-    { label: 'elf', degrees: 30 + bottomIncrement },
-    { label: 'dwarf', degrees: 30 + 2 * bottomIncrement },
-    { label: 'human', degrees: 30 + 3 * bottomIncrement },
-    { label: 'female', degrees: 30 + 5 * bottomIncrement },
-    { label: 'male', degrees: 30 + 6 * bottomIncrement },
+    { label: 'refresh', degrees: 360 - 45, size: CircleSizes.LARGE },
+    { label: 'copy', degrees: 0, size: CircleSizes.LARGE },
+    {
+      label: 'halfling',
+      degrees: 30 + 0 * bottomIncrement,
+      size: CircleSizes.SMALL,
+    },
+    { label: 'elf', degrees: 30 + bottomIncrement, size: CircleSizes.SMALL },
+    {
+      label: 'dwarf',
+      degrees: 30 + 2 * bottomIncrement,
+      size: CircleSizes.SMALL,
+    },
+    {
+      label: 'human',
+      degrees: 30 + 3 * bottomIncrement,
+      size: CircleSizes.SMALL,
+    },
+    {
+      label: 'female',
+      degrees: 30 + 5 * bottomIncrement,
+      size: CircleSizes.SMALL,
+    },
+    {
+      label: 'male',
+      degrees: 30 + 6 * bottomIncrement,
+      size: CircleSizes.SMALL,
+    },
   ]
 
-  const circles = radiusCircles.map(({ label, degrees }) => ({
+  const circles = radiusCircles.map(({ label, degrees, size }) => ({
     label,
+    size,
     point: calculateRadiusCirclePosition(degrees, circleOptions),
   }))
 
@@ -105,8 +130,14 @@ const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
         <mask id="Mask">
           <rect x={0} y={0} width={width} height={height} fill="white" />
 
-          {circles.map(({ label, point: [x, y] }) => (
-            <circle key={label} cx={x} cy={y} r={22} fill="black" />
+          {circles.map(({ label, size, point: [x, y] }) => (
+            <circle
+              key={label}
+              cx={x}
+              cy={y}
+              r={size === CircleSizes.LARGE ? 28 : 21}
+              fill="black"
+            />
           ))}
         </mask>
       </defs>
@@ -134,12 +165,12 @@ const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
         mask="url(#Mask)"
       />
 
-      {circles.map(({ label, point: [x, y] }) => (
+      {circles.map(({ label, size, point: [x, y] }) => (
         <circle
           key={label}
           cx={x}
           cy={y}
-          r={21}
+          r={size === CircleSizes.LARGE ? 28 : 21}
           fill="none"
           stroke={stroke}
           strokeWidth={4}
