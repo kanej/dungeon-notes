@@ -20,8 +20,8 @@ const BlogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
     <Layout location={location} title={siteTitle}>
       <Seo title="All posts" />
       <IntroText>
-        Dungeon Notes provides tools to help Dungeon Masters improvise their
-        game sessions.
+        Dungeon Notes provides tools to help Dungeon Masters plan and improvise
+        their game sessions.
       </IntroText>
 
       <Wrap>
@@ -38,8 +38,8 @@ const BlogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
 const Wrap = styled.div`
   display: grid;
+  margin-top: 4rem;
   height: 100%;
-  place-items: center;
 `
 
 const IntroText = styled.p`
