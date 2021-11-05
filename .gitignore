@@ -120,3 +120,5 @@ site
 
 # Local Netlify folder
 .netlify
+
+notes.md
