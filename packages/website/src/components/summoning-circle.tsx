@@ -1,15 +1,24 @@
+import flatten from '@flatten-js/core'
 import { lighten } from 'polished'
 import * as React from 'react'
+import { useMemo } from 'react'
 import { useTheme } from 'styled-components'
 import { theme as styledTheme } from '../theme'
 
-type CircleOptions = { radius: number; centerX: number; centerY: number }
+type CircleOptions = {
+  radius: number
+  centerX: number
+  centerY: number
+  outerRadius: number
+}
 type Point = [x: number, y: number]
 type Line = [Point, Point]
 enum CircleSizes {
   LARGE = 'LARGE',
   SMALL = 'SMALL',
 }
+
+type CircleConfig = { label: string; degrees: number; size: CircleSizes }
 
 const calculateRadiusCirclePosition = (
   degrees: number,
@@ -55,6 +64,65 @@ const resolveCircleSquare = (
   ]
 }
 
+const resolveSelectorLines = function* (
+  circles: CircleConfig[],
+  options: CircleOptions,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Generator<Line, any, undefined> {
+  const { outerRadius } = options
+
+  for (const { degrees, size } of circles) {
+    if (size !== CircleSizes.SMALL) {
+      continue
+    }
+
+    const start = calculateRadiusCirclePosition(degrees, options)
+    const end = calculateRadiusCirclePosition(degrees, {
+      ...options,
+      radius: outerRadius,
+    })
+
+    yield [start, end]
+  }
+}
+
+const GroupingCircle = ({
+  start,
+  end,
+  circleOptions,
+  stroke,
+  strokeWidth,
+}: {
+  start: CircleConfig
+  end: CircleConfig
+  circleOptions: CircleOptions
+  stroke: string
+  strokeWidth: number
+}): JSX.Element => {
+  const [x, y] = calculateRadiusCirclePosition(
+    (start.degrees + end.degrees) / 2,
+    {
+      ...circleOptions,
+    },
+  )
+
+  const [sx, sy] = calculateRadiusCirclePosition(start.degrees, circleOptions)
+
+  const [r] = new flatten.Point(x, y).distanceTo(new flatten.Point(sx, sy))
+
+  return (
+    <circle
+      cx={x}
+      cy={y}
+      r={r}
+      fill="none"
+      stroke={stroke}
+      strokeWidth={strokeWidth}
+      mask="url(#Inner)"
+    />
+  )
+}
+
 const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
   const theme = useTheme() as typeof styledTheme
 
@@ -65,56 +133,74 @@ const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
   const centerX = width / 2
   const centerY = height / 2
   const radius = 450 / 2
-
-  const circleOptions = {
-    radius,
-    centerX,
-    centerY,
-  }
+  const outerRadius = radius + 30
 
   const bottomIncrement = (150 - 30) / 6
 
-  const radiusCircles = [
-    { label: 'refresh', degrees: 360 - 45, size: CircleSizes.LARGE },
-    { label: 'copy', degrees: 0, size: CircleSizes.LARGE },
-    {
-      label: 'halfling',
-      degrees: 30 + 0 * bottomIncrement,
-      size: CircleSizes.SMALL,
-    },
-    { label: 'elf', degrees: 30 + bottomIncrement, size: CircleSizes.SMALL },
-    {
-      label: 'dwarf',
-      degrees: 30 + 2 * bottomIncrement,
-      size: CircleSizes.SMALL,
-    },
-    {
-      label: 'human',
-      degrees: 30 + 3 * bottomIncrement,
-      size: CircleSizes.SMALL,
-    },
-    {
-      label: 'female',
-      degrees: 30 + 5 * bottomIncrement,
-      size: CircleSizes.SMALL,
-    },
-    {
-      label: 'male',
-      degrees: 30 + 6 * bottomIncrement,
-      size: CircleSizes.SMALL,
-    },
-  ]
+  const circleOptions: CircleOptions = useMemo(
+    () => ({
+      radius,
+      centerX,
+      centerY,
+      outerRadius,
+    }),
+    [centerX, centerY, outerRadius, radius],
+  )
 
-  const circles = radiusCircles.map(({ label, degrees, size }) => ({
-    label,
-    size,
-    point: calculateRadiusCirclePosition(degrees, circleOptions),
-  }))
+  const radiusCircles: CircleConfig[] = useMemo(
+    () => [
+      { label: 'refresh', degrees: 360 - 45, size: CircleSizes.LARGE },
+      { label: 'copy', degrees: 0, size: CircleSizes.LARGE },
+      {
+        label: 'halfling',
+        degrees: 30 + 0 * bottomIncrement,
+        size: CircleSizes.SMALL,
+      },
+      { label: 'elf', degrees: 30 + bottomIncrement, size: CircleSizes.SMALL },
+      {
+        label: 'dwarf',
+        degrees: 30 + 2 * bottomIncrement,
+        size: CircleSizes.SMALL,
+      },
+      {
+        label: 'human',
+        degrees: 30 + 3 * bottomIncrement,
+        size: CircleSizes.SMALL,
+      },
+      {
+        label: 'female',
+        degrees: 30 + 5 * bottomIncrement,
+        size: CircleSizes.SMALL,
+      },
+      {
+        label: 'male',
+        degrees: 30 + 6 * bottomIncrement,
+        size: CircleSizes.SMALL,
+      },
+    ],
+    [bottomIncrement],
+  )
 
-  const lines = resolveCircleTriangle(30, circleOptions)
-    .concat(resolveCircleTriangle(90, circleOptions))
-    .concat(resolveCircleSquare(45, circleOptions))
-    .concat(resolveCircleSquare(90, circleOptions))
+  const [, , halfling, , , human, female, male] = radiusCircles
+
+  const circles = useMemo(
+    () =>
+      radiusCircles.map(({ label, degrees, size }) => ({
+        label,
+        size,
+        point: calculateRadiusCirclePosition(degrees, circleOptions),
+      })),
+    [circleOptions, radiusCircles],
+  )
+
+  const lines = useMemo(
+    () =>
+      resolveCircleTriangle(30, circleOptions)
+        .concat(resolveCircleTriangle(90, circleOptions))
+        .concat(resolveCircleSquare(45, circleOptions))
+        .concat(resolveCircleSquare(90, circleOptions)),
+    [circleOptions],
+  )
 
   return (
     <svg
@@ -127,15 +213,29 @@ const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
       {...props}
     >
       <defs>
-        <mask id="Mask">
-          <rect x={0} y={0} width={width} height={height} fill="white" />
+        <mask id="Inner">
+          <circle cx={centerX} cy={centerY} r={radius} fill="white" />
 
           {circles.map(({ label, size, point: [x, y] }) => (
             <circle
               key={label}
               cx={x}
               cy={y}
-              r={size === CircleSizes.LARGE ? 28 : 21}
+              r={size === CircleSizes.LARGE ? 26 : 21}
+              fill="black"
+            />
+          ))}
+        </mask>
+
+        <mask id="Outer">
+          <circle cx={centerX} cy={centerY} r={outerRadius} fill="white" />
+
+          {circles.map(({ label, size, point: [x, y] }) => (
+            <circle
+              key={label}
+              cx={x}
+              cy={y}
+              r={size === CircleSizes.LARGE ? 26 : 21}
               fill="black"
             />
           ))}
@@ -151,18 +251,34 @@ const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
           x2={x2}
           y2={y2}
           stroke={lighten(0.5, stroke)}
-          mask="url(#Mask)"
+          mask="url(#Outer)"
         />
       ))}
 
       <circle
         cx={centerX}
         cy={centerY}
-        r={radius + 26}
+        r={outerRadius}
         fill="none"
         stroke={lighten(0.5, stroke)}
         strokeWidth={1}
-        mask="url(#Mask)"
+        mask="url(#Outer)"
+      />
+
+      <GroupingCircle
+        start={male}
+        end={female}
+        circleOptions={circleOptions}
+        stroke={lighten(0.5, stroke)}
+        strokeWidth={2}
+      />
+
+      <GroupingCircle
+        start={halfling}
+        end={human}
+        circleOptions={circleOptions}
+        stroke={lighten(0.5, stroke)}
+        strokeWidth={2}
       />
 
       <circle
@@ -172,7 +288,7 @@ const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
         fill="none"
         stroke={lighten(0.5, stroke)}
         strokeWidth={4}
-        mask="url(#Mask)"
+        mask="url(#Outer)"
       />
 
       {circles.map(({ label, size, point: [x, y] }) => (
@@ -180,7 +296,7 @@ const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
           key={label}
           cx={x}
           cy={y}
-          r={size === CircleSizes.LARGE ? 28 : 21}
+          r={size === CircleSizes.LARGE ? 26 : 21}
           fill="none"
           stroke={lighten(0.5, stroke)}
           strokeWidth={4}

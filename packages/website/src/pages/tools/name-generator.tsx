@@ -281,7 +281,7 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
                   className={maleButtonClasses}
                   onClick={handleToggleMale}
                 >
-                  <Male />
+                  <Male width="28px" />
                 </ActionButton>
               </Tooltip>
             </MalePlacer>
@@ -299,7 +299,7 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
                   className={femaleButtonClasses}
                   onClick={handleToggleFemale}
                 >
-                  <Female />
+                  <Female width="28px" />
                 </ActionButton>
               </Tooltip>
             </FemalePlacer>
@@ -423,8 +423,8 @@ const CopyPlacer = styled.div`
 
 const HalflingPlacer = styled.div`
   position: absolute;
-  top: 349px;
-  left: 431px;
+  top: 346px;
+  left: 429px;
   z-index: 100;
   width: 80px;
   height: 80px;
@@ -432,8 +432,8 @@ const HalflingPlacer = styled.div`
 
 const ElfPlacer = styled.div`
   position: absolute;
-  top: 409px;
-  left: 381px;
+  top: 406px;
+  left: 379px;
   z-index: 100;
   width: 80px;
   height: 80px;
@@ -441,8 +441,8 @@ const ElfPlacer = styled.div`
 
 const DwarfPlacer = styled.div`
   position: absolute;
-  top: 448px;
-  left: 313px;
+  top: 445px;
+  left: 311px;
   z-index: 100;
   width: 80px;
   height: 80px;
@@ -450,8 +450,8 @@ const DwarfPlacer = styled.div`
 
 const HumanPlacer = styled.div`
   position: absolute;
-  top: 461px;
-  left: 236px;
+  top: 459px;
+  left: 234px;
   z-index: 100;
   width: 80px;
   height: 80px;
@@ -459,8 +459,8 @@ const HumanPlacer = styled.div`
 
 const FemalePlacer = styled.div`
   position: absolute;
-  top: 408px;
-  left: 91px;
+  top: 406px;
+  left: 89px;
   z-index: 100;
   width: 80px;
   height: 80px;
@@ -468,8 +468,8 @@ const FemalePlacer = styled.div`
 
 const MalePlacer = styled.div`
   position: absolute;
-  top: 348px;
-  left: 41px;
+  top: 347px;
+  left: 39px;
   z-index: 100;
   width: 80px;
   height: 80px;
@@ -485,15 +485,15 @@ const Name = styled.p`
 
 const ActionButton = styled.button`
   background: none;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border: none;
   border-radius: 50%;
 
   color: ${({ theme }) => theme.text.primary};
 
   &:active {
-    outline: ${({ theme }) => `1px solid ${lighten(0, theme.text.primary)}`};
+    outline: ${({ theme }) => `2px solid ${lighten(0, theme.text.primary)}`};
   }
 
   &.current {
