@@ -1,5 +1,6 @@
 import { PageProps, Link, graphql } from 'gatsby'
 import * as React from 'react'
+import styled from 'styled-components'
 
 import Layout from '../components/layout'
 import Seo from '../components/seo'
@@ -41,11 +42,7 @@ const BlogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
           return (
             <li key={post.fields.slug}>
-              <article
-                itemScope
-                className="post-list-item"
-                itemType="http://schema.org/Article"
-              >
+              <Article itemScope itemType="http://schema.org/Article">
                 <header>
                   <h2>
                     <Link to={`/blog${post.fields.slug}`} itemProp="url">
@@ -63,7 +60,7 @@ const BlogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
                     itemProp="description"
                   />
                 </section>
-              </article>
+              </Article>
             </li>
           )
         })}
@@ -71,6 +68,10 @@ const BlogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
     </Layout>
   )
 }
+
+const Article = styled.article`
+  width: ${({ theme }) => theme.spacing.maxWidth};
+`
 
 export default BlogIndex
 

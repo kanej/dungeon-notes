@@ -29,7 +29,8 @@ const Layout = ({
               <div />
               {/* <Link to="/tools">tools</Link> */}
               <Link to="/blog">blog</Link>
-              <Link to="/blog">discord</Link>
+              <Link to="https://discord.gg/Hejq6K99CQ">discord</Link>
+              <Link to="https://github.com/kanej/dungeon-notes">source</Link>
             </Header>
             <Main>{children}</Main>
             <Footer>
@@ -40,9 +41,9 @@ const Layout = ({
                 <SocialBar>
                   <div />
                   <Link to="/blog">blog</Link>
-                  <Link to="/blog">discord</Link>
+                  <Link to="https://discord.gg/Hejq6K99CQ">discord</Link>
                   <Link to="https://github.com/kanej/dungeon-notes">
-                    github
+                    source
                   </Link>
                 </SocialBar>
               </FooterWrap>
@@ -100,7 +101,7 @@ const Page = styled.div`
 const Header = styled.nav`
   display: grid;
   width: 100%;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto auto auto;
   grid-column-gap: 1rem;
   align-items: center;
 

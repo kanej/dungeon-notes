@@ -4,7 +4,7 @@ module.exports = {
     title: 'Dungeon Notes',
     author: {
       name: 'John Kane',
-      summary: 'a programmer reporting from North of the Wall',
+      summary: 'a programmer from North of the Wall',
     },
     description:
       'Tools to aid the the Dungeon Master in their depraved adventures.',
