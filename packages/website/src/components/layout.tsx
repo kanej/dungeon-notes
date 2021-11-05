@@ -113,6 +113,7 @@ const Header = styled.nav`
 const Branding = styled.h1`
   margin: 0;
   color: ${({ theme }) => theme.text.primary};
+  font-family: 'Alte Schwabacher';
 `
 
 const Wrap = styled.div`

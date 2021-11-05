@@ -1,4 +1,5 @@
 /* CSS Custom Properties Definitions */
+@import './typography.css';
 
 :root {
   --maxWidth-none: 'none';
