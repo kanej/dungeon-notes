@@ -1,6 +1,7 @@
 import { defaultNameArchive } from './defaultNameArchive'
-import { NameGenerationConfig, NameGenerationResult, Race } from './domain'
+import { NameGenerationConfig, NameGenerationResult } from './domain'
 import { pickRandomGender } from './utils/pickRandomGender'
+import { pickRandomRace } from './utils/pickRandomRace'
 import { randomPick } from './utils/randomPick'
 
 export function generate(
@@ -10,7 +11,7 @@ export function generate(
   },
 ): NameGenerationResult {
   const gender = givenGender ?? pickRandomGender()
-  const race = givenRace ?? Race.Human
+  const race = givenRace ?? pickRandomRace()
 
   const perRaceArchive = defaultNameArchive[race]
 
