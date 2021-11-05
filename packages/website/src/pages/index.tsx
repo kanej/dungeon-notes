@@ -26,7 +26,7 @@ const BlogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
       <Wrap>
         <div>
-          <Text>How can I aid you wise Dungeon Master?</Text>
+          <Text>What would you have me do, wise Dungeon Master?</Text>
           <ButtonList>
             <Button to="/tools/name-generator">Summon a name!</Button>
           </ButtonList>
@@ -46,8 +46,9 @@ const IntroText = styled.p`
 `
 
 const Text = styled.p`
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   font-weight: bold;
+  font-family: 'Alte Schwabacher';
 `
 
 const ButtonList = styled.div`
