@@ -1,9 +1,18 @@
-import * as React from 'react'
 import { Link } from 'gatsby'
+import * as React from 'react'
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { theme } from '../theme'
 
-const Layout = ({ location, title, children }) => {
+const Layout = ({
+  location,
+  title,
+  children,
+}: {
+  location: { pathname: string }
+  title: string
+  children: JSX.Element[]
+}): JSX.Element => {
+  // @ts-expect-error using a gatsby  global here
   const rootPath = `${__PATH_PREFIX__}/`
   const isRootPath = location.pathname === rootPath
 
@@ -17,14 +26,26 @@ const Layout = ({ location, title, children }) => {
               <Branding>
                 <Link to="/">{title}</Link>
               </Branding>
-              <div></div>
+              <div />
               {/* <Link to="/tools">tools</Link> */}
               <Link to="/blog">blog</Link>
               <Link to="/blog">discord</Link>
             </Header>
             <Main>{children}</Main>
             <Footer>
-              © {new Date().getFullYear()} Molendinar Solutions Limited
+              <FooterWrap>
+                <div>
+                  © {new Date().getFullYear()} Molendinar Solutions Limited
+                </div>
+                <SocialBar>
+                  <div />
+                  <Link to="/blog">blog</Link>
+                  <Link to="/blog">discord</Link>
+                  <Link to="https://github.com/kanej/dungeon-notes">
+                    github
+                  </Link>
+                </SocialBar>
+              </FooterWrap>
             </Footer>
           </Wrap>
         </Page>
@@ -108,11 +129,32 @@ const Main = styled.main`
 `
 
 const Footer = styled.footer`
-  background: white;
+  background-color: ${({ theme }) => theme.footer.color};
   width: 100%;
   text-align: center;
   color: darkgrey;
   padding: 1rem;
+
+  a {
+    color: darkgrey;
+
+    &:hover {
+      color: #838181;
+    }
+  }
+`
+
+const FooterWrap = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 0 auto;
+  max-width: ${({ theme }) => theme.spacing.maxWidth};
+`
+
+const SocialBar = styled.div`
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  grid-column-gap: 1rem;
 `
 
 export default Layout

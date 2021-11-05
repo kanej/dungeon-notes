@@ -2,6 +2,9 @@ export const theme = {
   background: {
     color: '#fdf5e6',
   },
+  footer: {
+    color: '#fffaf0',
+  },
   text: {
     primary: '#b51a1a',
     body: '#2e353f',
