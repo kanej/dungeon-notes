@@ -43,7 +43,7 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
   const [race, setRace] = useState<Race | null>(null)
   const [raceSelectionState, setRaceSelectionState] = useState<Race | null>(
-    null,
+    Race.Human,
   )
 
   const [copyState, setCopyState] = useState<CopyState>('ready')
@@ -228,7 +228,10 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
       <Wrap>
         {!loading && (
           <CirclePlacer>
-            <SummoningCircle />
+            <SummoningCircle
+              gender={genderSelectionState}
+              race={raceSelectionState}
+            />
 
             <RefreshPlacer>
               <Tooltip

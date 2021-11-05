@@ -1,3 +1,4 @@
+import { Gender, Race } from '@dungeon-notes/name-generator'
 import flatten from '@flatten-js/core'
 import { lighten } from 'polished'
 import * as React from 'react'
@@ -64,28 +65,6 @@ const resolveCircleSquare = (
   ]
 }
 
-const resolveSelectorLines = function* (
-  circles: CircleConfig[],
-  options: CircleOptions,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): Generator<Line, any, undefined> {
-  const { outerRadius } = options
-
-  for (const { degrees, size } of circles) {
-    if (size !== CircleSizes.SMALL) {
-      continue
-    }
-
-    const start = calculateRadiusCirclePosition(degrees, options)
-    const end = calculateRadiusCirclePosition(degrees, {
-      ...options,
-      radius: outerRadius,
-    })
-
-    yield [start, end]
-  }
-}
-
 const GroupingCircle = ({
   start,
   end,
@@ -123,7 +102,41 @@ const GroupingCircle = ({
   )
 }
 
-const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
+const OptionMarker = ({
+  option,
+  circleOptions,
+  fill,
+}: {
+  option: CircleConfig
+  circleOptions: CircleOptions
+  fill: string
+}): JSX.Element => {
+  const width = 3
+
+  const [x1, y1] = calculateRadiusCirclePosition(option.degrees - width, {
+    ...circleOptions,
+    radius: circleOptions.outerRadius,
+  })
+
+  const [x2, y2] = calculateRadiusCirclePosition(option.degrees + width, {
+    ...circleOptions,
+    radius: circleOptions.outerRadius,
+  })
+
+  const [x3, y3] = calculateRadiusCirclePosition(option.degrees, {
+    ...circleOptions,
+    radius: circleOptions.radius + 15,
+  })
+
+  return <polygon fill={fill} points={`${x1},${y1} ${x2},${y2} ${x3},${y3}`} />
+}
+
+const SummoningCircle = (
+  props: React.SVGProps<SVGSVGElement> & {
+    gender: Gender | null
+    race: Race | null
+  },
+): JSX.Element => {
   const theme = useTheme() as typeof styledTheme
 
   const stroke = theme.text.primary
@@ -181,7 +194,33 @@ const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
     [bottomIncrement],
   )
 
-  const [, , halfling, , , human, female, male] = radiusCircles
+  const [, , halfling, elf, dwarf, human, female, male] = radiusCircles
+
+  const genderMarker = useMemo(() => {
+    switch (props.gender) {
+      case Gender.Male:
+        return male
+      case Gender.Female:
+        return female
+      default:
+        return null
+    }
+  }, [female, male, props.gender])
+
+  const raceMarker = useMemo(() => {
+    switch (props.race) {
+      case Race.Dwarf:
+        return dwarf
+      case Race.Elf:
+        return elf
+      case Race.Halfling:
+        return halfling
+      case Race.Human:
+        return human
+      default:
+        return null
+    }
+  }, [dwarf, elf, halfling, human, props.race])
 
   const circles = useMemo(
     () =>
@@ -302,6 +341,22 @@ const SummoningCircle = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
           strokeWidth={4}
         />
       ))}
+
+      {genderMarker && (
+        <OptionMarker
+          option={genderMarker}
+          circleOptions={circleOptions}
+          fill={lighten(0.4, stroke)}
+        />
+      )}
+
+      {raceMarker && (
+        <OptionMarker
+          option={raceMarker}
+          circleOptions={circleOptions}
+          fill={lighten(0.4, stroke)}
+        />
+      )}
     </svg>
   )
 }
