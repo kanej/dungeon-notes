@@ -274,7 +274,11 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
             <MalePlacer>
               <Tooltip
                 arrow
-                title="Pin to male names"
+                title={
+                  genderSelectionState === Gender.Male
+                    ? 'Unpin from male names'
+                    : 'Pin to male names'
+                }
                 enterDelay={500}
                 placement="bottom"
               >
@@ -291,7 +295,11 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
             <FemalePlacer>
               <Tooltip
                 arrow
-                title="Pin to female names"
+                title={
+                  genderSelectionState === Gender.Female
+                    ? 'Unpin from female names'
+                    : 'Pin to female names'
+                }
                 enterDelay={500}
                 placement="bottom"
               >
@@ -310,7 +318,11 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
             <HalflingPlacer>
               <Tooltip
                 arrow
-                title="Pin to halfling names"
+                title={
+                  raceSelectionState === Race.Halfling
+                    ? 'Unpin from halfling names'
+                    : 'Pin to halfling names'
+                }
                 enterDelay={500}
                 placement="bottom"
               >
@@ -327,7 +339,11 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
             <ElfPlacer>
               <Tooltip
                 arrow
-                title="Pin to elven names"
+                title={
+                  raceSelectionState === Race.Elf
+                    ? 'Unpin from elven names'
+                    : 'Pin to elven names'
+                }
                 enterDelay={500}
                 placement="bottom"
               >
@@ -344,7 +360,11 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
             <DwarfPlacer>
               <Tooltip
                 arrow
-                title="Pin to dwarven names"
+                title={
+                  raceSelectionState === Race.Dwarf
+                    ? 'Unpin from dwarven names'
+                    : 'Pin to dwarven names'
+                }
                 enterDelay={500}
                 placement="bottom"
               >
@@ -361,7 +381,11 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
             <HumanPlacer>
               <Tooltip
                 arrow
-                title="Pin to human names"
+                title={
+                  raceSelectionState === Race.Human
+                    ? 'Unpin from human names'
+                    : 'Pin to human names'
+                }
                 enterDelay={500}
                 placement="bottom"
               >
