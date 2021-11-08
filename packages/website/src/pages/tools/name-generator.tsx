@@ -19,6 +19,10 @@ import SummoningCircle from '../../components/summoning-circle'
 import { theme as styleTheme } from '../../theme'
 import { assertNever } from '../../utils/assertNever'
 
+const SETTINGS_TOKEN = 'dungeon-notes::name-generator'
+
+const isBrowser = typeof window !== 'undefined'
+
 type DataProps = {
   site: {
     siteMetadata?: {
@@ -29,6 +33,16 @@ type DataProps = {
 
 type CopyState = 'ready' | 'error' | 'success'
 
+const saveSettingsToLocalstorage = ({
+  gender,
+  race,
+}: {
+  gender: Gender | null
+  race: Race | null
+}) => {
+  localStorage.setItem(SETTINGS_TOKEN, JSON.stringify({ gender, race }))
+}
+
 const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
   const siteTitle = data.site.siteMetadata?.title || `Title`
 
@@ -36,17 +50,39 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
   const [name, setName] = useState('')
 
   const [gender, setGender] = useState<Gender | null>(null)
+  const [race, setRace] = useState<Race | null>(null)
+
+  const [copyState, setCopyState] = useState<CopyState>('ready')
+
+  const {
+    gender: initialGenderSelectionState,
+    race: initialRaceSelectionState,
+  } = useMemo(() => {
+    if (!isBrowser) {
+      return {
+        gender: null,
+        race: Race.Human,
+      }
+    }
+
+    const savedSettings = localStorage.getItem(SETTINGS_TOKEN)
+
+    return savedSettings
+      ? JSON.parse(savedSettings)
+      : {
+          gender: null,
+          race: Race.Human,
+        }
+  }, [])
+
   const [
     genderSelectionState,
     setGenderSelectionState,
-  ] = useState<Gender | null>(null)
+  ] = useState<Gender | null>(initialGenderSelectionState)
 
-  const [race, setRace] = useState<Race | null>(null)
   const [raceSelectionState, setRaceSelectionState] = useState<Race | null>(
-    Race.Human,
+    initialRaceSelectionState,
   )
-
-  const [copyState, setCopyState] = useState<CopyState>('ready')
 
   const copyTooltip = useMemo(() => {
     switch (copyState) {
@@ -141,6 +177,7 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
         gender: pinnedGender,
         race: pinnedRace,
       })
+
       setName(`${firstName} ${lastName}`)
       setGender(gender)
       setRace(race)
@@ -218,8 +255,23 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
   }, [handleRaceToggle])
 
   useEffect(() => {
-    refresh()
-  }, [refresh])
+    if (!isBrowser) {
+      return
+    }
+
+    saveSettingsToLocalstorage({
+      gender: genderSelectionState,
+      race: raceSelectionState,
+    })
+  }, [genderSelectionState, raceSelectionState])
+
+  useEffect(() => {
+    if (name) {
+      return
+    }
+
+    refresh(genderSelectionState, raceSelectionState)
+  }, [genderSelectionState, name, raceSelectionState, refresh])
 
   return (
     <Layout location={location} title={siteTitle}>
