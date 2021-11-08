@@ -346,7 +346,7 @@ const SummoningCircle = (
         <OptionMarker
           option={genderMarker}
           circleOptions={circleOptions}
-          fill={lighten(0.4, stroke)}
+          fill={lighten(0.45, stroke)}
         />
       )}
 
@@ -354,7 +354,7 @@ const SummoningCircle = (
         <OptionMarker
           option={raceMarker}
           circleOptions={circleOptions}
-          fill={lighten(0.4, stroke)}
+          fill={lighten(0.45, stroke)}
         />
       )}
     </svg>

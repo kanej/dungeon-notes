@@ -8,7 +8,7 @@ const ElfHelmet = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
         width: 28,
       }}
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 512 512"
+      viewBox="0 -40 512 512"
       {...props}
     >
       <path
