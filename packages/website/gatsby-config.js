@@ -128,5 +128,17 @@ module.exports = {
     // To learn more, visit: https://gatsby.dev/offline
     // 'gatsby-plugin-offline',
     'gatsby-plugin-styled-components',
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: 'UA-212218980-1',
+        head: true,
+        anonymize: true,
+        respectDNT: true,
+        defer: true,
+        cookieDomain: 'dungeonnotes.io',
+        enableWebVitalsTracking: true,
+      },
+    },
   ],
 }
