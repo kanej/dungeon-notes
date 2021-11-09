@@ -30,9 +30,9 @@ const Layout = ({
               </Branding>
               <div />
               {/* <Link to="/tools">tools</Link> */}
-              <Link to="/blog">blog</Link>
-              <Link to="https://discord.gg/Hejq6K99CQ">discord</Link>
-              <Link to="https://github.com/kanej/dungeon-notes">source</Link>
+              <Link to="/changelog">changlog</Link>
+              <a href="https://discord.gg/Hejq6K99CQ">discord</a>
+              <a href="https://github.com/kanej/dungeon-notes">source</a>
             </Header>
             <Main>{children}</Main>
             <Footer>
@@ -42,11 +42,9 @@ const Layout = ({
                 </div>
                 <SocialBar>
                   <div />
-                  <Link to="/blog">blog</Link>
-                  <Link to="https://discord.gg/Hejq6K99CQ">discord</Link>
-                  <Link to="https://github.com/kanej/dungeon-notes">
-                    source
-                  </Link>
+                  <Link to="/changelog">changelog</Link>
+                  <a href="https://discord.gg/Hejq6K99CQ">discord</a>
+                  <a href="https://github.com/kanej/dungeon-notes">source</a>
                 </SocialBar>
               </FooterWrap>
             </Footer>
