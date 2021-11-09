@@ -27,7 +27,7 @@ const BlogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
   if (posts.length === 0) {
     return (
       <Layout location={location} title={siteTitle}>
-        <Seo title="All posts" />
+        <Seo title="Blog" />
         <p>No blog posts found.</p>
       </Layout>
     )
@@ -35,7 +35,7 @@ const BlogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
   return (
     <Layout location={location} title={siteTitle}>
-      <Seo title="All posts" />
+      <Seo title="Blog" />
       <ol style={{ listStyle: `none` }}>
         {posts.map((post) => {
           const title = post.frontmatter.title || post.fields.slug

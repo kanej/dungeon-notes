@@ -18,7 +18,7 @@ const BlogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
   return (
     <Layout location={location} title={siteTitle}>
-      <Seo title="All posts" />
+      <Seo title="Home" />
       <IntroText>
         Dungeon Notes provides tools to help Dungeon Masters plan and improvise
         their game sessions.
@@ -26,7 +26,7 @@ const BlogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
       <Wrap>
         <div>
-          <Text>What would you have me do, wise Dungeon Master?</Text>
+          <Text>What would you have me do, Dungeon Master?</Text>
           <ButtonList>
             <Button to="/tools/name-generator">Summon a name!</Button>
           </ButtonList>

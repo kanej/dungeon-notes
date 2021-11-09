@@ -2,6 +2,7 @@ import { Link } from 'gatsby'
 import * as React from 'react'
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { theme } from '../theme'
+import Logo from './icons/logo'
 
 const Layout = ({
   location,
@@ -24,7 +25,10 @@ const Layout = ({
           <Wrap>
             <Header>
               <Branding>
-                <Link to="/">{title}</Link>
+                <Logo />
+                <h1>
+                  <Link to="/">{title}</Link>
+                </h1>
               </Branding>
               <div />
               {/* <Link to="/tools">tools</Link> */}
@@ -107,13 +111,21 @@ const Header = styled.nav`
 
   margin: 0 auto;
   max-width: ${({ theme }) => theme.spacing.maxWidth};
-  padding: 0 0 0 1.2rem;
+  padding: 1rem 0 0 1.2rem;
 `
 
-const Branding = styled.h1`
-  margin: 0;
+const Branding = styled.div`
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  grid-column-gap: 0.5rem;
+  align-items: center;
   color: ${({ theme }) => theme.text.primary};
-  font-family: 'Alte Schwabacher';
+
+  h1 {
+    margin: 0;
+
+    font-family: 'Alte Schwabacher';
+  }
 `
 
 const Wrap = styled.div`
