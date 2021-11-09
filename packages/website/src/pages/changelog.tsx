@@ -20,14 +20,14 @@ type DataProps = {
   }
 }
 
-const BlogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
+const ChangelogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
   const siteTitle = data.site.siteMetadata?.title || `Title`
   const posts = data.allMarkdownRemark.nodes
 
   if (posts.length === 0) {
     return (
       <Layout location={location} title={siteTitle}>
-        <Seo title="Blog" />
+        <Seo title="Changelog" />
         <p>No blog posts found.</p>
       </Layout>
     )
@@ -35,7 +35,7 @@ const BlogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
   return (
     <Layout location={location} title={siteTitle}>
-      <Seo title="Blog" />
+      <Seo title="Changelog" />
       <ol style={{ listStyle: `none` }}>
         {posts.map((post) => {
           const title = post.frontmatter.title || post.fields.slug
@@ -73,7 +73,7 @@ const Article = styled.article`
   width: ${({ theme }) => theme.spacing.maxWidth};
 `
 
-export default BlogIndex
+export default ChangelogIndex
 
 export const pageQuery = graphql`
   query {
