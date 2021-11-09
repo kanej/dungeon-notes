@@ -24,11 +24,9 @@ const Layout = ({
         <Page>
           <Wrap>
             <Header>
-              <Branding>
+              <Branding to="/">
                 <Logo />
-                <h1>
-                  <Link to="/">{title}</Link>
-                </h1>
+                <h1>{title}</h1>
               </Branding>
               <div />
               {/* <Link to="/tools">tools</Link> */}
@@ -114,17 +112,19 @@ const Header = styled.nav`
   padding: 1rem 0 0 1.2rem;
 `
 
-const Branding = styled.div`
+const Branding = styled(Link)`
   display: grid;
   grid-template-columns: auto auto 1fr;
   grid-column-gap: 0.5rem;
   align-items: center;
   color: ${({ theme }) => theme.text.primary};
+  text-decoration: none;
 
   h1 {
     margin: 0;
 
     font-family: 'Alte Schwabacher';
+    text-decoration: none;
   }
 `
 
