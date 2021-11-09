@@ -1,4 +1,5 @@
 import { PageProps, Link, graphql } from 'gatsby'
+import { StaticImage } from 'gatsby-plugin-image'
 import * as React from 'react'
 import styled from 'styled-components'
 
@@ -32,6 +33,15 @@ const BlogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
           </ButtonList>
         </div>
       </Wrap>
+
+      <BookWrap>
+        <StaticImage
+          src="../images/codex_sorcery.png"
+          alt="A damned spellbook"
+          placeholder="dominantColor"
+          width={300}
+        />
+      </BookWrap>
     </Layout>
   )
 }
@@ -67,6 +77,13 @@ const Button = styled(Link)`
 
     transition: 0.5s all;
   }
+`
+
+const BookWrap = styled.div`
+  width: 100%;
+  display: grid;
+  place-items: center;
+  margin-top: 4rem;
 `
 
 export default BlogIndex
