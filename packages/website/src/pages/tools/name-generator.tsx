@@ -563,13 +563,21 @@ const Name = styled.p`
 `
 
 const ActionButton = styled.button`
-  background: none;
+  background: ${({ 'data-state': state }: { 'data-state': CopyState }) =>
+    state === 'success' ? 'green' : 'none'};
   width: 44px;
   height: 44px;
   border: none;
   border-radius: 50%;
+  transition: all 0.4s;
 
-  color: ${({ theme }) => theme.text.primary};
+  color: ${({
+    theme,
+    'data-state': state,
+  }: {
+    theme: typeof styleTheme
+    'data-state': CopyState
+  }) => (state === 'success' ? theme.background.color : theme.text.primary)};
 
   &:active {
     outline: ${({ theme }) => `2px solid ${lighten(0, theme.text.primary)}`};
