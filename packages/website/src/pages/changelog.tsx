@@ -70,7 +70,7 @@ const ChangelogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 }
 
 const Article = styled.article`
-  width: ${({ theme }) => theme.spacing.maxWidth};
+  max-width: ${({ theme }) => theme.spacing.maxWidth};
 `
 
 export default ChangelogIndex

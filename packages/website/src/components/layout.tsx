@@ -24,15 +24,20 @@ const Layout = ({
         <Page>
           <Wrap>
             <Header>
+              <div />
               <Branding to="/">
                 <Logo />
                 <h1>{title}</h1>
               </Branding>
               <div />
-              {/* <Link to="/tools">tools</Link> */}
-              <Link to="/changelog">changlog</Link>
-              <a href="https://discord.gg/Hejq6K99CQ">discord</a>
-              <a href="https://github.com/kanej/dungeon-notes">source</a>
+
+              <div />
+              <Links>
+                <Link to="/changelog">changlog</Link>
+                <a href="https://discord.gg/Hejq6K99CQ">discord</a>
+                <a href="https://github.com/kanej/dungeon-notes">source</a>
+              </Links>
+              <div />
             </Header>
             <Main>{children}</Main>
             <Footer>
@@ -45,6 +50,7 @@ const Layout = ({
                   <Link to="/changelog">changelog</Link>
                   <a href="https://discord.gg/Hejq6K99CQ">discord</a>
                   <a href="https://github.com/kanej/dungeon-notes">source</a>
+                  <div />
                 </SocialBar>
               </FooterWrap>
             </Footer>
@@ -101,13 +107,25 @@ const Page = styled.div`
 const Header = styled.nav`
   display: grid;
   width: 100%;
-  grid-template-columns: auto 1fr auto auto auto;
-  grid-column-gap: 1rem;
   align-items: center;
 
-  margin: 0 auto;
-  max-width: ${({ theme }) => theme.spacing.maxWidth};
-  padding: 1rem 0 0 1.2rem;
+  grid-template-columns: 1fr auto 1fr;
+
+  @media (min-width: 576px) {
+    grid-template-columns: auto 1fr auto auto 1fr auto;
+    grid-column-gap: 1rem;
+
+    margin: 0 auto;
+    max-width: ${({ theme }) => theme.spacing.maxWidth};
+    padding: 1rem 0 0 1.2rem;
+  }
+`
+
+const Links = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 0.5rem 0;
+  text-align: center;
 `
 
 const Branding = styled(Link)`
@@ -157,16 +175,26 @@ const Footer = styled.footer`
 `
 
 const FooterWrap = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin: 0 auto;
-  max-width: ${({ theme }) => theme.spacing.maxWidth};
+  display: flex;
+  flex-direction: column-reverse;
+  row-gap: 1.5rem;
+
+  @media (min-width: 576px) {
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: ${({ theme }) => theme.spacing.maxWidth};
+  }
 `
 
 const SocialBar = styled.div`
   display: grid;
-  grid-template-columns: 1fr auto auto auto;
-  grid-column-gap: 1rem;
+  grid-template-columns: auto 1fr 1fr 1fr auto;
+
+  @media (min-width: 576px) {
+    grid-template-columns: 1fr auto auto auto 1fr;
+    grid-column-gap: 1rem;
+  }
 `
 
 export default Layout
