@@ -48,7 +48,7 @@ const BlogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
 const Wrap = styled.div`
   display: grid;
-  margin-top: 4rem;
+  margin-top: 3rem;
 `
 
 const IntroText = styled.p`
