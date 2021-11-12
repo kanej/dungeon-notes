@@ -198,7 +198,7 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
     } catch (error) {
       setCopyState('error')
     } finally {
-      setTimeout(() => setCopyState('ready'), 3000)
+      setTimeout(() => setCopyState('ready'), 1500)
     }
   }, [name])
 
