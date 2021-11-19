@@ -19,6 +19,8 @@ enum CircleSizes {
   SMALL = 'SMALL',
 }
 
+type CircleGrouping = [name: string, start: CircleConfig, end: CircleConfig]
+
 type CircleConfig = { label: string; degrees: number; size: CircleSizes }
 
 const calculateRadiusCirclePosition = (
@@ -131,24 +133,13 @@ const OptionMarker = ({
   return <polygon fill={fill} points={`${x1},${y1} ${x2},${y2} ${x3},${y3}`} />
 }
 
-const SummoningCircle = (
-  props: React.SVGProps<SVGSVGElement> & {
-    gender: Gender | null
-    race: Race | null
-  },
-): JSX.Element => {
-  const theme = useTheme() as typeof styledTheme
-
-  const stroke = theme.text.primary
-
+const useSummoningCircle = (props: { gender: Gender; race: Race }) => {
   const height = 512
   const width = 512
   const centerX = width / 2
   const centerY = height / 2
   const radius = 450 / 2
   const outerRadius = radius + 30
-
-  const bottomIncrement = (150 - 30) / 6
 
   const circleOptions: CircleOptions = useMemo(
     () => ({
@@ -160,9 +151,10 @@ const SummoningCircle = (
     [centerX, centerY, outerRadius, radius],
   )
 
+  const bottomIncrement = (150 - 30) / 6
+
   const radiusCircles: CircleConfig[] = useMemo(
     () => [
-      { label: 'refresh', degrees: 360 - 45, size: CircleSizes.LARGE },
       { label: 'copy', degrees: 0, size: CircleSizes.LARGE },
       {
         label: 'halfling',
@@ -190,37 +182,81 @@ const SummoningCircle = (
         degrees: 30 + 6 * bottomIncrement,
         size: CircleSizes.SMALL,
       },
+      { label: 'refresh', degrees: 360 - 45, size: CircleSizes.LARGE },
     ],
     [bottomIncrement],
   )
 
-  const [, , halfling, elf, dwarf, human, female, male] = radiusCircles
-
   const genderMarker = useMemo(() => {
     switch (props.gender) {
       case Gender.Male:
-        return male
+        return 6
       case Gender.Female:
-        return female
+        return 5
       default:
         return null
     }
-  }, [female, male, props.gender])
+  }, [props.gender])
 
   const raceMarker = useMemo(() => {
     switch (props.race) {
       case Race.Dwarf:
-        return dwarf
+        return 3
       case Race.Elf:
-        return elf
+        return 2
       case Race.Halfling:
-        return halfling
+        return 1
       case Race.Human:
-        return human
+        return 4
       default:
         return null
     }
-  }, [dwarf, elf, halfling, human, props.race])
+  }, [props.race])
+
+  const groupings = useMemo(() => {
+    return [
+      ['gender', 5, 6],
+      ['race', 1, 4],
+    ] as Array<[string, number, number]>
+  }, [])
+
+  const markers = useMemo(() => {
+    return [raceMarker, genderMarker]
+  }, [genderMarker, raceMarker])
+
+  return { circleOptions, radiusCircles, groupings, markers }
+}
+
+const SummoningCircle = (
+  props: React.SVGProps<SVGSVGElement> & {
+    gender: Gender | null
+    race: Race | null
+  },
+): JSX.Element => {
+  const theme = useTheme() as typeof styledTheme
+
+  const stroke = theme.text.primary
+
+  const {
+    circleOptions,
+    radiusCircles,
+    groupings: groupingNums,
+    markers: markerNums,
+  } = useSummoningCircle({
+    gender: props.gender,
+    race: props.race,
+  })
+
+  const { groupings, markers } = useMemo(() => {
+    return {
+      groupings: groupingNums.map(([name, start, end]) => [
+        name,
+        radiusCircles[start],
+        radiusCircles[end],
+      ]),
+      markers: markerNums.map((ind) => radiusCircles[ind]),
+    } as { groupings: Array<CircleGrouping>; markers: Array<CircleConfig> }
+  }, [groupingNums, markerNums, radiusCircles])
 
   const circles = useMemo(
     () =>
@@ -253,7 +289,12 @@ const SummoningCircle = (
     >
       <defs>
         <mask id="Inner">
-          <circle cx={centerX} cy={centerY} r={radius} fill="white" />
+          <circle
+            cx={circleOptions.centerX}
+            cy={circleOptions.centerY}
+            r={circleOptions.radius}
+            fill="white"
+          />
 
           {circles.map(({ label, size, point: [x, y] }) => (
             <circle
@@ -267,7 +308,12 @@ const SummoningCircle = (
         </mask>
 
         <mask id="Outer">
-          <circle cx={centerX} cy={centerY} r={outerRadius} fill="white" />
+          <circle
+            cx={circleOptions.centerX}
+            cy={circleOptions.centerY}
+            r={circleOptions.outerRadius}
+            fill="white"
+          />
 
           {circles.map(({ label, size, point: [x, y] }) => (
             <circle
@@ -295,35 +341,30 @@ const SummoningCircle = (
       ))}
 
       <circle
-        cx={centerX}
-        cy={centerY}
-        r={outerRadius}
+        cx={circleOptions.centerX}
+        cy={circleOptions.centerY}
+        r={circleOptions.outerRadius}
         fill="none"
         stroke={lighten(0.5, stroke)}
         strokeWidth={1}
         mask="url(#Outer)"
       />
 
-      <GroupingCircle
-        start={male}
-        end={female}
-        circleOptions={circleOptions}
-        stroke={lighten(0.5, stroke)}
-        strokeWidth={2}
-      />
-
-      <GroupingCircle
-        start={halfling}
-        end={human}
-        circleOptions={circleOptions}
-        stroke={lighten(0.5, stroke)}
-        strokeWidth={2}
-      />
+      {groupings.map(([name, start, end]) => (
+        <GroupingCircle
+          key={name}
+          start={start}
+          end={end}
+          circleOptions={circleOptions}
+          stroke={lighten(0.5, stroke)}
+          strokeWidth={2}
+        />
+      ))}
 
       <circle
-        cx={centerX}
-        cy={centerY}
-        r={radius}
+        cx={circleOptions.centerX}
+        cy={circleOptions.centerY}
+        r={circleOptions.radius}
         fill="none"
         stroke={lighten(0.5, stroke)}
         strokeWidth={4}
@@ -342,21 +383,14 @@ const SummoningCircle = (
         />
       ))}
 
-      {genderMarker && (
+      {markers.map((marker) => (
         <OptionMarker
-          option={genderMarker}
+          key={marker.label}
+          option={marker}
           circleOptions={circleOptions}
           fill={lighten(0.45, stroke)}
         />
-      )}
-
-      {raceMarker && (
-        <OptionMarker
-          option={raceMarker}
-          circleOptions={circleOptions}
-          fill={lighten(0.45, stroke)}
-        />
-      )}
+      ))}
     </svg>
   )
 }
