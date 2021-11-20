@@ -1,4 +1,3 @@
-import { Gender, Race } from '@dungeon-notes/name-generator'
 import flatten from '@flatten-js/core'
 import { lighten } from 'polished'
 import * as React from 'react'
@@ -6,22 +5,28 @@ import { useMemo } from 'react'
 import { useTheme } from 'styled-components'
 import { theme as styledTheme } from '../theme'
 
-type CircleOptions = {
+export type CircleOptions = {
   radius: number
   centerX: number
   centerY: number
   outerRadius: number
 }
-type Point = [x: number, y: number]
-type Line = [Point, Point]
-enum CircleSizes {
+
+export enum CircleSizes {
   LARGE = 'LARGE',
   SMALL = 'SMALL',
 }
 
-type CircleGrouping = [name: string, start: CircleConfig, end: CircleConfig]
+type Point = [x: number, y: number]
+type Line = [Point, Point]
 
-type CircleConfig = { label: string; degrees: number; size: CircleSizes }
+export type CircleGrouping = [
+  name: string,
+  start: CircleConfig,
+  end: CircleConfig,
+]
+
+export type CircleConfig = { label: string; degrees: number; size: CircleSizes }
 
 const calculateRadiusCirclePosition = (
   degrees: number,
@@ -133,119 +138,24 @@ const OptionMarker = ({
   return <polygon fill={fill} points={`${x1},${y1} ${x2},${y2} ${x3},${y3}`} />
 }
 
-const useSummoningCircle = (props: { gender: Gender; race: Race }) => {
-  const height = 512
-  const width = 512
-  const centerX = width / 2
-  const centerY = height / 2
-  const radius = 450 / 2
-  const outerRadius = radius + 30
-
-  const circleOptions: CircleOptions = useMemo(
-    () => ({
-      radius,
-      centerX,
-      centerY,
-      outerRadius,
-    }),
-    [centerX, centerY, outerRadius, radius],
-  )
-
-  const bottomIncrement = (150 - 30) / 6
-
-  const radiusCircles: CircleConfig[] = useMemo(
-    () => [
-      { label: 'copy', degrees: 0, size: CircleSizes.LARGE },
-      {
-        label: 'halfling',
-        degrees: 30 + 0 * bottomIncrement,
-        size: CircleSizes.SMALL,
-      },
-      { label: 'elf', degrees: 30 + bottomIncrement, size: CircleSizes.SMALL },
-      {
-        label: 'dwarf',
-        degrees: 30 + 2 * bottomIncrement,
-        size: CircleSizes.SMALL,
-      },
-      {
-        label: 'human',
-        degrees: 30 + 3 * bottomIncrement,
-        size: CircleSizes.SMALL,
-      },
-      {
-        label: 'female',
-        degrees: 30 + 5 * bottomIncrement,
-        size: CircleSizes.SMALL,
-      },
-      {
-        label: 'male',
-        degrees: 30 + 6 * bottomIncrement,
-        size: CircleSizes.SMALL,
-      },
-      { label: 'refresh', degrees: 360 - 45, size: CircleSizes.LARGE },
-    ],
-    [bottomIncrement],
-  )
-
-  const genderMarker = useMemo(() => {
-    switch (props.gender) {
-      case Gender.Male:
-        return 6
-      case Gender.Female:
-        return 5
-      default:
-        return null
-    }
-  }, [props.gender])
-
-  const raceMarker = useMemo(() => {
-    switch (props.race) {
-      case Race.Dwarf:
-        return 3
-      case Race.Elf:
-        return 2
-      case Race.Halfling:
-        return 1
-      case Race.Human:
-        return 4
-      default:
-        return null
-    }
-  }, [props.race])
-
-  const groupings = useMemo(() => {
-    return [
-      ['gender', 5, 6],
-      ['race', 1, 4],
-    ] as Array<[string, number, number]>
-  }, [])
-
-  const markers = useMemo(() => {
-    return [raceMarker, genderMarker]
-  }, [genderMarker, raceMarker])
-
-  return { circleOptions, radiusCircles, groupings, markers }
-}
-
 const SummoningCircle = (
   props: React.SVGProps<SVGSVGElement> & {
-    gender: Gender | null
-    race: Race | null
+    circleOptions: CircleOptions
+    radiusCircles: Array<CircleConfig>
+    groupings: [string, number, number][]
+    markers: number[]
   },
 ): JSX.Element => {
-  const theme = useTheme() as typeof styledTheme
-
-  const stroke = theme.text.primary
-
   const {
     circleOptions,
     radiusCircles,
     groupings: groupingNums,
     markers: markerNums,
-  } = useSummoningCircle({
-    gender: props.gender,
-    race: props.race,
-  })
+  } = props
+
+  const theme = useTheme() as typeof styledTheme
+
+  const stroke = theme.text.primary
 
   const { groupings, markers } = useMemo(() => {
     return {

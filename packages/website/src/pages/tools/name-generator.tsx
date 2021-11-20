@@ -15,7 +15,10 @@ import VisoredHelm from '../../components/icons/visored-helm'
 
 import Layout from '../../components/layout'
 import Seo from '../../components/seo'
-import SummoningCircle from '../../components/summoning-circle'
+import SummoningCircle, {
+  CircleConfig,
+  CircleSizes,
+} from '../../components/summoning-circle'
 import { theme as styleTheme } from '../../theme'
 import { assertNever } from '../../utils/assertNever'
 
@@ -41,6 +44,100 @@ const saveSettingsToLocalstorage = ({
   race: Race | null
 }) => {
   localStorage.setItem(SETTINGS_TOKEN, JSON.stringify({ gender, race }))
+}
+
+const useSummoningCircle = (props: { gender: Gender; race: Race }) => {
+  const height = 512
+  const width = 512
+  const centerX = width / 2
+  const centerY = height / 2
+  const radius = 450 / 2
+  const outerRadius = radius + 30
+
+  const circleOptions: CircleOptions = useMemo(
+    () => ({
+      radius,
+      centerX,
+      centerY,
+      outerRadius,
+    }),
+    [centerX, centerY, outerRadius, radius],
+  )
+
+  const bottomIncrement = (150 - 30) / 6
+
+  const radiusCircles: CircleConfig[] = useMemo(
+    () => [
+      { label: 'copy', degrees: 0, size: CircleSizes.LARGE },
+      {
+        label: 'halfling',
+        degrees: 30 + 0 * bottomIncrement,
+        size: CircleSizes.SMALL,
+      },
+      { label: 'elf', degrees: 30 + bottomIncrement, size: CircleSizes.SMALL },
+      {
+        label: 'dwarf',
+        degrees: 30 + 2 * bottomIncrement,
+        size: CircleSizes.SMALL,
+      },
+      {
+        label: 'human',
+        degrees: 30 + 3 * bottomIncrement,
+        size: CircleSizes.SMALL,
+      },
+      {
+        label: 'female',
+        degrees: 30 + 5 * bottomIncrement,
+        size: CircleSizes.SMALL,
+      },
+      {
+        label: 'male',
+        degrees: 30 + 6 * bottomIncrement,
+        size: CircleSizes.SMALL,
+      },
+      { label: 'refresh', degrees: 360 - 45, size: CircleSizes.LARGE },
+    ],
+    [bottomIncrement],
+  )
+
+  const genderMarker = useMemo(() => {
+    switch (props.gender) {
+      case Gender.Male:
+        return 6
+      case Gender.Female:
+        return 5
+      default:
+        return null
+    }
+  }, [props.gender])
+
+  const raceMarker = useMemo(() => {
+    switch (props.race) {
+      case Race.Dwarf:
+        return 3
+      case Race.Elf:
+        return 2
+      case Race.Halfling:
+        return 1
+      case Race.Human:
+        return 4
+      default:
+        return null
+    }
+  }, [props.race])
+
+  const groupings = useMemo(() => {
+    return [
+      ['gender', 5, 6],
+      ['race', 1, 4],
+    ] as Array<[string, number, number]>
+  }, [])
+
+  const markers = useMemo(() => {
+    return [raceMarker, genderMarker]
+  }, [genderMarker, raceMarker])
+
+  return { circleOptions, radiusCircles, groupings, markers }
 }
 
 const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
@@ -83,6 +180,16 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
   const [raceSelectionState, setRaceSelectionState] = useState<Race | null>(
     initialRaceSelectionState,
   )
+
+  const {
+    circleOptions,
+    radiusCircles,
+    groupings,
+    markers,
+  } = useSummoningCircle({
+    gender: genderSelectionState,
+    race: raceSelectionState,
+  })
 
   const copyTooltip = useMemo(() => {
     switch (copyState) {
@@ -281,8 +388,10 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
         {!loading && (
           <CirclePlacer>
             <SummoningCircle
-              gender={genderSelectionState}
-              race={raceSelectionState}
+              circleOptions={circleOptions}
+              radiusCircles={radiusCircles}
+              groupings={groupings}
+              markers={markers}
             />
 
             <RefreshPlacer>
