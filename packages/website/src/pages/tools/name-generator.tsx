@@ -15,10 +15,12 @@ import VisoredHelm from '../../components/icons/visored-helm'
 
 import Layout from '../../components/layout'
 import Seo from '../../components/seo'
-import SummoningCircle, {
+import SummoningCircle from '../../components/summoning-circle/summoning-circle'
+import {
   CircleConfig,
+  CircleOptions,
   CircleSizes,
-} from '../../components/summoning-circle'
+} from '../../components/summoning-circle/types'
 import { theme as styleTheme } from '../../theme'
 import { assertNever } from '../../utils/assertNever'
 

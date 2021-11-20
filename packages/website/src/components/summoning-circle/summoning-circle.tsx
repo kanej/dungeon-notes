@@ -1,142 +1,19 @@
-import flatten from '@flatten-js/core'
 import { lighten } from 'polished'
 import * as React from 'react'
 import { useMemo } from 'react'
 import { useTheme } from 'styled-components'
-import { theme as styledTheme } from '../theme'
-
-export type CircleOptions = {
-  radius: number
-  centerX: number
-  centerY: number
-  outerRadius: number
-}
-
-export enum CircleSizes {
-  LARGE = 'LARGE',
-  SMALL = 'SMALL',
-}
-
-type Point = [x: number, y: number]
-type Line = [Point, Point]
-
-export type CircleGrouping = [
-  name: string,
-  start: CircleConfig,
-  end: CircleConfig,
-]
-
-export type CircleConfig = { label: string; degrees: number; size: CircleSizes }
-
-const calculateRadiusCirclePosition = (
-  degrees: number,
-  { radius, centerX, centerY }: CircleOptions,
-): Point => {
-  const radians = degrees * (Math.PI / 180)
-
-  const x = Math.cos(radians) * radius
-  const y = Math.sin(radians) * radius
-
-  return [x + centerX, y + centerY]
-}
-
-const resolveCircleTriangle = (
-  startingDegree,
-  options: CircleOptions,
-): Line[] => {
-  const point1 = calculateRadiusCirclePosition(startingDegree, options)
-  const point2 = calculateRadiusCirclePosition(startingDegree + 120, options)
-  const point3 = calculateRadiusCirclePosition(startingDegree + 240, options)
-
-  return [
-    [point1, point2],
-    [point2, point3],
-    [point3, point1],
-  ]
-}
-
-const resolveCircleSquare = (
-  startingDegree,
-  options: CircleOptions,
-): Line[] => {
-  const point1 = calculateRadiusCirclePosition(startingDegree, options)
-  const point2 = calculateRadiusCirclePosition(startingDegree + 90, options)
-  const point3 = calculateRadiusCirclePosition(startingDegree + 180, options)
-  const point4 = calculateRadiusCirclePosition(startingDegree + 270, options)
-
-  return [
-    [point1, point2],
-    [point2, point3],
-    [point3, point4],
-    [point4, point1],
-  ]
-}
-
-const GroupingCircle = ({
-  start,
-  end,
-  circleOptions,
-  stroke,
-  strokeWidth,
-}: {
-  start: CircleConfig
-  end: CircleConfig
-  circleOptions: CircleOptions
-  stroke: string
-  strokeWidth: number
-}): JSX.Element => {
-  const [x, y] = calculateRadiusCirclePosition(
-    (start.degrees + end.degrees) / 2,
-    {
-      ...circleOptions,
-    },
-  )
-
-  const [sx, sy] = calculateRadiusCirclePosition(start.degrees, circleOptions)
-
-  const [r] = new flatten.Point(x, y).distanceTo(new flatten.Point(sx, sy))
-
-  return (
-    <circle
-      cx={x}
-      cy={y}
-      r={r}
-      fill="none"
-      stroke={stroke}
-      strokeWidth={strokeWidth}
-      mask="url(#Inner)"
-    />
-  )
-}
-
-const OptionMarker = ({
-  option,
-  circleOptions,
-  fill,
-}: {
-  option: CircleConfig
-  circleOptions: CircleOptions
-  fill: string
-}): JSX.Element => {
-  const width = 3
-
-  const [x1, y1] = calculateRadiusCirclePosition(option.degrees - width, {
-    ...circleOptions,
-    radius: circleOptions.outerRadius,
-  })
-
-  const [x2, y2] = calculateRadiusCirclePosition(option.degrees + width, {
-    ...circleOptions,
-    radius: circleOptions.outerRadius,
-  })
-
-  const [x3, y3] = calculateRadiusCirclePosition(option.degrees, {
-    ...circleOptions,
-    radius: circleOptions.radius + 15,
-  })
-
-  return <polygon fill={fill} points={`${x1},${y1} ${x2},${y2} ${x3},${y3}`} />
-}
+import { theme as styledTheme } from '../../theme'
+import GroupingCircle from './grouping-circle'
+import OptionMarker from './option-marker'
+import {
+  CircleOptions,
+  CircleConfig,
+  CircleGrouping,
+  CircleSizes,
+} from './types'
+import calculateRadiusCirclePosition from './utils/calculateRadiusCirclePosition'
+import resolveCircleSquare from './utils/resolveCircleSquare'
+import resolveCircleTriangle from './utils/resolveCircleTriangle'
 
 const SummoningCircle = (
   props: React.SVGProps<SVGSVGElement> & {
