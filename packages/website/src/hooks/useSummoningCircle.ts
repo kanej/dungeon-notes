@@ -14,16 +14,34 @@ const useSummoningCircle = (props: {
   genderSelectionState: Gender
   raceSelectionState: Race
   copyState: ButtonState
+  mobileScreenSize: boolean
 }): {
   circleOptions: CircleOptions
   radiusCircles: CircleConfig[]
   groupings: [string, number, number][]
   markers: number[]
 } => {
-  const height = 512
-  const width = 512
-  const radius = 225
-  const outerRadius = 255
+  const {
+    height,
+    width,
+    radius,
+    outerRadius,
+    fontSize,
+  } = props.mobileScreenSize
+    ? {
+        height: 360,
+        width: 360,
+        radius: 155,
+        outerRadius: 179,
+        fontSize: 2.5,
+      }
+    : {
+        height: 512,
+        width: 512,
+        radius: 225,
+        outerRadius: 255,
+        fontSize: 3,
+      }
 
   const centerX = width / 2
   const centerY = height / 2
@@ -35,8 +53,11 @@ const useSummoningCircle = (props: {
       centerX,
       centerY,
       outerRadius,
+      height,
+      width,
+      fontSize,
     }),
-    [centerX, centerY, outerRadius, radius],
+    [centerX, centerY, fontSize, height, outerRadius, radius, width],
   )
 
   const copyTooltip = useMemo(() => {
@@ -59,7 +80,7 @@ const useSummoningCircle = (props: {
         degrees: 0,
         size: CircleSizes.LARGE,
         tooltipText: copyTooltip,
-        tooltipPlacement: 'right',
+        tooltipPlacement: props.mobileScreenSize ? 'left' : 'right',
         state: props.copyState,
         highlighted: true,
       },
@@ -140,7 +161,7 @@ const useSummoningCircle = (props: {
         degrees: 360 - 45,
         size: CircleSizes.LARGE,
         tooltipText: 'Roll again',
-        tooltipPlacement: 'right',
+        tooltipPlacement: props.mobileScreenSize ? 'left' : 'right',
         state: 'ready',
         highlighted: true,
       },
@@ -151,6 +172,7 @@ const useSummoningCircle = (props: {
       props.copyState,
       props.gender,
       props.genderSelectionState,
+      props.mobileScreenSize,
       props.race,
       props.raceSelectionState,
     ],

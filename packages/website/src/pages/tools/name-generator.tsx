@@ -170,6 +170,15 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
     [handleCopy, handleGenderToggle, handleRaceToggle, handleRefresh],
   )
 
+  const mobileScreenSize = useMemo(() => {
+    const vw = Math.max(
+      document.documentElement.clientWidth || 0,
+      window.innerWidth || 0,
+    )
+
+    return vw < 400
+  }, [])
+
   const {
     circleOptions,
     radiusCircles,
@@ -181,6 +190,7 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
     genderSelectionState: genderSelectionState,
     raceSelectionState: raceSelectionState,
     copyState,
+    mobileScreenSize,
   })
 
   useEffect(() => {
@@ -208,7 +218,10 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
       <Wrap>
         {!loading && (
-          <MainPanel>
+          <MainPanel
+            data-height={circleOptions.height}
+            data-width={circleOptions.width}
+          >
             <SummoningCircle
               circleoptions={circleOptions}
               radiuscircles={radiusCircles}
@@ -216,8 +229,11 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
               markers={markers}
             />
 
-            <NameWrap>
-              <Name>{name}</Name>
+            <NameWrap
+              data-height={circleOptions.height}
+              data-width={circleOptions.width}
+            >
+              <Name data-fontsize={circleOptions.fontSize}>{name}</Name>
             </NameWrap>
 
             {radiusCircles.map((circle) => (
@@ -266,17 +282,24 @@ const Wrap = styled.div`
   place-items: center;
 `
 
-const MainPanel = styled.div`
-  height: 512;
-  width: 512;
-  position: relative;
+const MainPanel = styled.div.attrs((props) => ({
+  height: props['data-height'],
+  width: props['data-width'],
+}))`
+  height: ${(props) => `${props.height}px`};
+  width: ${(props) => `${props.width}px`};
 
+  position: relative;
   color: ${({ theme }) => theme.text.color};
 `
 
-const NameWrap = styled.div`
-  width: 512px;
-  height: 512px;
+const NameWrap = styled.div.attrs((props) => ({
+  height: props['data-height'],
+  width: props['data-width'],
+}))`
+  height: ${(props) => `${props.height}px`};
+  width: ${(props) => `${props.width}px`};
+
   display: grid;
   place-items: center;
   position: absolute;
@@ -284,10 +307,12 @@ const NameWrap = styled.div`
   left: 0;
 `
 
-const Name = styled.p`
-  font-size: 3rem;
+const Name = styled.p.attrs((props) => ({
+  fontSize: props['data-fontsize'],
+}))`
+  font-size: ${(props) => `${props.fontSize}rem`};
   color: ${({ theme }) => theme.text.color};
-  padding: 0rem 6rem;
+  max-width: 66%;
   margin-bottom: 0;
   text-align: center;
 `
