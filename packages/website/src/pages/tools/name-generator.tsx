@@ -18,6 +18,8 @@ import SummoningCircleBtn from '../../components/summoning-circle/summoning-circ
 import {
   ButtonLabel,
   ButtonState,
+  CircleOptions,
+  CircleSizes,
 } from '../../components/summoning-circle/types'
 import useSummoningCircle from '../../hooks/useSummoningCircle'
 import { assertNever } from '../../utils/assertNever'
@@ -171,6 +173,10 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
   )
 
   const mobileScreenSize = useMemo(() => {
+    if (!isBrowser) {
+      return false
+    }
+
     const vw = Math.max(
       document.documentElement.clientWidth || 0,
       window.innerWidth || 0,
@@ -243,7 +249,12 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
                 circleOptions={circleOptions}
                 onClick={handleButtonClick}
               >
-                <ButtonIcon label={circle.label} />
+                <ButtonIcon
+                  label={circle.label}
+                  circleSize={circle.size}
+                  mobileScreenSize={mobileScreenSize}
+                  circleOptions={circleOptions}
+                />
               </SummoningCircleBtn>
             ))}
           </MainPanel>
@@ -253,24 +264,88 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
   )
 }
 
-const ButtonIcon = ({ label }: { label: ButtonLabel }) => {
+const ButtonIcon = ({
+  label,
+  circleSize,
+  mobileScreenSize,
+  circleOptions,
+}: {
+  label: ButtonLabel
+  circleSize: CircleSizes
+  mobileScreenSize: boolean
+  circleOptions: CircleOptions
+}) => {
+  const iconSize = useMemo(() => {
+    return circleSize === CircleSizes.LARGE
+      ? Math.round(circleOptions.largeButtonCircleSize * 0.5)
+      : Math.round(circleOptions.smallButtonCircleSize * 0.6)
+  }, [
+    circleOptions.largeButtonCircleSize,
+    circleOptions.smallButtonCircleSize,
+    circleSize,
+  ])
+
   switch (label) {
     case 'refresh':
-      return <Refresh width="34px" />
+      return (
+        <div
+          style={
+            mobileScreenSize ? { paddingLeft: '0px', paddingTop: '1px' } : {}
+          }
+        >
+          <Refresh width={iconSize} />
+        </div>
+      )
     case 'copy':
-      return <ContentCopy width="28px" />
+      return (
+        <div
+          style={
+            mobileScreenSize ? { paddingLeft: '2px', paddingTop: '1px' } : {}
+          }
+        >
+          <ContentCopy width={iconSize} />
+        </div>
+      )
     case 'male':
-      return <Male width="28px" />
+      return (
+        <div>
+          <Male width={iconSize} />
+        </div>
+      )
     case 'female':
-      return <Female width="28px" />
+      return (
+        <div style={mobileScreenSize ? { paddingLeft: '1px' } : {}}>
+          <Female width={iconSize} />
+        </div>
+      )
     case 'halfling':
-      return <Cowled />
+      return (
+        <div style={mobileScreenSize ? { paddingLeft: '1px' } : {}}>
+          <Cowled height={iconSize} width={iconSize} />
+        </div>
+      )
     case 'elf':
-      return <ElfHelmet />
+      return (
+        <div style={mobileScreenSize ? { paddingLeft: '1px' } : {}}>
+          <ElfHelmet height={iconSize} width={iconSize} />
+        </div>
+      )
     case 'dwarf':
-      return <DwarfHelmet />
+      return (
+        <div style={mobileScreenSize ? { paddingLeft: '1px' } : {}}>
+          <DwarfHelmet height={iconSize} width={iconSize} />
+        </div>
+      )
     case 'human':
-      return <VisoredHelm />
+      return (
+        <div
+          style={
+            mobileScreenSize ? { paddingLeft: '1px', paddingTop: '1px' } : {}
+          }
+        >
+          <VisoredHelm height={iconSize} width={iconSize} />
+        </div>
+      )
     default:
       assertNever(label)
   }

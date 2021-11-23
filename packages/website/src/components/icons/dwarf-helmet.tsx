@@ -4,8 +4,8 @@ const DwarfHelmet = (props: React.SVGProps<SVGSVGElement>): JSX.Element => {
   return (
     <svg
       style={{
-        height: 28,
-        width: 28,
+        height: props.height,
+        width: props.width,
       }}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 -10 512 512"

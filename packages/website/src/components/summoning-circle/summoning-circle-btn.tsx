@@ -35,14 +35,27 @@ const SummoningCircleBtn = ({
   }, [label, onClick])
 
   const { left, top } = useMemo(() => {
-    const modifier = size === CircleSizes.LARGE ? 27 : 22
+    const modifier =
+      size === CircleSizes.LARGE
+        ? Math.round(circleOptions.largeButtonCircleSize / 2)
+        : Math.round(circleOptions.smallButtonCircleSize / 2)
     const [rawX, rawY] = calculateRadiusCirclePosition(degrees, circleOptions)
 
     const x = Math.round(rawX)
     const y = Math.round(rawY)
 
-    return { left: x - modifier, top: y - modifier }
+    return { left: x - modifier - 1, top: y - modifier - 1 }
   }, [circleOptions, degrees, size])
+
+  const buttonSize = useMemo(() => {
+    return size === CircleSizes.LARGE
+      ? Math.round(circleOptions.largeButtonCircleSize) + 2
+      : Math.round(circleOptions.smallButtonCircleSize) + 2
+  }, [
+    circleOptions.largeButtonCircleSize,
+    circleOptions.smallButtonCircleSize,
+    size,
+  ])
 
   return (
     <Placer data-left={left} data-top={top}>
@@ -52,25 +65,16 @@ const SummoningCircleBtn = ({
         enterDelay={500}
         placement={tooltipPlacement}
       >
-        {size === CircleSizes.LARGE ? (
-          <LargeActionButton
-            type="reset"
-            data-state={state}
-            className={highlighted ? 'current' : 'uncurrent'}
-            onClick={handleClick}
-          >
-            {children}
-          </LargeActionButton>
-        ) : (
-          <ActionButton
-            type="reset"
-            data-state={state}
-            className={highlighted ? 'current' : 'uncurrent'}
-            onClick={handleClick}
-          >
-            {children}
-          </ActionButton>
-        )}
+        <ActionButton
+          type="reset"
+          data-state={state}
+          className={highlighted ? 'current' : 'uncurrent'}
+          data-height={buttonSize}
+          data-width={buttonSize}
+          onClick={handleClick}
+        >
+          {children}
+        </ActionButton>
       </Tooltip>
     </Placer>
   )
@@ -85,18 +89,20 @@ const Placer = styled.div.attrs((props) => ({
   left: ${({ left }) => `${left}px`};
 
   z-index: 100;
-  width: 40px;
-  height: 40px;
 `
 
-const ActionButton = styled.button`
+const ActionButton = styled.button.attrs((props) => ({
+  height: props['data-height'],
+  width: props['data-width'],
+}))`
   background: ${({ 'data-state': state }: { 'data-state': ButtonState }) =>
     state === 'success' ? 'green' : 'none'};
-  width: 44px;
-  height: 44px;
+  width: ${({ width }) => `${width}px`};
+  height: ${({ height }) => `${height}px`};
   border: none;
   border-radius: 50%;
   transition: all 0.4s;
+  padding: 0;
 
   color: ${({
     theme,
@@ -129,11 +135,6 @@ const ActionButton = styled.button`
     color: ${({ theme }) => theme.background.color};
     transition: all 0.4s;
   }
-`
-
-const LargeActionButton = styled(ActionButton)`
-  width: 54px;
-  height: 54px;
 `
 
 export default memo(SummoningCircleBtn)

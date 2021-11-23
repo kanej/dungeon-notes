@@ -88,7 +88,11 @@ const SummoningCircle = (
               key={label}
               cx={x}
               cy={y}
-              r={size === CircleSizes.LARGE ? 26 : 21}
+              r={
+                size === CircleSizes.LARGE
+                  ? Math.round(circleOptions.largeButtonCircleSize / 2)
+                  : Math.round(circleOptions.smallButtonCircleSize / 2)
+              }
               fill="black"
             />
           ))}
@@ -107,7 +111,11 @@ const SummoningCircle = (
               key={label}
               cx={x}
               cy={y}
-              r={size === CircleSizes.LARGE ? 26 : 21}
+              r={
+                size === CircleSizes.LARGE
+                  ? Math.round(circleOptions.largeButtonCircleSize / 2)
+                  : Math.round(circleOptions.smallButtonCircleSize / 2)
+              }
               fill="black"
             />
           ))}
@@ -163,7 +171,11 @@ const SummoningCircle = (
           key={label}
           cx={x}
           cy={y}
-          r={size === CircleSizes.LARGE ? 26 : 21}
+          r={
+            size === CircleSizes.LARGE
+              ? Math.round(circleOptions.largeButtonCircleSize / 2)
+              : Math.round(circleOptions.smallButtonCircleSize / 2)
+          }
           fill="none"
           stroke={lighten(0.5, stroke)}
           strokeWidth={4}
