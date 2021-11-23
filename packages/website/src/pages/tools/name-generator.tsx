@@ -1,27 +1,19 @@
 import { generate, Gender, Race } from '@dungeon-notes/name-generator'
-import Tooltip from '@mui/material/Tooltip'
-import { Female } from '@styled-icons/ionicons-sharp/Female'
-import { Male } from '@styled-icons/ionicons-sharp/Male'
-import { ContentCopy } from '@styled-icons/material/ContentCopy'
-import { Refresh } from '@styled-icons/material/Refresh'
 import { PageProps, graphql } from 'gatsby'
-import { lighten } from 'polished'
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
-import Cowled from '../../components/icons/cowled'
-import DwarfHelmet from '../../components/icons/dwarf-helmet'
-import ElfHelmet from '../../components/icons/elf-helmet'
-import VisoredHelm from '../../components/icons/visored-helm'
 
 import Layout from '../../components/layout'
 import Seo from '../../components/seo'
 import SummoningCircle from '../../components/summoning-circle/summoning-circle'
+import SummoningCircleBtn from '../../components/summoning-circle/summoning-circle-btn'
 import {
+  ButtonLabel,
   CircleConfig,
   CircleOptions,
   CircleSizes,
+  ButtonState,
 } from '../../components/summoning-circle/types'
-import { theme as styleTheme } from '../../theme'
 import { assertNever } from '../../utils/assertNever'
 
 const SETTINGS_TOKEN = 'dungeon-notes::name-generator'
@@ -36,8 +28,6 @@ type DataProps = {
   }
 }
 
-type CopyState = 'ready' | 'error' | 'success'
-
 const saveSettingsToLocalstorage = ({
   gender,
   race,
@@ -48,7 +38,14 @@ const saveSettingsToLocalstorage = ({
   localStorage.setItem(SETTINGS_TOKEN, JSON.stringify({ gender, race }))
 }
 
-const useSummoningCircle = (props: { gender: Gender; race: Race }) => {
+const useSummoningCircle = (props: {
+  gender: Gender
+  race: Race
+  genderSelectionState: Gender
+  raceSelectionState: Race
+  copyTooltip: string
+  copyState: ButtonState
+}) => {
   const height = 512
   const width = 512
   const centerX = width / 2
@@ -70,40 +67,110 @@ const useSummoningCircle = (props: { gender: Gender; race: Race }) => {
 
   const radiusCircles: CircleConfig[] = useMemo(
     () => [
-      { label: 'copy', degrees: 0, size: CircleSizes.LARGE },
+      {
+        label: 'copy',
+        degrees: 0,
+        size: CircleSizes.LARGE,
+        tooltipText: props.copyTooltip,
+        tooltipPlacement: 'right',
+        state: props.copyState,
+        highlighted: true,
+      },
       {
         label: 'halfling',
         degrees: 30 + 0 * bottomIncrement,
         size: CircleSizes.SMALL,
+        tooltipText:
+          props.raceSelectionState === Race.Halfling
+            ? 'Unpin from halfling names'
+            : 'Pin to halfling names',
+        tooltipPlacement: 'bottom',
+        state: 'ready',
+        highlighted: props.race === Race.Halfling,
       },
-      { label: 'elf', degrees: 30 + bottomIncrement, size: CircleSizes.SMALL },
+      {
+        label: 'elf',
+        degrees: 30 + bottomIncrement,
+        size: CircleSizes.SMALL,
+        tooltipText:
+          props.raceSelectionState === Race.Elf
+            ? 'Unpin from elven names'
+            : 'Pin to elven names',
+        tooltipPlacement: 'bottom',
+        state: 'ready',
+        highlighted: props.race === Race.Elf,
+      },
       {
         label: 'dwarf',
         degrees: 30 + 2 * bottomIncrement,
         size: CircleSizes.SMALL,
+        tooltipText:
+          props.raceSelectionState === Race.Dwarf
+            ? 'Unpin from dwarven names'
+            : 'Pin to dwarven names',
+        tooltipPlacement: 'bottom',
+        state: 'ready',
+        highlighted: props.race === Race.Dwarf,
       },
       {
         label: 'human',
         degrees: 30 + 3 * bottomIncrement,
         size: CircleSizes.SMALL,
+        tooltipText:
+          props.raceSelectionState === Race.Human
+            ? 'Unpin from human names'
+            : 'Pin to human names',
+        tooltipPlacement: 'bottom',
+        state: 'ready',
+        highlighted: props.race === Race.Human,
       },
       {
         label: 'female',
         degrees: 30 + 5 * bottomIncrement,
         size: CircleSizes.SMALL,
+        tooltipText:
+          props.genderSelectionState === Gender.Female
+            ? 'Unpin from female names'
+            : 'Pin to female names',
+        tooltipPlacement: 'bottom',
+        state: 'ready',
+        highlighted: props.gender === Gender.Female,
       },
       {
         label: 'male',
         degrees: 30 + 6 * bottomIncrement,
         size: CircleSizes.SMALL,
+        tooltipText:
+          props.genderSelectionState === Gender.Male
+            ? 'Unpin from male names'
+            : 'Pin to male names',
+        tooltipPlacement: 'bottom',
+        state: 'ready',
+        highlighted: props.gender === Gender.Male,
       },
-      { label: 'refresh', degrees: 360 - 45, size: CircleSizes.LARGE },
+      {
+        label: 'refresh',
+        degrees: 360 - 45,
+        size: CircleSizes.LARGE,
+        tooltipText: 'Roll again',
+        tooltipPlacement: 'right',
+        state: 'ready',
+        highlighted: true,
+      },
     ],
-    [bottomIncrement],
+    [
+      bottomIncrement,
+      props.copyState,
+      props.copyTooltip,
+      props.gender,
+      props.genderSelectionState,
+      props.race,
+      props.raceSelectionState,
+    ],
   )
 
   const genderMarker = useMemo(() => {
-    switch (props.gender) {
+    switch (props.genderSelectionState) {
       case Gender.Male:
         return 6
       case Gender.Female:
@@ -111,10 +178,10 @@ const useSummoningCircle = (props: { gender: Gender; race: Race }) => {
       default:
         return null
     }
-  }, [props.gender])
+  }, [props.genderSelectionState])
 
   const raceMarker = useMemo(() => {
-    switch (props.race) {
+    switch (props.raceSelectionState) {
       case Race.Dwarf:
         return 3
       case Race.Elf:
@@ -126,7 +193,7 @@ const useSummoningCircle = (props: { gender: Gender; race: Race }) => {
       default:
         return null
     }
-  }, [props.race])
+  }, [props.raceSelectionState])
 
   const groupings = useMemo(() => {
     return [
@@ -136,7 +203,7 @@ const useSummoningCircle = (props: { gender: Gender; race: Race }) => {
   }, [])
 
   const markers = useMemo(() => {
-    return [raceMarker, genderMarker]
+    return [raceMarker, genderMarker].filter((x) => Boolean(x))
   }, [genderMarker, raceMarker])
 
   return { circleOptions, radiusCircles, groupings, markers }
@@ -151,7 +218,7 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
   const [gender, setGender] = useState<Gender | null>(null)
   const [race, setRace] = useState<Race | null>(null)
 
-  const [copyState, setCopyState] = useState<CopyState>('ready')
+  const [copyState, setCopyState] = useState<ButtonState>('ready')
 
   const {
     gender: initialGenderSelectionState,
@@ -183,16 +250,6 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
     initialRaceSelectionState,
   )
 
-  const {
-    circleOptions,
-    radiusCircles,
-    groupings,
-    markers,
-  } = useSummoningCircle({
-    gender: genderSelectionState,
-    race: raceSelectionState,
-  })
-
   const copyTooltip = useMemo(() => {
     switch (copyState) {
       case 'ready':
@@ -206,79 +263,19 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
     }
   }, [copyState])
 
-  const resolveGenderButtonClasses = useCallback(
-    (
-      buttonGender: Gender,
-      gender: Gender | null,
-      selectionState: Gender | null,
-    ) => {
-      const active = selectionState === buttonGender ? 'active' : ''
-      const current = gender === buttonGender ? 'current' : 'uncurrent'
-
-      return `${current} ${active}`.trim()
-    },
-    [],
-  )
-
-  const resolveRaceButtonClasses = useCallback(
-    (buttonRace: Race, race: Race | null, selectionState: Race | null) => {
-      const active = selectionState === buttonRace ? 'active' : ''
-      const current = race === buttonRace ? 'current' : 'uncurrent'
-
-      return `${current} ${active}`.trim()
-    },
-    [],
-  )
-
   const {
-    maleButtonClasses,
-    femaleButtonClasses,
-    humanButtonClasses,
-    dwarfButtonClasses,
-    elfButtonClasses,
-    halflingButtonClasses,
-  } = useMemo(
-    () => ({
-      maleButtonClasses: resolveGenderButtonClasses(
-        Gender.Male,
-        gender,
-        genderSelectionState,
-      ),
-      femaleButtonClasses: resolveGenderButtonClasses(
-        Gender.Female,
-        gender,
-        genderSelectionState,
-      ),
-      humanButtonClasses: resolveRaceButtonClasses(
-        Race.Human,
-        race,
-        raceSelectionState,
-      ),
-      dwarfButtonClasses: resolveRaceButtonClasses(
-        Race.Dwarf,
-        race,
-        raceSelectionState,
-      ),
-      elfButtonClasses: resolveRaceButtonClasses(
-        Race.Elf,
-        race,
-        raceSelectionState,
-      ),
-      halflingButtonClasses: resolveRaceButtonClasses(
-        Race.Halfling,
-        race,
-        raceSelectionState,
-      ),
-    }),
-    [
-      gender,
-      genderSelectionState,
-      race,
-      raceSelectionState,
-      resolveGenderButtonClasses,
-      resolveRaceButtonClasses,
-    ],
-  )
+    circleOptions,
+    radiusCircles,
+    groupings,
+    markers,
+  } = useSummoningCircle({
+    gender: gender,
+    race: race,
+    genderSelectionState: genderSelectionState,
+    raceSelectionState: raceSelectionState,
+    copyTooltip,
+    copyState,
+  })
 
   const refresh = useCallback(
     (pinnedGender: Gender | null = null, pinnedRace: Race | null = null) => {
@@ -325,14 +322,6 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
     [gender, genderSelectionState, raceSelectionState, refresh],
   )
 
-  const handleToggleMale = useCallback(() => {
-    handleGenderToggle(Gender.Male)
-  }, [handleGenderToggle])
-
-  const handleToggleFemale = useCallback(() => {
-    handleGenderToggle(Gender.Female)
-  }, [handleGenderToggle])
-
   const handleRaceToggle = useCallback(
     (buttonRace: Race) => {
       const updatedRaceSelectionState =
@@ -347,21 +336,31 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
     [genderSelectionState, race, raceSelectionState, refresh],
   )
 
-  const handleToggleHuman = useCallback(() => {
-    handleRaceToggle(Race.Human)
-  }, [handleRaceToggle])
-
-  const handleToggleDwarf = useCallback(() => {
-    handleRaceToggle(Race.Dwarf)
-  }, [handleRaceToggle])
-
-  const handleToggleElf = useCallback(() => {
-    handleRaceToggle(Race.Elf)
-  }, [handleRaceToggle])
-
-  const handleToggleHalfling = useCallback(() => {
-    handleRaceToggle(Race.Halfling)
-  }, [handleRaceToggle])
+  const handleButtonClick = useCallback(
+    (label: ButtonLabel) => {
+      switch (label) {
+        case 'refresh':
+          return handleRefresh()
+        case 'copy':
+          return handleCopy()
+        case 'male':
+          return handleGenderToggle(Gender.Male)
+        case 'female':
+          return handleGenderToggle(Gender.Female)
+        case 'human':
+          return handleRaceToggle(Race.Human)
+        case 'elf':
+          return handleRaceToggle(Race.Elf)
+        case 'dwarf':
+          return handleRaceToggle(Race.Dwarf)
+        case 'halfling':
+          return handleRaceToggle(Race.Halfling)
+        default:
+          assertNever(label)
+      }
+    },
+    [handleCopy, handleGenderToggle, handleRaceToggle, handleRefresh],
+  )
 
   useEffect(() => {
     if (!isBrowser) {
@@ -388,7 +387,7 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
       <Wrap>
         {!loading && (
-          <CirclePlacer>
+          <MainPanel>
             <SummoningCircle
               circleOptions={circleOptions}
               radiusCircles={radiusCircles}
@@ -396,173 +395,19 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
               markers={markers}
             />
 
-            <RefreshPlacer>
-              <Tooltip
-                arrow
-                title="Roll again"
-                enterDelay={500}
-                placement="right"
-              >
-                <LargeActionButton
-                  type="reset"
-                  data-state="ready"
-                  onClick={handleRefresh}
-                >
-                  <Refresh width="34px" />
-                </LargeActionButton>
-              </Tooltip>
-            </RefreshPlacer>
-
-            <CopyPlacer>
-              <Tooltip
-                arrow
-                title={copyTooltip}
-                enterDelay={500}
-                placement="right"
-              >
-                <LargeActionButton
-                  type="button"
-                  data-state={copyState}
-                  onClick={handleCopy}
-                >
-                  <ContentCopy width="28px" />
-                </LargeActionButton>
-              </Tooltip>
-            </CopyPlacer>
-
             <NameWrap>
               <Name>{name}</Name>
             </NameWrap>
 
-            <MalePlacer>
-              <Tooltip
-                arrow
-                title={
-                  genderSelectionState === Gender.Male
-                    ? 'Unpin from male names'
-                    : 'Pin to male names'
-                }
-                enterDelay={500}
-                placement="bottom"
-              >
-                <ActionButton
-                  type="button"
-                  data-state="ready"
-                  className={maleButtonClasses}
-                  onClick={handleToggleMale}
-                >
-                  <Male width="28px" />
-                </ActionButton>
-              </Tooltip>
-            </MalePlacer>
-            <FemalePlacer>
-              <Tooltip
-                arrow
-                title={
-                  genderSelectionState === Gender.Female
-                    ? 'Unpin from female names'
-                    : 'Pin to female names'
-                }
-                enterDelay={500}
-                placement="bottom"
-              >
-                <ActionButton
-                  data-tip
-                  type="button"
-                  data-state="ready"
-                  className={femaleButtonClasses}
-                  onClick={handleToggleFemale}
-                >
-                  <Female width="28px" />
-                </ActionButton>
-              </Tooltip>
-            </FemalePlacer>
-
-            <HalflingPlacer>
-              <Tooltip
-                arrow
-                title={
-                  raceSelectionState === Race.Halfling
-                    ? 'Unpin from halfling names'
-                    : 'Pin to halfling names'
-                }
-                enterDelay={500}
-                placement="bottom"
-              >
-                <ActionButton
-                  type="button"
-                  data-state="ready"
-                  className={halflingButtonClasses}
-                  onClick={handleToggleHalfling}
-                >
-                  <Cowled />
-                </ActionButton>
-              </Tooltip>
-            </HalflingPlacer>
-            <ElfPlacer>
-              <Tooltip
-                arrow
-                title={
-                  raceSelectionState === Race.Elf
-                    ? 'Unpin from elven names'
-                    : 'Pin to elven names'
-                }
-                enterDelay={500}
-                placement="bottom"
-              >
-                <ActionButton
-                  type="button"
-                  data-state="ready"
-                  className={elfButtonClasses}
-                  onClick={handleToggleElf}
-                >
-                  <ElfHelmet />
-                </ActionButton>
-              </Tooltip>
-            </ElfPlacer>
-            <DwarfPlacer>
-              <Tooltip
-                arrow
-                title={
-                  raceSelectionState === Race.Dwarf
-                    ? 'Unpin from dwarven names'
-                    : 'Pin to dwarven names'
-                }
-                enterDelay={500}
-                placement="bottom"
-              >
-                <ActionButton
-                  type="button"
-                  data-state="ready"
-                  className={dwarfButtonClasses}
-                  onClick={handleToggleDwarf}
-                >
-                  <DwarfHelmet />
-                </ActionButton>
-              </Tooltip>
-            </DwarfPlacer>
-            <HumanPlacer>
-              <Tooltip
-                arrow
-                title={
-                  raceSelectionState === Race.Human
-                    ? 'Unpin from human names'
-                    : 'Pin to human names'
-                }
-                enterDelay={500}
-                placement="bottom"
-              >
-                <ActionButton
-                  type="button"
-                  data-state="ready"
-                  className={humanButtonClasses}
-                  onClick={handleToggleHuman}
-                >
-                  <VisoredHelm />
-                </ActionButton>
-              </Tooltip>
-            </HumanPlacer>
-          </CirclePlacer>
+            {radiusCircles.map((circle) => (
+              <SummoningCircleBtn
+                key={`summon-btn-${circle.label}`}
+                config={circle}
+                circleOptions={circleOptions}
+                onClick={handleButtonClick}
+              />
+            ))}
+          </MainPanel>
         )}
       </Wrap>
     </Layout>
@@ -575,7 +420,7 @@ const Wrap = styled.div`
   place-items: center;
 `
 
-const CirclePlacer = styled.div`
+const MainPanel = styled.div`
   height: 512;
   width: 512;
   position: relative;
@@ -593,131 +438,12 @@ const NameWrap = styled.div`
   left: 0;
 `
 
-const RefreshPlacer = styled.div`
-  position: absolute;
-  top: 70px;
-  left: 388px;
-  z-index: 100;
-  width: 40px;
-  height: 40px;
-`
-
-const CopyPlacer = styled.div`
-  position: absolute;
-  top: 229px;
-  left: 454px;
-  z-index: 100;
-  width: 80px;
-  height: 80px;
-`
-
-const HalflingPlacer = styled.div`
-  position: absolute;
-  top: 346px;
-  left: 429px;
-  z-index: 100;
-  width: 80px;
-  height: 80px;
-`
-
-const ElfPlacer = styled.div`
-  position: absolute;
-  top: 406px;
-  left: 379px;
-  z-index: 100;
-  width: 80px;
-  height: 80px;
-`
-
-const DwarfPlacer = styled.div`
-  position: absolute;
-  top: 445px;
-  left: 311px;
-  z-index: 100;
-  width: 80px;
-  height: 80px;
-`
-
-const HumanPlacer = styled.div`
-  position: absolute;
-  top: 459px;
-  left: 234px;
-  z-index: 100;
-  width: 80px;
-  height: 80px;
-`
-
-const FemalePlacer = styled.div`
-  position: absolute;
-  top: 406px;
-  left: 89px;
-  z-index: 100;
-  width: 80px;
-  height: 80px;
-`
-
-const MalePlacer = styled.div`
-  position: absolute;
-  top: 347px;
-  left: 39px;
-  z-index: 100;
-  width: 80px;
-  height: 80px;
-`
-
 const Name = styled.p`
   font-size: 3rem;
   color: ${({ theme }) => theme.text.color};
   padding: 0rem 6rem;
   margin-bottom: 0;
   text-align: center;
-`
-
-const ActionButton = styled.button`
-  background: ${({ 'data-state': state }: { 'data-state': CopyState }) =>
-    state === 'success' ? 'green' : 'none'};
-  width: 44px;
-  height: 44px;
-  border: none;
-  border-radius: 50%;
-  transition: all 0.4s;
-
-  color: ${({
-    theme,
-    'data-state': state,
-  }: {
-    theme: typeof styleTheme
-    'data-state': CopyState
-  }) => (state === 'success' ? theme.background.color : theme.text.primary)};
-
-  &:active {
-    outline: ${({ theme }) => `2px solid ${lighten(0, theme.text.primary)}`};
-  }
-
-  &.current {
-    color: ${({ theme }) => theme.text.primary};
-  }
-
-  &.uncurrent {
-    color: ${({ theme }) => lighten(0.4, theme.text.primary)};
-  }
-
-  &:hover {
-    background-color: ${({
-      theme,
-      'data-state': state,
-    }: {
-      theme: typeof styleTheme
-      'data-state': CopyState
-    }) => (state === 'success' ? 'green' : theme.text.primary)};
-    color: ${({ theme }) => theme.background.color};
-    transition: all 0.4s;
-  }
-`
-
-const LargeActionButton = styled(ActionButton)`
-  width: 54px;
-  height: 54px;
 `
 
 export default NameGenerator
