@@ -27,6 +27,8 @@ const useSummoningCircle = (props: {
     radius,
     outerRadius,
     fontSize,
+    smallButtonCircleSize,
+    largeButtonCircleSize,
   } = props.mobileScreenSize
     ? {
         height: 360,
@@ -34,6 +36,8 @@ const useSummoningCircle = (props: {
         radius: 155,
         outerRadius: 179,
         fontSize: 2.5,
+        smallButtonCircleSize: 32,
+        largeButtonCircleSize: 42,
       }
     : {
         height: 512,
@@ -41,6 +45,8 @@ const useSummoningCircle = (props: {
         radius: 225,
         outerRadius: 255,
         fontSize: 3,
+        smallButtonCircleSize: 42,
+        largeButtonCircleSize: 52,
       }
 
   const centerX = width / 2
@@ -56,8 +62,20 @@ const useSummoningCircle = (props: {
       height,
       width,
       fontSize,
+      smallButtonCircleSize,
+      largeButtonCircleSize,
     }),
-    [centerX, centerY, fontSize, height, outerRadius, radius, width],
+    [
+      centerX,
+      centerY,
+      fontSize,
+      height,
+      largeButtonCircleSize,
+      outerRadius,
+      radius,
+      smallButtonCircleSize,
+      width,
+    ],
   )
 
   const copyTooltip = useMemo(() => {

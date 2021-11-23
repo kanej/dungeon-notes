@@ -6,6 +6,8 @@ export type CircleOptions = {
   height: number
   width: number
   fontSize: number
+  smallButtonCircleSize: number
+  largeButtonCircleSize: number
 }
 
 export enum CircleSizes {
