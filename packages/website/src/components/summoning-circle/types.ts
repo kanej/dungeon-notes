@@ -10,6 +10,18 @@ export enum CircleSizes {
   SMALL = 'SMALL',
 }
 
+export type ButtonState = 'ready' | 'error' | 'success'
+
+export type ButtonLabel =
+  | 'refresh'
+  | 'copy'
+  | 'halfling'
+  | 'elf'
+  | 'dwarf'
+  | 'human'
+  | 'male'
+  | 'female'
+
 export type Point = [x: number, y: number]
 export type Line = [Point, Point]
 
@@ -19,4 +31,12 @@ export type CircleGrouping = [
   end: CircleConfig,
 ]
 
-export type CircleConfig = { label: string; degrees: number; size: CircleSizes }
+export type CircleConfig = {
+  label: ButtonLabel
+  degrees: number
+  size: CircleSizes
+  tooltipText: string
+  tooltipPlacement: 'right' | 'bottom'
+  state: ButtonState
+  highlighted: boolean
+}
