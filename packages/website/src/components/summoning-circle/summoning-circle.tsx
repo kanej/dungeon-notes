@@ -17,15 +17,15 @@ import resolveCircleTriangle from './utils/resolveCircleTriangle'
 
 const SummoningCircle = (
   props: React.SVGProps<SVGSVGElement> & {
-    circleOptions: CircleOptions
-    radiusCircles: Array<CircleConfig>
+    circleoptions: CircleOptions
+    radiuscircles: Array<CircleConfig>
     groupings: [string, number, number][]
     markers: number[]
   },
 ): JSX.Element => {
   const {
-    circleOptions,
-    radiusCircles,
+    circleoptions: circleOptions,
+    radiuscircles: radiusCircles,
     groupings: groupingNums,
     markers: markerNums,
   } = props

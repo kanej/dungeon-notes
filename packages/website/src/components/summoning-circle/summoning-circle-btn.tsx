@@ -1,48 +1,16 @@
 import { Tooltip } from '@mui/material'
-import { Female } from '@styled-icons/ionicons-sharp/Female'
-import { Male } from '@styled-icons/ionicons-sharp/Male'
-import { ContentCopy } from '@styled-icons/material/ContentCopy'
-import { Refresh } from '@styled-icons/material/Refresh'
 import { lighten } from 'polished'
 import React, { memo, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
-import Cowled from '../../components/icons/cowled'
-import DwarfHelmet from '../../components/icons/dwarf-helmet'
-import ElfHelmet from '../../components/icons/elf-helmet'
-import VisoredHelm from '../../components/icons/visored-helm'
 import { theme as styleTheme } from '../../theme'
-import { assertNever } from '../../utils/assertNever'
 import {
   ButtonLabel,
   CircleConfig,
-  CircleOptions,
   ButtonState,
   CircleSizes,
+  CircleOptions,
 } from './types'
 import calculateRadiusCirclePosition from './utils/calculateRadiusCirclePosition'
-
-const ButtonIcon = ({ label }: { label: ButtonLabel }) => {
-  switch (label) {
-    case 'refresh':
-      return <Refresh width="34px" />
-    case 'copy':
-      return <ContentCopy width="28px" />
-    case 'male':
-      return <Male width="28px" />
-    case 'female':
-      return <Female width="28px" />
-    case 'halfling':
-      return <Cowled />
-    case 'elf':
-      return <ElfHelmet />
-    case 'dwarf':
-      return <DwarfHelmet />
-    case 'human':
-      return <VisoredHelm />
-    default:
-      assertNever(label)
-  }
-}
 
 const SummoningCircleBtn = ({
   config: {
@@ -56,11 +24,12 @@ const SummoningCircleBtn = ({
   },
   circleOptions,
   onClick,
-}: {
+  children,
+}: React.PropsWithChildren<{
   config: CircleConfig
   circleOptions: CircleOptions
   onClick: (label: ButtonLabel) => void
-}): JSX.Element => {
+}>): JSX.Element => {
   const handleClick = useCallback(() => {
     return onClick(label)
   }, [label, onClick])
@@ -90,7 +59,7 @@ const SummoningCircleBtn = ({
             className={highlighted ? 'current' : 'uncurrent'}
             onClick={handleClick}
           >
-            <ButtonIcon label={label} />
+            {children}
           </LargeActionButton>
         ) : (
           <ActionButton
@@ -99,7 +68,7 @@ const SummoningCircleBtn = ({
             className={highlighted ? 'current' : 'uncurrent'}
             onClick={handleClick}
           >
-            <ButtonIcon label={label} />
+            {children}
           </ActionButton>
         )}
       </Tooltip>
