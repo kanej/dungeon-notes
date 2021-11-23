@@ -3,6 +3,9 @@ export type CircleOptions = {
   centerX: number
   centerY: number
   outerRadius: number
+  height: number
+  width: number
+  fontSize: number
 }
 
 export enum CircleSizes {
@@ -36,7 +39,7 @@ export type CircleConfig = {
   degrees: number
   size: CircleSizes
   tooltipText: string
-  tooltipPlacement: 'right' | 'bottom'
+  tooltipPlacement: 'right' | 'bottom' | 'left' | 'top'
   state: ButtonState
   highlighted: boolean
 }
