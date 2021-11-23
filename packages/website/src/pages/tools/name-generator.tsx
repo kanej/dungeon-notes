@@ -1,8 +1,16 @@
 import { generate, Gender, Race } from '@dungeon-notes/name-generator'
+import { Female } from '@styled-icons/ionicons-sharp/Female'
+import { Male } from '@styled-icons/ionicons-sharp/Male'
+import { ContentCopy } from '@styled-icons/material/ContentCopy'
+import { Refresh } from '@styled-icons/material/Refresh'
 import { PageProps, graphql } from 'gatsby'
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 
+import Cowled from '../../components/icons/cowled'
+import DwarfHelmet from '../../components/icons/dwarf-helmet'
+import ElfHelmet from '../../components/icons/elf-helmet'
+import VisoredHelm from '../../components/icons/visored-helm'
 import Layout from '../../components/layout'
 import Seo from '../../components/seo'
 import SummoningCircle from '../../components/summoning-circle/summoning-circle'
@@ -43,7 +51,6 @@ const useSummoningCircle = (props: {
   race: Race
   genderSelectionState: Gender
   raceSelectionState: Race
-  copyTooltip: string
   copyState: ButtonState
 }) => {
   const height = 512
@@ -63,6 +70,19 @@ const useSummoningCircle = (props: {
     [centerX, centerY, outerRadius, radius],
   )
 
+  const copyTooltip = useMemo(() => {
+    switch (props.copyState) {
+      case 'ready':
+        return 'Copy name to clipboard'
+      case 'success':
+        return 'Copied!'
+      case 'error':
+        return 'Copy failed!'
+      default:
+        assertNever(props.copyState)
+    }
+  }, [props.copyState])
+
   const bottomIncrement = (150 - 30) / 6
 
   const radiusCircles: CircleConfig[] = useMemo(
@@ -71,7 +91,7 @@ const useSummoningCircle = (props: {
         label: 'copy',
         degrees: 0,
         size: CircleSizes.LARGE,
-        tooltipText: props.copyTooltip,
+        tooltipText: copyTooltip,
         tooltipPlacement: 'right',
         state: props.copyState,
         highlighted: true,
@@ -160,8 +180,8 @@ const useSummoningCircle = (props: {
     ],
     [
       bottomIncrement,
+      copyTooltip,
       props.copyState,
-      props.copyTooltip,
       props.gender,
       props.genderSelectionState,
       props.race,
@@ -250,33 +270,6 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
     initialRaceSelectionState,
   )
 
-  const copyTooltip = useMemo(() => {
-    switch (copyState) {
-      case 'ready':
-        return 'Copy name to clipboard'
-      case 'success':
-        return 'Copied!'
-      case 'error':
-        return 'Copy failed!'
-      default:
-        assertNever(copyState)
-    }
-  }, [copyState])
-
-  const {
-    circleOptions,
-    radiusCircles,
-    groupings,
-    markers,
-  } = useSummoningCircle({
-    gender: gender,
-    race: race,
-    genderSelectionState: genderSelectionState,
-    raceSelectionState: raceSelectionState,
-    copyTooltip,
-    copyState,
-  })
-
   const refresh = useCallback(
     (pinnedGender: Gender | null = null, pinnedRace: Race | null = null) => {
       const { gender, race, firstName, lastName } = generate({
@@ -362,6 +355,19 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
     [handleCopy, handleGenderToggle, handleRaceToggle, handleRefresh],
   )
 
+  const {
+    circleOptions,
+    radiusCircles,
+    groupings,
+    markers,
+  } = useSummoningCircle({
+    gender: gender,
+    race: race,
+    genderSelectionState: genderSelectionState,
+    raceSelectionState: raceSelectionState,
+    copyState,
+  })
+
   useEffect(() => {
     if (!isBrowser) {
       return
@@ -389,8 +395,8 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
         {!loading && (
           <MainPanel>
             <SummoningCircle
-              circleOptions={circleOptions}
-              radiusCircles={radiusCircles}
+              circleoptions={circleOptions}
+              radiuscircles={radiusCircles}
               groupings={groupings}
               markers={markers}
             />
@@ -405,13 +411,38 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
                 config={circle}
                 circleOptions={circleOptions}
                 onClick={handleButtonClick}
-              />
+              >
+                <ButtonIcon label={circle.label} />
+              </SummoningCircleBtn>
             ))}
           </MainPanel>
         )}
       </Wrap>
     </Layout>
   )
+}
+
+const ButtonIcon = ({ label }: { label: ButtonLabel }) => {
+  switch (label) {
+    case 'refresh':
+      return <Refresh width="34px" />
+    case 'copy':
+      return <ContentCopy width="28px" />
+    case 'male':
+      return <Male width="28px" />
+    case 'female':
+      return <Female width="28px" />
+    case 'halfling':
+      return <Cowled />
+    case 'elf':
+      return <ElfHelmet />
+    case 'dwarf':
+      return <DwarfHelmet />
+    case 'human':
+      return <VisoredHelm />
+    default:
+      assertNever(label)
+  }
 }
 
 const Wrap = styled.div`
