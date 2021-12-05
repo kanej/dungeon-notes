@@ -36,38 +36,47 @@ const ChangelogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
   return (
     <Layout location={location} title={siteTitle}>
       <Seo title="Changelog" />
-      <ol style={{ listStyle: `none` }}>
-        {posts.map((post) => {
-          const title = post.frontmatter.title || post.fields.slug
+      <Wrap>
+        <ol style={{ listStyle: `none` }}>
+          {posts.map((post) => {
+            const title = post.frontmatter.title || post.fields.slug
 
-          return (
-            <li key={post.fields.slug}>
-              <Article itemScope itemType="http://schema.org/Article">
-                <header>
-                  <h2>
-                    <Link to={`/blog${post.fields.slug}`} itemProp="url">
-                      <span itemProp="headline">{title}</span>
-                    </Link>
-                  </h2>
-                  <small>{post.frontmatter.date}</small>
-                </header>
-                <section>
-                  <p
-                    // eslint-disable-next-line react/no-danger
-                    dangerouslySetInnerHTML={{
-                      __html: post.frontmatter.description || post.excerpt,
-                    }}
-                    itemProp="description"
-                  />
-                </section>
-              </Article>
-            </li>
-          )
-        })}
-      </ol>
+            return (
+              <li key={post.fields.slug}>
+                <Article itemScope itemType="http://schema.org/Article">
+                  <header>
+                    <h2>
+                      <Link to={`/blog${post.fields.slug}`} itemProp="url">
+                        <span itemProp="headline">{title}</span>
+                      </Link>
+                    </h2>
+                    <small>{post.frontmatter.date}</small>
+                  </header>
+                  <section>
+                    <p
+                      // eslint-disable-next-line react/no-danger
+                      dangerouslySetInnerHTML={{
+                        __html: post.frontmatter.description || post.excerpt,
+                      }}
+                      itemProp="description"
+                    />
+                  </section>
+                </Article>
+              </li>
+            )
+          })}
+        </ol>
+      </Wrap>
     </Layout>
   )
 }
+
+const Wrap = styled.div`
+  @media (max-width: 575px) {
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+  }
+`
 
 const Article = styled.article`
   max-width: ${({ theme }) => theme.spacing.maxWidth};
