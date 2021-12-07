@@ -17,7 +17,8 @@
     "prerelease": "lerna run build --scope @dungeon-notes/writer-web && rm -r packages/cli/www && mv packages/web/build packages/cli/www",
     "release": "lerna publish --conventional-commits",
     "build": "lerna run build",
-    "clean": "lerna run clean --concurrency 4"
+    "clean": "lerna run clean --concurrency 4",
+    "start": "lerna run develop --scope @dungeon-notes/website"
   },
   "devDependencies": {
     "@babel/preset-env": "7.14.5",

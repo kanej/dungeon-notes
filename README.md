@@ -2,42 +2,32 @@
 
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
-Write D & D 5e adventures in markdown.
+Tools to help Dungeon Masters plan and improvise their game sessions.
 
 ## Table of Contents
 
 - [Dungeon Notes](#dungeon-notes)
   - [Table of Contents](#table-of-contents)
-  - [Install](#install)
-  - [Usage](#usage)
+  - [Development](#development)
   - [Maintainers](#maintainers)
   - [Contributing](#contributing)
   - [License](#license)
 
-## Install
+## Development
 
-Dungeon notes is installed to the command line via `npm`:
+This is a node project that uses `yarn`. To install dependencies:
 
-```sh
-npm install -g @dungeon-notes/writer
+```shell
+yarn
 ```
 
-## Usage
+To run the development server for the website:
 
-Setup a new adventure by creating a new directory:
-
-```sh
-mkdir example-adventure
-cd example-adventure
-dnwriter init
-# Follow setup
+```shell
+yarn start
 ```
 
-With a new adventure initialised, run the development server:
-
-```sh
-dnwriter serve
-```
+The website should now be available on [http://localhost:8000](http://localhost:8000).
 
 ## Maintainers
 
