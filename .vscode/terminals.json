@@ -2,20 +2,6 @@
   "autorun": true,
   "terminals": [
     {
-      "name": "Web",
-      "description": "The front end UI",
-      "focus": false,
-      "cwd": "packages/web",
-      "command": "BROWSER=none yarn start"
-    },
-    {
-      "name": "Server",
-      "description": "The express backend",
-      "focus": false,
-      "cwd": "packages/cli",
-      "command": "yarn dev"
-    },
-    {
       "name": "Website",
       "description": "The gatsby website",
       "focus": false,
