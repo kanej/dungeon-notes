@@ -42,9 +42,18 @@ const Layout = ({
             <Main>{children}</Main>
             <Footer>
               <FooterWrap>
-                <div>
-                  © {new Date().getFullYear()} Molendinar Solutions Limited
-                </div>
+                <Licensing>
+                  <div>
+                    © {new Date().getFullYear()} Molendinar Solutions Limited
+                  </div>
+                  <div>
+                    <IconLicense>
+                      Icons made by Kier Heyl and Lorc. Available on{' '}
+                      <a href="https://game-icons.net">game-icons</a>
+                    </IconLicense>
+                  </div>
+                </Licensing>
+
                 <SocialBar>
                   <div />
                   <Link to="/changelog">changelog</Link>
@@ -188,6 +197,26 @@ const FooterWrap = styled.div`
     justify-content: space-between;
     margin: 0 auto;
     max-width: ${({ theme }) => theme.spacing.maxWidth};
+  }
+`
+
+const Licensing = styled.div`
+  display: grid;
+
+  grid-row-gap: 1rem;
+  text-align: center;
+
+  @media (min-width: 576px) {
+    text-align: left;
+  }
+`
+
+const IconLicense = styled.p`
+  margin-bottom: 0;
+  font-size: 0.7rem;
+
+  @media (min-width: 576px) {
+    font-size: 0.8rem;
   }
 `
 
