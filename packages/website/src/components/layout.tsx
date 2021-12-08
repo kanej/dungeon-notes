@@ -106,6 +106,26 @@ const GlobalStyle = createGlobalStyle`
   a:focus {
     text-decoration: none;
   }
+
+  ul,
+  ol {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+    margin-bottom: 0;
+    list-style-position: inside;
+    list-style-image: none;
+  }
+
+  ul li,
+  ol li {
+    margin-bottom: 1rem;
+  }
+
+  blockquote > ul,
+  blockquote > ol {
+    list-style-position: inside;
+  }
 `
 
 const Page = styled.div`
