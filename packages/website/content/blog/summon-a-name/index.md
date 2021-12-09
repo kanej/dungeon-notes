@@ -2,10 +2,12 @@
 title: Summon me a name!
 date: '2021-12-07T20:43:00.000Z'
 description: 'Yet another name generator for your TTRPG. Need an elf, dwarf, human or halfling name - it is just an infernal invocation away ...'
+featuredImage:
+  path: ksenia-yakovleva-cBkHr5RuooA-unsplash.jpg
+  alt: Witch's Runes
+  credit: Ksenia Yakovleva
+  link: https://unsplash.com/@ksyfffka07?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText
 ---
-
-![Summoning Runes](./ksenia-yakovleva-cBkHr5RuooA-unsplash.jpg 'Summoning Runes')
-Photo by <a href="https://unsplash.com/@ksyfffka07?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Ksenia Yakovleva</a> on <a href="https://unsplash.com/s/photos/witch?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
 
 So I built a table top RPG fantasy name generator. I did this not because it was easy, but because I thought it was going to be easy.
 
