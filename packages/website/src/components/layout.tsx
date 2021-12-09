@@ -146,7 +146,7 @@ const Header = styled.nav`
 
     margin: 0 auto;
     max-width: ${({ theme }) => theme.spacing.maxWidth};
-    padding: 1rem 0 0 1.2rem;
+    padding: 1rem 0 0 0;
   }
 `
 
