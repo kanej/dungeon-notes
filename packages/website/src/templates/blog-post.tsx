@@ -77,8 +77,6 @@ const BlogPostTemplate: React.FC<PageProps<DataProps>> = ({
   const featuredImage = data.markdownRemark.frontmatter?.featuredImage
   const { previous, next } = data
 
-  console.log(featuredImage)
-
   return (
     <Layout location={location} title={siteTitle}>
       <Seo
@@ -87,10 +85,10 @@ const BlogPostTemplate: React.FC<PageProps<DataProps>> = ({
       />
       <Wrap>
         <article itemScope itemType="http://schema.org/Article">
-          <header>
-            <h1 itemProp="headline">{post.frontmatter.title}</h1>
-            <p>{post.frontmatter.date}</p>
-          </header>
+          <Header>
+            <Headline>{post.frontmatter.title}</Headline>
+            <small>{post.frontmatter.date}</small>
+          </Header>
           <FeaturedImage featuredImage={featuredImage} />
           <Section
             dangerouslySetInnerHTML={{ __html: post.html }}
@@ -139,10 +137,18 @@ const Wrap = styled.div`
   }
 `
 
+const Header = styled.header`
+  margin-bottom: 1rem;
+`
+
+const Headline = styled.h1`
+  margin: 0 0;
+`
+
 const Section = styled.section`
   img {
     width: 100%;
-    max-width: 90vw;
+    max-width: 100%;
   }
 
   .gatsby-highlight {
@@ -155,9 +161,7 @@ const Section = styled.section`
   }
 `
 
-const ImageContainer = styled.div`
-  width: 90vw;
-`
+const ImageContainer = styled.div``
 
 const CreditText = styled.p`
   color: gray;
