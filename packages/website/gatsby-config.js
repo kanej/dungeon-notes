@@ -8,7 +8,7 @@ module.exports = {
     },
     description:
       'Tools to aid the the Dungeon Master in their depraved adventures.',
-    siteUrl: 'https://dungeonnotes.com/',
+    siteUrl: 'https://dungeonnotes.io/',
     social: {
       twitter: 'dungeonnotes',
     },
@@ -53,12 +53,6 @@ module.exports = {
     },
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp',
-    // {
-    //   resolve: 'gatsby-plugin-google-analytics',
-    //   options: {
-    //     trackingId: 'ADD YOUR TRACKING ID HERE',
-    //   },
-    // },
     {
       resolve: 'gatsby-plugin-feed',
       options: {
@@ -140,5 +134,6 @@ module.exports = {
         enableWebVitalsTracking: true,
       },
     },
+    'gatsby-plugin-sitemap',
   ],
 }
