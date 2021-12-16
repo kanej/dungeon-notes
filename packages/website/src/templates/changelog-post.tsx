@@ -68,7 +68,7 @@ const FeaturedImage: React.FC<{
   )
 }
 
-const BlogPostTemplate: React.FC<PageProps<DataProps>> = ({
+const ChangelogPostTemplate: React.FC<PageProps<DataProps>> = ({
   data,
   location,
 }) => {
@@ -99,7 +99,7 @@ const BlogPostTemplate: React.FC<PageProps<DataProps>> = ({
             <Bio />
           </footer>
         </article>
-        <nav className="blog-post-nav">
+        <nav className="changelog-post-nav">
           <ul
             style={{
               display: `flex`,
@@ -111,14 +111,14 @@ const BlogPostTemplate: React.FC<PageProps<DataProps>> = ({
           >
             <li>
               {previous && (
-                <Link to={`/blog${previous.fields.slug}`} rel="prev">
+                <Link to={`/changelog${previous.fields.slug}`} rel="prev">
                   ← {previous.frontmatter.title}
                 </Link>
               )}
             </li>
             <li>
               {next && (
-                <Link to={`/blog${next.fields.slug}`} rel="next">
+                <Link to={`/changelog${next.fields.slug}`} rel="next">
                   {next.frontmatter.title} →
                 </Link>
               )}
@@ -168,10 +168,10 @@ const CreditText = styled.p`
   margin-bottom: 2rem;
 `
 
-export default BlogPostTemplate
+export default ChangelogPostTemplate
 
 export const pageQuery = graphql`
-  query BlogPostBySlug(
+  query ChangelogPostBySlug(
     $id: String!
     $previousPostId: String
     $nextPostId: String

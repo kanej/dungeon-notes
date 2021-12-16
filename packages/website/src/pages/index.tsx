@@ -14,7 +14,7 @@ type DataProps = {
   }
 }
 
-const BlogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
+const ChangelogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
   const siteTitle = data.site.siteMetadata?.title || `Title`
 
   return (
@@ -96,7 +96,7 @@ const BookWrap = styled.div`
   margin-top: 4rem;
 `
 
-export default BlogIndex
+export default ChangelogIndex
 
 export const pageQuery = graphql`
   query {
