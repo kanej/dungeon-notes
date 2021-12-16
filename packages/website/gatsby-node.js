@@ -5,10 +5,10 @@ const { createFilePath } = require(`gatsby-source-filesystem`)
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
 
-  // Define a template for blog post
-  const blogPost = path.resolve(`./src/templates/blog-post.tsx`)
+  // Define a template for changelog post
+  const changelogPost = path.resolve(`./src/templates/changelog-post.tsx`)
 
-  // Get all markdown blog posts sorted by date
+  // Get all markdown changelog posts sorted by date
   const result = await graphql(
     `
       {
@@ -29,7 +29,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   if (result.errors) {
     reporter.panicOnBuild(
-      `There was an error loading your blog posts`,
+      `There was an error loading your changelog posts`,
       result.errors,
     )
     return
@@ -37,8 +37,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   const posts = result.data.allMarkdownRemark.nodes
 
-  // Create blog posts pages
-  // But only if there's at least one markdown file found at "content/blog" (defined in gatsby-config.js)
+  // Create changelog posts pages
+  // But only if there's at least one markdown file found at "content/changelog" (defined in gatsby-config.js)
   // `context` is available in the template as a prop and as a variable in GraphQL
 
   if (posts.length > 0) {
@@ -47,8 +47,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       const nextPostId = index === posts.length - 1 ? null : posts[index + 1].id
 
       createPage({
-        path: `/blog${post.fields.slug}`,
-        component: blogPost,
+        path: `/changelog${post.fields.slug}`,
+        component: changelogPost,
         context: {
           id: post.id,
           previousPostId,
@@ -81,7 +81,7 @@ exports.createSchemaCustomization = ({ actions }) => {
 
   // Also explicitly define the Markdown frontmatter
   // This way the "MarkdownRemark" queries will return `null` even when no
-  // blog posts are stored inside "content/blog" instead of returning an error
+  // changelog posts are stored inside "content/changelog" instead of returning an error
   createTypes(`
     type SiteSiteMetadata {
       author: Author

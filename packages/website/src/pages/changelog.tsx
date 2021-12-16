@@ -28,7 +28,7 @@ const ChangelogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
     return (
       <Layout location={location} title={siteTitle}>
         <Seo title="Changelog" />
-        <p>No blog posts found.</p>
+        <p>No changelog posts found.</p>
       </Layout>
     )
   }
@@ -46,7 +46,7 @@ const ChangelogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
                 <Article itemScope itemType="http://schema.org/Article">
                   <header>
                     <h2>
-                      <Link to={`/blog${post.fields.slug}`} itemProp="url">
+                      <Link to={`/changelog${post.fields.slug}`} itemProp="url">
                         <span itemProp="headline">{title}</span>
                       </Link>
                     </h2>
