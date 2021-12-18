@@ -220,7 +220,10 @@ const NameGenerator: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
   return (
     <Layout location={location} title={siteTitle}>
-      <Seo title="Name Generator" />
+      <Seo
+        title="Name Generator"
+        description="A fantasy name generator for your TTRPG. Supports human, dwarf, elf and halfling names."
+      />
 
       <Wrap>
         {!loading && (

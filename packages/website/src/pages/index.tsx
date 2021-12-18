@@ -19,7 +19,7 @@ const ChangelogIndex: React.FC<PageProps<DataProps>> = ({ data, location }) => {
 
   return (
     <Layout location={location} title={siteTitle}>
-      <Seo title="Home" />
+      <Seo title="Dungeon Notes" />
       <IntroText>
         Dungeon Notes provides tools to help Dungeon Masters plan and improvise
         their game sessions.
