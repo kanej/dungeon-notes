@@ -60,12 +60,22 @@ const FeaturedImage: React.FC<{
       <GatsbyImage image={image} alt={alt} />
       <CreditText>
         Photo by <a href={link}>{credit}</a> on{' '}
-        <a href="https://unsplash.com/s/photos/witch?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">
+        <a href="https://unsplash.com/s/photos/witch?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">
           Unsplash
         </a>
       </CreditText>
     </ImageContainer>
   )
+}
+
+const resolveImageUrlFrom = (path: ImageDataLike): string => {
+  // @ts-expect-error typing for query ... figure out later
+  const srcSet = path.childImageSharp.gatsbyImageData.images.sources[1].srcSet
+  const items = srcSet.split(',')
+  const lastEntry = items[items.length - 1]
+  const firstPart = lastEntry.split(' ')[0]
+
+  return firstPart.replace('\n', '')
 }
 
 const ChangelogPostTemplate: React.FC<PageProps<DataProps>> = ({
@@ -77,11 +87,14 @@ const ChangelogPostTemplate: React.FC<PageProps<DataProps>> = ({
   const featuredImage = data.markdownRemark.frontmatter?.featuredImage
   const { previous, next } = data
 
+  const imageUrl = resolveImageUrlFrom(featuredImage.path)
+
   return (
     <Layout location={location} title={siteTitle}>
       <Seo
         title={post.frontmatter.title}
         description={post.frontmatter.description || post.excerpt}
+        image={imageUrl}
       />
       <Wrap>
         <article itemScope itemType="http://schema.org/Article">

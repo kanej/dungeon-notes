@@ -3,11 +3,12 @@ import * as React from 'react'
 import { Helmet } from 'react-helmet'
 
 const Seo: React.FC<{
+  title: string
+  image?: string
   description?: string
   lang?: string
   meta?: { name: string; content: string }[]
-  title: string
-}> = ({ description = '', lang = 'en', meta = [], title }) => {
+}> = ({ title, image, description = '', lang = 'en', meta = [] }) => {
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -59,7 +60,7 @@ const Seo: React.FC<{
         },
         {
           name: `twitter:card`,
-          content: `summary`,
+          content: image ? `summary` : 'summary_large_image',
         },
         {
           name: `twitter:creator`,
@@ -73,6 +74,18 @@ const Seo: React.FC<{
           name: `twitter:description`,
           content: metaDescription,
         },
+        ...(image
+          ? [
+              {
+                name: `twitter:image`,
+                content: image,
+              },
+              {
+                name: `og:image`,
+                content: image,
+              },
+            ]
+          : []),
       ].concat(meta)}
     />
   )
