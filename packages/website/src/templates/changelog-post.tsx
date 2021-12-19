@@ -11,6 +11,7 @@ type DataProps = {
   site: {
     siteMetadata?: {
       title: string
+      siteUrl: string
     }
   }
   markdownRemark: {
@@ -68,14 +69,15 @@ const FeaturedImage: React.FC<{
   )
 }
 
-const resolveImageUrlFrom = (path: ImageDataLike): string => {
+const resolveImageUrlFrom = (siteUrl: string, path: ImageDataLike): string => {
   // @ts-expect-error typing for query ... figure out later
   const srcSet = path.childImageSharp.gatsbyImageData.images.sources[1].srcSet
   const items = srcSet.split(',')
   const lastEntry = items[items.length - 1]
   const firstPart = lastEntry.split(' ')[0]
+  const pathTrimmed = firstPart.replace('\n', '')
 
-  return firstPart.replace('\n', '')
+  return new URL(pathTrimmed, siteUrl).href
 }
 
 const ChangelogPostTemplate: React.FC<PageProps<DataProps>> = ({
@@ -87,7 +89,9 @@ const ChangelogPostTemplate: React.FC<PageProps<DataProps>> = ({
   const featuredImage = data.markdownRemark.frontmatter?.featuredImage
   const { previous, next } = data
 
-  const imageUrl = resolveImageUrlFrom(featuredImage.path)
+  const siteUrl = data.site.siteMetadata?.siteUrl
+
+  const imageUrl = resolveImageUrlFrom(siteUrl, featuredImage.path)
 
   return (
     <Layout location={location} title={siteTitle}>
@@ -192,6 +196,7 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         title
+        siteUrl
       }
     }
     markdownRemark(id: { eq: $id }) {
