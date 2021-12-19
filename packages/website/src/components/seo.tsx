@@ -60,7 +60,7 @@ const Seo: React.FC<{
         },
         {
           name: `twitter:card`,
-          content: image ? `summary` : 'summary_large_image',
+          content: image ? 'summary_large_image' : `summary`,
         },
         {
           name: `twitter:creator`,
