@@ -37,7 +37,6 @@
     "@babel/core": "7.12.10",
     "@babel/preset-env": "7.12.11",
     "@babel/preset-typescript": "7.12.7",
-    "@dungeon-notes/writer-web": "^0.3.0",
     "@oclif/dev-cli": "1.26.0",
     "@types/express": "4.17.9",
     "@types/jest": "26.0.19",
