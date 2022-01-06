@@ -13,7 +13,7 @@
       "description": "Run Chrome with remote debugging enabled",
       "focus": false,
       "open": false,
-      "command": "sleep 5 && /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --disable-infobars --pinned-tab-count=2 http://localhost:3000 http://localhost:8000"
+      "command": "sleep 5 && /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --disable-infobars --pinned-tab-count=1 http://localhost:8000"
     }
   ]
 }

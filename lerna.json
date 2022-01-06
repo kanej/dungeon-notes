@@ -3,5 +3,13 @@
   "version": "0.3.3",
   "useWorkspaces": true,
   "npmClient": "yarn",
-  "npmClientArgs": ["--no-lockfile", "--no-package-lock"]
+  "npmClientArgs": ["--no-lockfile", "--no-package-lock"],
+  "command": {
+    "publish": {
+      "conventionalCommits": true
+    },
+    "version": {
+      "message": "chore(release): publish"
+    }
+  }
 }
