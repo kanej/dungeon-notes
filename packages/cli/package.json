@@ -1,15 +1,15 @@
 {
   "name": "@dungeon-notes/cli",
   "description": "Create D & D 5e adventures in markdown",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "author": "John Kane @kanej",
   "bin": {
     "dnotes": "./bin/run"
   },
   "bugs": "https://github.com/kanej/dungeon-notes/issues",
   "dependencies": {
-    "@dungeon-notes/name-generator": "^0.3.2",
-    "@dungeon-notes/types": "^0.3.2",
+    "@dungeon-notes/name-generator": "^0.4.0",
+    "@dungeon-notes/types": "^0.4.0",
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",

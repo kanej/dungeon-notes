@@ -1,6 +1,6 @@
 {
   "name": "@dungeon-notes/name-generator",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Generate NPC names for your rpg adventure",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

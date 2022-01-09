@@ -26,11 +26,11 @@ generating html from saved files.
 <!-- usage -->
 
 ```sh-session
-$ npm install -g @dungeon-notes/writer
+$ npm install -g @dungeon-notes/cli
 $ dnwriter COMMAND
 running command...
 $ dnwriter (-v|--version|version)
-@dungeon-notes/writer/0.3.3 darwin-x64 node-v14.15.3
+@dungeon-notes/cli/0.4.0 darwin-x64 node-v14.18.1
 $ dnwriter --help [COMMAND]
 USAGE
   $ dnwriter COMMAND
@@ -43,25 +43,8 @@ USAGE
 
 <!-- commands -->
 
-- [`dnwriter build [FILE]`](#dnwriter-build-file)
 - [`dnwriter help [COMMAND]`](#dnwriter-help-command)
-- [`dnwriter init [PATH]`](#dnwriter-init-path)
-- [`dnwriter serve [PATH]`](#dnwriter-serve-path)
-
-## `dnwriter build [FILE]`
-
-build a static site from the repo
-
-```
-USAGE
-  $ dnwriter build [FILE]
-
-OPTIONS
-  -h, --help       show CLI help
-  -p, --path=path  [default: .]
-```
-
-_See code: [lib/commands/build.js](https://github.com/kanej/dungeon-notes/blob/v0.3.3/lib/commands/build.js)_
+- [`dnwriter summon [TYPE]`](#dnwriter-summon-type)
 
 ## `dnwriter help [COMMAND]`
 
@@ -78,39 +61,21 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.3.1/src/commands/help.ts)_
 
-## `dnwriter init [PATH]`
+## `dnwriter summon [TYPE]`
 
-Setup a new notes repo
+randomly generate a name
 
 ```
 USAGE
-  $ dnwriter init [PATH]
+  $ dnwriter summon [TYPE]
 
 OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [lib/commands/init.js](https://github.com/kanej/dungeon-notes/blob/v0.3.3/lib/commands/init.js)_
-
-## `dnwriter serve [PATH]`
-
-serves the notes editor
-
-```
-USAGE
-  $ dnwriter serve [PATH]
-
-OPTIONS
-  -h, --help       show CLI help
-  -p, --port=port  [default: 9898] the port to serve on
-
-EXAMPLE
-  $ dnwriter serve
-```
-
-_See code: [lib/commands/serve.js](https://github.com/kanej/dungeon-notes/blob/v0.3.3/lib/commands/serve.js)_
+_See code: [lib/commands/summon.js](https://github.com/kanej/dungeon-notes/blob/v0.4.0/lib/commands/summon.js)_
 
 <!-- commandsstop -->
 
