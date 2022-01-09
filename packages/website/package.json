@@ -2,11 +2,11 @@
   "name": "@dungeon-notes/website",
   "private": true,
   "description": "The website for dungeon notes",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "author": "John Kane <kanej>",
   "license": "GPL-3.0",
   "dependencies": {
-    "@dungeon-notes/name-generator": "^0.3.2",
+    "@dungeon-notes/name-generator": "^0.4.0",
     "@emotion/react": "11.5.0",
     "@emotion/styled": "11.3.0",
     "@flatten-js/core": "1.2.27",

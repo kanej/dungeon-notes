@@ -18,5 +18,5 @@
   "files": ["src/libs.d.ts"],
   "exclude": ["**/node_modules/**", "../../node_modules"],
   "composite": true,
-  "references": [{ "path": "../engine" }, { "path": "../types" }]
+  "references": [{ "path": "../name-generator" }, { "path": "../types" }]
 }

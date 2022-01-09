@@ -8,10 +8,28 @@ Tools to help Dungeon Masters plan and improvise their game sessions.
 
 - [Dungeon Notes](#dungeon-notes)
   - [Table of Contents](#table-of-contents)
+  - [Install](#install)
+  - [Usage](#usage)
   - [Development](#development)
   - [Maintainers](#maintainers)
   - [Contributing](#contributing)
   - [License](#license)
+
+## Install
+
+The dungeon notes cli can be install with:
+
+```shell
+npm install -g @dungeon-notes/cli
+```
+
+## Usage
+
+Generate a random fantasy name:
+
+```shell
+dnotes summon
+```
 
 ## Development
 

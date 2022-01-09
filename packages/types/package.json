@@ -1,6 +1,6 @@
 {
   "name": "@dungeon-notes/types",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "The types that underly dungeon notes",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,7 +17,7 @@
     "clean": "rimraf dist *.tsbuildinfo"
   },
   "dependencies": {
-    "@dungeon-notes/name-generator": "^0.3.2",
+    "@dungeon-notes/name-generator": "^0.4.0",
     "@reduxjs/toolkit": "1.5.0"
   }
 }
